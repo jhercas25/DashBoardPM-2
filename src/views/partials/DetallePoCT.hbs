@@ -1,0 +1,139 @@
+<div class="row">
+    <h3 id="PoC" class="mb-3 m-4">{{#if prov }}Proveedores{{else}}Clientes{{/if}}</h3>
+
+    <h5 class="mb-3 m-4 " id="Tipo">Minorista</h5>
+
+</div>
+<div class="form-group row pl-3 pr-3">
+    <div class="col-4">
+        <label for="Proveedor">Proveedor</label>
+    </div>
+    <div class="col-8">
+        <select id="PoCSel"  onchange="SelectPoC()" class="selectpicker" data-live-search="true" required>
+        </select>
+    </div>
+</div>
+
+<div class="form-group pl-3 pr-3">
+    <label for="NitoCC">Nit o CC sin digito de verificacion </label>
+    <div class="form-group row">
+        <input type="text" class="form-control col-10" data-inputmask="'alias': 'numeric'" name="NitoCC" id="NitoCCT"
+           value={{DT.row.PoC}}  onchange="TraerPoC(this)" required>
+        <input type="text" class="form-control col-2" id="DVer" readonly>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="Nombre">Nombre</label>
+    <input type="text" class="form-control" name="Nombre" id="Nombre" readonly required>
+</div>
+
+<div class="form-group">
+    <label for="Direccion">Dirección</label>
+    <input type="text" class="form-control" name="Direccion" id="Direccion" readonly required>
+</div>
+
+<div class="form-group  row">
+    <div class="col-6">
+        <label for="Telefono">Teléfono 1</label>
+        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" name="Telefono" id="Telefono"
+            readonly required>
+    </div>
+    <div class="col-6">
+        <label for="Telefono_2">Teléfono 2</label>
+        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" name="Telefono2" id="Telefono2"
+            readonly>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-6">
+        <label for="Ciudad">Ciudad</label>
+        <input type="text" class="form-control" name="Ciudad" id="Ciudad" readonly required>
+    </div>
+
+    <div class="col-6">
+        <label for="Departamento">Departamento</label>
+        <input type="text" class="form-control" name="Departamento" id="Departamento" readonly>
+    </div>
+
+</div>
+
+
+<div class="form-group">
+    <label for="E-mail">E-mail</label>
+    <input type="text" class="form-control" name="Email" id="E-mail" readonly>
+</div>
+
+<div class="form-group">
+    <label for="Observaciones">Observaciones</label>
+    <input type="text" class="form-control" name="Observaciones" id="Observaciones" readonly>
+</div>
+
+<div class="form-group row">
+    <div class="col-4">
+        <label for="AE">Actividad Economica </label>
+        <input type="text" class="form-control" name="AE" id="AE" readonly required>
+    </div>
+
+    <div class="col-4">
+        <label for="RT">Regime Tributario</label>
+        <input type="text" class="form-control" name="RT" id="RT" readonly>
+    </div>
+
+    <div class="col-4">
+        <label for="ReteIca">Tarifa ReteIca</label>
+        <input type="text" value="0" class="form-control" name="TIca" id="TIca" readonly>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        Tipo = document.getElementById('TipoT').innerText;
+
+        switch (Tipo) {
+            case 'Ventas':
+                url = '/PoC/Clientes/datos';
+                break;
+            case 'Compras':
+                url = '/PoC/Proveedores/datos';
+                break;
+            case 'Cotizaciones':
+                url = '/PoC/Clientes/datos';
+                break;
+            case 'Pagos':
+                url = '/PoC/Proveedores/datos';
+                break;
+            case 'Pedidos':
+                url = '/PoC/Proveedores/datos';
+                break;
+
+        }
+
+
+
+
+        $('#PoCSel').empty();
+
+        $('#PoCSel').append('<option value=0 selected>---Seleccione el proveedor---</option>')
+
+        $.get(url).then(function (res) {
+
+           // console.log(res);
+           // debugger
+
+            for (i = 0; i < res.length; i++) {
+
+                $('#PoCSel').append(`<option  value ="${res[i].NitoCC}" data-subtext="${res[i].NitoCC}">${res[i].Nombre}</option`).selectpicker('refresh');
+                //console.log(i);
+            }
+
+            $('#PoCSel').val(0).selectpicker('refresh');
+
+        });
+
+    });
+
+
+</script>

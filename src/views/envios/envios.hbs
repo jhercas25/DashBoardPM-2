@@ -1,0 +1,112 @@
+<div class="row col-md-8 mx-auto m-4">
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Imprimir Guia</h6>
+        </div>
+
+        <div class="card-body">
+            <form action="/envios/Genvios" method="POST" class="col needs-validation" novalidate>
+                <div class="form-group row pl-3 pr-3">
+                    <label for="NIT">Nit o CC sin digito de verificacion </label>
+                    <input type="text" class="form-control col-10" data-inputmask="'alias': 'numeric'"  name="NitoCC"  id="NitoCC" onchange="DV(this)" required>
+                    <input type="text" class="form-control col-2" id="DVer" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="Destinatario">Destinatario</label>
+                    <input type="text" class="form-control" name="Destinatario"  id="Destinatario"required>
+                </div>
+                <div class="form-group">
+                    <label for="Direccion">Dirección</label>
+                    <input type="text" class="form-control" name="Direccion" id="Direccion" required>
+                </div>
+                <div class="form-group">
+                    <label for="Telefono">Teléfono</label>
+                    <input type="text" class="form-control" name="Telefono" data-inputmask="'alias': 'numeric'" id="Telefono" required>
+                </div>
+                <div class="form-group">
+                    <label for="Ciudad">Ciudad</label>
+                    <input type="text" class="form-control" name="Ciudad"  id="Ciudad"required>
+                </div>
+                <div class="form-group">
+                    <label for="Municipo">Departamento</label>
+                    <input type="text" class="form-control" name="Municipio" id="Departamento">
+                </div>
+
+
+                <fieldset class="form-group">
+                    <div class="row">
+                        <legend class="col-form-label col-4 pt-0">Remitente</legend>
+                        <div class="col-8">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="Remitente" id="gridRadios1"
+                                    value="LED" checked>
+                                <label class="form-check-label" for="gridRadios1">
+                                    LEDDENT
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="Remitente" id="gridRadios2"
+                                    value="PMD">
+                                <label class="form-check-label" for="gridRadios2">
+                                    PROMYD
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="Remitente" id="gridRadios3"
+                                    value="CUI">
+                                <label class="form-check-label" for="gridRadios3">
+                                    CUIDARE
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <button class="btn btn-primary"> IMPRIMIR </button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $('#Telefono').inputmask();
+    
+    $('#NitoCC').inputmask();
+
+    $('#Destinatario').keyup(function(){
+        $('#Destinatario').val($('#Destinatario').val().toUpperCase());
+        });
+
+    $('#Direccion').keyup(function(){
+        $('#Direccion').val($('#Direccion').val().toUpperCase());
+        });
+    $('#Ciudad').keyup(function(){
+        $('#Ciudad').val($('#Ciudad').val().toUpperCase());
+        });
+    $('#Departamento').keyup(function(){
+        $('#Departamento').val($('#Departamento').val().toUpperCase());
+        });
+
+
+
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>

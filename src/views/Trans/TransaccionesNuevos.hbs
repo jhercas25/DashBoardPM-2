@@ -1,0 +1,558 @@
+<script type='text/javascript'
+    src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h3 class="mb-3 m-4" id="TipoT"> {{Trans}} </h3>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="col-md-12 mx-auto p-2 ">
+            <div id="accordion">
+                <div class="card">
+                    <div class="card-header" id="hDatosPoC">
+                        <h5 class="mb-0">
+                            <button class="btn btn-block" data-toggle="collapse" data-target="#DatosPoC"
+                                aria-expanded="true" aria-controls="DatosPoC">
+                                <h5 class="card-title">Información
+                                    {{#switch Trans}}
+
+                                    {{#case "Ventas" }}del comprador {{/case}}
+                                    {{#case "Compras" }}del vendedor {{/case}}
+                                    {{#case "Cotizaciones"}}del Cliente{{/case}}
+                                    {{#case "Pedidos" }}del Proveedor{{/case}}
+                                    {{#case "Pagos" }}del Proveedor{{/case}}
+
+                                    {{/switch}}
+
+                                </h5>
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div id="DatosPoC" class="collapse " aria-labelledby="hDatosPoC" data-parent="#accordion">
+                        <div class="card-body">
+                            {{>DetallePoCT}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="col-md-12 mx-auto  p-2">
+            <div id="accordion">
+                <div class="card">
+                    <div class="card-header" id="hDatosT">
+                        <h5 class="mb-0">
+                            <button class="btn btn-block" data-toggle="collapse" data-target="#DatosT"
+                                aria-expanded="true" aria-controls="DatosT">
+                                <h5 class="card-title">Información
+                                    {{#switch Trans}}
+                                    {{#case "Ventas" }} de Venta {{/case}}
+                                    {{#case "Compras" }} de Compra {{/case}}
+                                    {{#case "Cotizaciones"}} de Cotizacion {{/case}}
+                                    {{#case "Pedidos" }}de Pedido{{/case}}
+                                    {{#case "Pagos" }} de Pago{{/case}}
+
+                                    {{/switch}}
+
+                                </h5>
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div id="DatosT" class="collapse show " aria-labelledby="hDatosT" data-parent="#accordion">
+                        <div class="card-body">
+                            {{>DetalleT}}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="row">
+    <div class="col-md-12 mx-auto p-2 ">
+        <div class="card">
+
+            <div class="card-body">
+
+
+                <div class="form-group row">
+
+                    <label for="Codido" class="col-sm col-form-label">Buscar por codigo</label>
+
+                    <div class=" input-group mb-1">
+
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" aria-hidden="true"> <i class="fas fa-search"></i>
+                            </span>
+                        </div>
+                        <input value="{{Cod}}" type="text" class="form-control" name="Nombre" placeholder="Codigo"
+                            aria-label="Username" aria-describedby="basic-addon1" style="text-transform: uppercase"
+                            id="CodigoT" onchange="traerPro('{{Trans}}')" required>
+                    </div>
+
+                    <div class="mx-auto">
+                        <a type="button" href="#" class="btn btn-primary mt-2" data-toggle="modal"
+                            data-target="#BarcodeReader"> Leer cordigo </a>
+                    </div>
+
+                    <div class="mx-auto">
+                        <a type="button" href="#" class="btn btn-primary mt-2" data-toggle="modal"
+                            data-target="#BuscarPro"> Buscar
+                            Producto </a>
+                    </div>
+
+                </div>
+
+                <form action="" method="POST">
+
+                    <div id="alertas" class="alert alert-danger alert-dismissible fade show " role="alert">
+                        <strong>Algo salio mal!</strong> revisa los datos
+                        <button type="button" class="close" onclick="CerrarAlerta()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="NombreProT">Nombre</label>
+                            <input type="text" class="form-control" name="NombreProT" id="NombreProT" required readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-6 col-md-2">
+                            <label for="Cnt">
+                                <span class="d-none d-sm-block"> Cantidad</span>
+                                <span class="d-block d-sm-none">Cnt</span>
+                            </label>
+                            <input type="text" class="form-control" data-inputmask="'alias': 'numeric'"
+                                onkeyup="MTotal()" name="Cnt" id="Cnt" required>
+                        </div>
+
+                        <div class="col-6 col-md-2">
+                            <label for="Cnt">
+                                <span class="d-none d-sm-block"> Utilidad</span>
+                                <span class="d-block d-sm-none">Utl</span></label>
+                            <input type="text" class="form-control " name="Util" id="G" required>
+                        </div>
+
+                        <div class="col-6 col-md-4">
+
+                            <label class="d-none d-sm-block" for="PreUni">Precio Unitario</label>
+                            <label class="d-block d-sm-none" for="PreUni">Precio Uni</label>
+                            {{#ifEquals Trans "Compras"}}
+                            <input type="text" class="form-control" data-inputmask="'alias': 'numeric'" name="PreUni"
+                                id="PreUni" required>
+                            {{else}}
+                            <input type="text" class="form-control" data-inputmask="'alias': 'numeric'" name="PreUni"
+                                id="PreUni" onchange="MprecioV()" required>
+                            {{/ifEquals}}
+
+                        </div>
+
+                        <div class="col-6 col-md-4">
+                            <label for="PreTotal">Precio Total</label>
+                            <input type="text" class="form-control" data-inputmask="'alias': 'numeric'" name="PreTotal"
+                                id="PreTotal" required readonly>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label for="Iva">Iva</label>
+                            <input type="text" class="form-control" name="Iva" id="Iva" required readonly>
+                        </div>
+                        <div class="col-4">
+                            <label class="d-none d-sm-block" for="Des">Descuento </label>
+                            <label class="d-block d-sm-none" for="Des">Des</label>
+                            <input type="text" class="form-control" onkeyup="NDes()" name="Des" id="Des" required>
+                        </div>
+                        <div class="col-4">
+                            <label class="d-none d-sm-block" for="Des">Descuento Max</label>
+                            <label class="d-block d-sm-none" for="DesM">Des Max</label>
+                            <input type="text" class="form-control" name="DesM" id="DesM" required readonly>
+                        </div>
+
+                    </div>
+
+                    {{#ifEquals Trans 'Compras'}}
+
+                    <div class="form-group row">
+
+                        <div class="col-6 col-md-4">
+                            <label for="Iva">Invima</label>
+                            <input type="text" class="form-control" name="Inv" id="Inv" required>
+                        </div>
+
+                        <div class="col-6  col-md-3">
+                            <label for="Des">Lote </label>
+
+                            <input type="text" class="form-control" name="Lot" id="Lot" required>
+                        </div>
+
+                        <div class="col-6 col-md-3 ">
+                            <label class="d-none d-sm-block" for="FV">Fecha de vencimiento </label>
+                            <label class="d-block d-sm-none" for="FV">F.Ven</label>
+                            <div class="input-group date" id="FevILF" data-provide="datepicker">
+                                <input type="text" class="form-control" name="Fvenc" id="Fev" required>
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-1 ">
+                            <label for="Cntilf"><span class="d-none d-sm-block"> Cantidad</span>
+                                <span class="d-block d-sm-none">Cnt</span></label>
+                            <input type="text" class="form-control" data-inputmask="'alias': 'numeric'" name="Cntilf"
+                                id="Cntilf" required>
+                        </div>
+
+                        <div class="col-1 p-3 my-auto">
+
+                            <a id="addILF" href="javascript:void(0)" onclick="agregarILF('{{Trans}}')">
+                                <i class="fas fa-plus-circle fa-w-16 fa-3x"></i>
+                            </a>
+                            <a id="editILF" class="invisible" href="javascript:void(0)"
+                                onclick="editarILF('{{Trans}}')">
+                                <i class="fas fa-pencil-alt fa-w-16 fa-3x"></i>
+                            </a>
+
+                        </div>
+                    </div>
+
+                    {{/ifEquals}}
+
+
+
+
+                    {{#ifEquals Trans 'Ventas'}}
+                    <div class="form-group row">
+                        <div class="col-8 ">
+                            <label class="d-none d-sm-block" for="Des">Invima-Lote-Fecha de vencimiento</label>
+                            <label class="d-block d-sm-none" for="DesM">Inv - Lot - FV </label>
+
+                            <select id="InvLotFev" class="selectpicker col-12"
+                                title="Elija el Invima, Lote y Fecha de Vencimiento." data-live-search="true" required>
+                            </select>
+
+                        </div>
+                        <div class="col-2">
+                            <label for="Cnt">Cantidad</label>
+                            <input type="text" value="0" class="form-control" data-inputmask="'alias': 'numeric'"
+                                name="Cntilf" id="Cntilf" required>
+                        </div>
+                        <div class="col-2 p-3 my-auto">
+                            <a id="addILF" href="javascript:void(0)" onclick="agregarILF('{{Trans}}')">
+                                <i class="fas fa-plus-circle fa-w-16 fa-3x"></i>
+                            </a>
+                            <a id="editILF" class="invisible" href="javascript:void(0)"
+                                onclick="editarILF('{{Trans}}')">
+                                <i class="fas fa-pencil-alt fa-w-16 fa-3x"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    {{/ifEquals}}
+
+
+                    <table id="tableILF" data-height="300" data-toggle="table" data-toolbar="#toolbar"
+                        data-ajax="InvLotFev" data-pagination-parts="['pageList]" data-page-size="10"
+                        data-pagination="true" data-query-params="queryParams">
+                        <thead>
+                            <tr>
+                                <th data-field="Invima">Invima</th>
+                                <th data-field="FechaVencimiento">Fecha de Vencimiento </th>
+                                <th data-field="Lote">Lote</th>
+                                <th data-field="Cnt">Cantidad</th>
+                                <th data-field="operate" data-formatter="opsILF" data-events="eveILF">
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+
+                    <div class="col p-3 my-auto ">
+
+                        <a id="addDetalle" href="javascript:void(0)" onclick="AgregarDetalle()">
+                            <i class="fas fa-plus-circle fa-w-16 fa-3x " style="color:rgb(73, 197, 191)"></i>
+                        </a>
+                        <a id="editDetalle" class="invisible" href="javascript:void(0)" onclick="EditarDetalle()">
+                            <i class="fas fa-pencil-alt fa-w-16 fa-3x" style="color:rgb(73, 197, 191)"></i>
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<table id="tableDetalle" data-height="500" data-toggle="table" data-toolbar="#toolbar" data-detail-view="true"
+    data-detail-view-icon="true" data-detail-formatter="detailFormatter" data-ajax="DetalleT"
+    data-pagination-parts="['pageList]" data-page-size="25" data-pagination="true" data-query-params="queryParams">
+    <thead>
+        <tr>
+            <th data-field="Producto">Codidgo</th>
+            <th data-field="Nombre">Producto</th>
+            {{#ifEquals Trans "Compras"}}
+            <th data-field="Valor">P.Compra</th>
+            {{else}}
+            <th data-field="Valor">P.Venta</th>
+            {{/ifEquals}}
+
+            <th data-field="Cantidad">Cantidad</th>
+            <th data-field="Total">Total</th>
+            <th data-field="operate" data-formatter="DetalletTFomater" data-events="DetalleTEvents"></th>
+        </tr>
+    </thead>
+</table>
+
+<div class="row">
+
+    <div class="col-md-4"></div>
+    <div class="col-md-8 mx-auto p-2 ">
+        <div class="card">
+
+            <div class="card-body">
+
+                <form action="" method="POST">
+                    <div class="form-group row">
+
+                        <div class="col-6">
+                            <label for="Subtotal">Sub Total</label>
+
+                            <input type="text" class="form-control form-control-plaintext text-right" name="Subtotal"
+                                id="Subtotal" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
+
+
+                        </div>
+                        <div class="col-6">
+                            <label for="BIva">Base Iva</label>
+                            <input type="text" class="form-control form-control-plaintext text-right" name="BIva"
+                                id="BIva" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+
+                        <div class="col-6">
+                            <label for="DTotal">Descuento Total </label>
+                            <input type="text" class="form-control form-control-plaintext text-right" name="DTotal"
+                                id="DTotal" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
+                        </div>
+                        <div class="col-6">
+
+                            <label for="RteFte">Rte.Fuente </label>
+                            <input type="text" class="form-control form-control-plaintext text-right" name="RteFte"
+                                id="RteFte" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-6">
+                            <label for="IvaT">Iva </label>
+                            <input type="text" class="form-control form-control-plaintext text-right" name="IvaT"
+                                id="IvaT" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
+                        </div>
+                        <div class="col-6">
+                            <label for="RteIva">Rte Iva </label>
+                            <input type="text" class="form-control form-control-plaintext text-right" name="RteIva"
+                                id="RteIva" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-6">
+                            <label for="RteIca">Rte Ica </label>
+                            <input type="text" class="form-control form-control-plaintext text-right" name="RteIca"
+                                id="RteIca" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
+                        </div>
+                        <div class="col-6">
+                            <label for="Autorenta">AutoRenta </label>
+                            <input type="text" class="form-control form-control-plaintext text-right" name="Autorenta"
+                                id="Autorenta" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-6">
+                            <label for="TotalT">Total </label>
+                            <input type="text" class="form-control form-control-lg form-control-plaintext text-right"
+                                value="0.00" data-inputmask="'alias': 'numeric'" name="TotalT" id="TotalT" readonly
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group row">
+                        <div class="col-6 p-3 my-auto">
+                            <a href="javascript:void(0)" onclick="GuardarTran(false)" class="text-dark btn">
+                                <i class="far fa-save fa-w-16 fa-3x"></i>
+                                <H5> GUARDAR </H5>
+                            </a>
+                        </div>
+
+                        <div class="col-6 p-3 my-auto">
+                            <a href="javascript:void(0)" onclick="GuardarTran(true)" class="text-dark btn">
+                                <i class="far fa-save fa-w-16 fa-3x"></i>
+                                <i class="fas fa-print fa-w-16 fa-3x"></i>
+                                <H5>GUARDAR / IMPRIMIR </H5>
+                            </a>
+                        </div>
+
+
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="BarcodeReader" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Escanear Codigo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{>leer}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="CerrarModal()">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade " id="Formalizar" tabindex="-1" role="dialog" aria-labelledby="FormalizarLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="FormalizarLabel">Formalizar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                {{>Formalizar}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="FormalizarTran({{Editar}})">
+                    <i class="fas fa-file-signature fa-w-16 fa-2x ml-2 "></i>Formalizar</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
+                            class="fas fa-times fa-w-16 fa-2x ml-2"></i> Cerrar</button>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade " id="BuscarPro" tabindex="-1" role="dialog" aria-labelledby="BuscarProLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="BuscarProLabel">Buscar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                {{>buscarPro}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $('#alertas').alert();
+    $('#PreUni').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#PreTotal').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+
+    $('#TotalT').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#RteIca').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#RteIva').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#IvaT').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#BIva').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#Subtotal').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#Autorenta').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#DTotal').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#RteFte').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+
+    $('#SubT').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#Ivap').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#TotalP').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+
+    $('#MontoTar').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#MontoEfe').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#Rte').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#DesTotalT').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+
+    $('#FevILF').datepicker({
+        format: "dd/mm/yyyy"
+    });
+
+
+    $(document).ready(() => {
+        $('#alertas').hide();
+
+            });
+
+</script>
+{{#if Editar}}
+<script>
+
+     $(document).ready(() => 
+     {$('#NitoCCT').change();
+     });
+
+</script>
+            
+{{/if}}

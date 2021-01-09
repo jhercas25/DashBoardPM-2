@@ -1,0 +1,130 @@
+
+    <div class="row justify-content-between flex-nowrapp  align-items-center pb-2 mb-3 border-bottom">
+        <h3 class="col-8  mb-3 ">Codigos para imprimir </h3>
+        <div class="col-4 ">
+            <a class="btn btn-primary" href="/impCod/historial">Historial</a>
+        </div>
+    </div>
+
+
+<div class="d-flex m-2 p-2">
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <div class="thead">
+                <th>Codigo</th>
+                <th>Nombre</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+            </div>
+            <div class="tbody">
+                {{#each stikers}}
+                <tr>
+                    <td> {{Codigo}} </td>
+                    <td style="word-wrap: break-word;min-width: 160px;max-width: 160px;"> {{Nombre}} </td>
+                    <td> {{Cant}} </td>
+                    <td> {{Precio}} </td>
+                    <td>
+                        <a href="/impCod/eliminar/{{id}}" class="fas fa-minus-circle" method="delete"></a>
+                        <a href="/impCod/{{id}}" class="fas fa-pencil-alt" method="delete"><a>
+                    </td>
+                </tr>
+                {{/each}}
+            </div>
+        </table>
+    </div>
+</div>
+<div class="d-flex m-2 p-2">
+    <form action="/impCod/imprimir" method="POST">
+        <button class="btn btn-success ml-auto">
+            Imprimir
+        </button>
+    </form>
+</div>
+<div class="col-md-12 mx-auto">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    {{#if stiker.id}}
+                    <form class="needs-validation" action="/impCod/agregar/{{stiker.id}} " method="POST" novalidate>
+                        {{else}}
+                        <form class="needs-validation" action="/impCod/agregar" method="POST" novalidate>
+                            {{/if}}
+
+                            <div class="form-group row">
+                                <div class="col-md-2 mb-2">
+                                    <label for="Codigo" class="col-sm col-form-label">Codigo</label>
+                                    <input type="text" class="form-control" name="Codigo" placeholder=""
+                                        style="text-transform: uppercase" value="{{stiker.Codigo}}" id="Codigo"
+                                        required>
+                                </div>
+                                <div class="col-md-5 mb-2">
+                                    <label for="prod" class="col-sm col-form-label">Nombre de producto</label>
+                                    <input type="text" class="form-control" name="Nombre" placeholder=""
+                                        style="text-transform: uppercase" value="{{stiker.Nombre}}" id="Nombre"
+                                        required>
+                                </div>
+                                <div class="col-md-2 mb-2">
+                                    <label for="cnt" class="col-sm col-form-label">Cantidad</label>
+                                    <input type="text" class="form-control " name="Cant" placeholder=""
+                                        data-inputmask="'alias': 'numeric'" value="{{stiker.Cant}}" required>
+                                </div>
+                                <div class="col-md-2 mb-2">
+                                    <label for="cnt" class="col-sm col-form-label">Precio</label>
+                                    <input type="text" class="form-control" name="Precio" id="Precio"
+                                        data-inputmask="'alias': 'numeric'" value="{{stiker.Precio}}" required>
+                                </div>
+
+                                <div class="col-ms-1 my-auto ">
+                                    <button href="#" class="btn">
+                                        <i class="fas fa-plus-circle fa-w-16 fa-3x"></i>
+                                    </button>
+                                </div>
+
+                                <script>
+                                    $(":input").inputmask();
+                                    $('#Precio').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+
+                                    $('#Codigo').inputmask();
+                                    $('#Codigo').change(function () {
+                                        $('#Codigo').prop('value', $('#Codigo').val().toUpperCase());
+                                    });
+                                    $('#Nombre').inputmask();
+                                    $('#Nombre').change(function () {
+                                        $('#Nombre').prop('value', $('#Nombre').val().toUpperCase());
+                                    });
+                                </script>
+                                <script>
+                                    // Example starter JavaScript for disabling form submissions if there are invalid fields
+                                    (function () {
+                                        'use strict';
+                                        window.addEventListener('load', function () {
+                                            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                                            var forms = document.getElementsByClassName('needs-validation');
+                                            // Loop over them and prevent submission
+                                            var validation = Array.prototype.filter.call(forms, function (form) {
+                                                form.addEventListener('submit', function (event) {
+                                                    if (form.checkValidity() === false) {
+                                                        event.preventDefault();
+                                                        event.stopPropagation();
+                                                    }
+                                                    form.classList.add('was-validated');
+                                                }, false);
+                                            });
+                                        }, false);
+                                    })();
+                                </script>
+
+                            </div>
+
+                        </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>

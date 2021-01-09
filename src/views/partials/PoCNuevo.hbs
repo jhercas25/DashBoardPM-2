@@ -1,0 +1,84 @@
+<div class="row">
+
+    <div class="card shadow mb-4">
+
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Nuevo {{#if prov }}  Proveedor {{else}} Cliente {{/if}}</h6>
+        </div>
+
+        <div class="card-body">
+            <form id="FPoC" action= {{#if prov }} "./Proveedores/CoE" {{else}} "./Clientes/CoE" {{/if}} method="POST" class="col needs-validation" novalidate>
+                <div class="form-group row pl-3 pr-3">
+                    <label for="NitoCC">Nit o CC sin digito de verificacion </label>
+                    <input type="text" class="form-control col-10" data-inputmask="'alias': 'numeric'" name="NitoCC"  id="NitoCCEd"  onchange="TraerPoC(this)" required>
+                    <input type="text" class="form-control col-2" id="DVer" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="Nombre">Nombre</label>
+                    <input type="text" class="form-control" name="Nombre" id="Nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="Direccion">Dirección</label>
+                    <input type="text" class="form-control" name="Direccion" id="Direccion"required>
+                </div>
+                <div class="form-group">
+                    <label for="Telefono">Teléfono 1</label>
+                    <input type="text"  data-inputmask="'alias': 'numeric'" class="form-control" name="Telefono" id="Telefono" required>
+                </div>
+                <div class="form-group">
+                    <label for="Telefono_2">Teléfono 2</label>
+                    <input type="text"  data-inputmask="'alias': 'numeric'" class="form-control" name="Telefono2" id="Telefono2" >
+                </div>
+                <div class="form-group">
+                    <label for="Ciudad">Ciudad</label>
+                    <input type="text" class="form-control" name="Ciudad"  id="Ciudad" required>
+                </div>
+                <div class="form-group">
+                    <label for="Departamento">Departamento</label>
+                    <input type="text" class="form-control" name="Departamento" id="Departamento">
+                </div>
+                <div class="form-group">
+                    <label for="E-mail">E-mail</label>
+                    <input type="text" class="form-control" name="Email" id="E-mail" >
+                </div>
+
+                <div class="form-group">
+                    <label for="Observaciones">Observaciones</label>
+                    <input type="text" class="form-control" name="Observaciones" id="Observaciones">
+                </div>
+
+                <input type="hidden" class="form-control"  value="0" name="Editar" id="editar">
+                
+                <button type="button" class="btn btn-secondary" onclick="CerrarModal()">Close</button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $('#Telefono').inputmask();
+    $('#Telefono2').inputmask();
+    $('#NitoCCEd').inputmask();
+
+    $('#Nombre').keyup(function(){
+        $('#Nombre').val($('#Nombre').val().toUpperCase());
+        });
+
+    $('#Direccion').keyup(function(){
+        $('#Direccion').val($('#Direccion').val().toUpperCase());
+        });
+    $('#Ciudad').keyup(function(){
+        $('#Ciudad').val($('#Ciudad').val().toUpperCase());
+        });
+    $('#Departamento').keyup(function(){
+        $('#Departamento').val($('#Departamento').val().toUpperCase());
+        });
+ 
+
+ 
+   
+
+</script>

@@ -1,0 +1,54 @@
+body{
+    background: #f5f6f5;
+    font-family: 'Oswald',sans-serif ;
+    overflow-x: hidden;
+}
+.index{
+    width: 100vw;
+    height: 100vh;
+    background:url('/img/background.jpg') ;
+    background-position: center center;
+    background-repeat: repeat-y;
+    background-size: cover;
+    
+}
+.masterhead{
+    color: black;
+    min-height: 30rem;
+    width: 100;
+    height: 100;
+    padding-top:8rem ;
+
+
+}
+.masterhead h1{
+    font-size: 4rem;
+    margin: 0;
+    padding: 0;
+
+}
+.tabla {
+    width: 600px;
+    height: 30px;
+    text-align: center;
+    
+}
+
+.wraptext{
+    word-wrap: break-word;
+    min-width: 160px;
+    max-width: 160px;
+}
+.table .wraptext{
+    word-wrap: break-word;
+    min-width: 160px;
+    max-width: 160px;
+}
+
+
+
+@media(min-with:660px){
+    .masterhead h1{
+        font-size: 5.5rem;
+    }
+}

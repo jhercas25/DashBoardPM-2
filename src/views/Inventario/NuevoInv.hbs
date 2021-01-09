@@ -1,0 +1,423 @@
+<script type='text/javascript'
+    src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js">    </script>
+<script src="/scrips/InventarioNuevo.js"></script>
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h3 class="mb-3 m-4" id="TipoT"> Inventario </h3>
+</div>
+
+
+<div class="row mx-auto">
+    <div class="col-md-4  ">
+        <div class="card m-2 p-2">
+            <div class="card-body">
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 ">
+        <div class="card m-2 p-2">
+            <div class="card-body">
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 ">
+        <div class="card m-2 p-2">
+            <div class="card-body">
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-12 mx-auto p-2 ">
+        <div class="card">
+
+            <div class="card-body">
+
+
+
+                <div class="form-group row">
+
+                    <div class="col-6 col-md-2">
+                        <label for="CodigoProducto">Codigo</label>
+                        <input type="text" class="form-control" name="CodigoP" readonly id="CodigoP" required>
+                    </div>
+                    <div class="col-6 col-md-2 mt-auto">
+                        <button class="btn btn-success" onclick="AsignarCodigo() "> Generar </button>
+                    </div>
+
+                    <div class="col-8 col-md-8">
+                        <label for="NombreP">Nombre</label>
+                        <input type="text" class="form-control" name="NombreP" id="NombreP" required>
+                    </div>
+
+                    <div class="col-4 col-md-4">
+                        <label for="Cnt">
+                            <span class="d-none d-sm-block"> Cantidad</span>
+                            <span class="d-block d-sm-none">Cnt</span>
+                        </label>
+                        <input type="text" class="form-control" data-inputmask="'alias': 'numeric'" name="Cnt" id="CntP"
+                            required>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <label for="Marca">Marca</label>
+                        <input type="text" class="form-control" name="Marca" id="Marca" required>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <label for="Presentacion">Presentacion</label>
+                        <input type="text" class="form-control" name="Presentacion" id="Presentacion" required>
+                    </div>
+
+                </div>
+
+                {{#ifEquals user.rol "Admin"}}
+                <div class="form-group row">
+                    <div class="form-group col-sm-6">
+                        <div class="col-sm-6">
+                            <label for="Proveedor">Proveedor</label>
+                        </div>
+                        <div class=" col-sm-6">
+                            <select id="ProveedorSel" class="selectpicker" data-live-search="true" required>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-2">
+                        <label for="Ult">
+                            <span class="d-none d-sm-block"> Utilidad</span>
+                            <span class="d-block d-sm-none">Utl</span></label>
+                        <input type="text" class="form-control " data-inputmask="'alias': 'numeric'" 
+                        onchange="CalcularPV(G.value)" name="Util" id="G" required>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+
+                        <label class="d-none d-sm-block" for="PrecioC">Precio Compra </label>
+                        <label class="d-block d-sm-none" for="PrecioC">Precio Com</label>
+                        <input type="text" class="form-control" data-inputmask="'alias': 'numeric'" name="PrecioC"
+                            id="PrecioC" onkeyup="CalcularPV(G.value)" required>
+
+                    </div>
+                    <div class="col-6 col-md-4">
+
+                        <label class="d-none d-sm-block" for="PrecioC">Precio Compra + Iva</label>
+                        <label class="d-block d-sm-none" for="PrecioC">PCompra + iva</label>
+                        <input type="text" class="form-control" data-inputmask="'alias': 'numeric'" name="PCiva"
+                            id="PCiva" required readonly >
+
+                    </div>
+
+                    <div class="col-6 col-md-4">
+
+                        <label class="d-none d-sm-block" for="PrecioV">Precio Venta</label>
+                        <label class="d-block d-sm-none" for="PrecioV">Precio Ven</label>
+                        <input type="text" class="form-control" data-inputmask="'alias': 'numeric'" name="PrecioV"
+                            id="PrecioV" required readonly>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+
+                        <label class="d-none d-sm-block" for="PrecioV">Precio Venta + iva </label>
+                        <label class="d-block d-sm-none" for="PrecioV">PVenta + Iva</label>
+                        <input type="text" class="form-control" data-inputmask="'alias': 'numeric'" name="PViva"
+                            id="PViva" onchange="CalcularUtilidad()" required>
+
+                    </div>
+                    <div class="col-6 col-md-4">
+
+                        <label class="d-none d-sm-block" for="PrecioV">Precio Descuento </label>
+                        <label class="d-block d-sm-none" for="PrecioV">Precio Des </label>
+                        <input type="text" class="form-control" data-inputmask="'alias': 'numeric'" name="PDes"
+                            id="PDes" required readonly>
+
+                    </div>
+
+                    <div class="col-6 col-md-4">
+
+                        <label class="d-none d-sm-block" for="PrecioV">Precio Descuento + iva </label>
+                        <label class="d-block d-sm-none" for="PrecioV">PDescuento + iva </label>
+                        <input type="text" class="form-control" data-inputmask="'alias': 'numeric'" name="PDesIva"
+                            id="PDesIva" required readonly >
+
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <label for="Iva">Iva</label>
+                        <input type="text" class="form-control" data-inputmask="'alias': 'numeric'" name="Iva" id="Iva"
+                           onkeyup="CalcularUtilidad()" required>
+                    </div>
+
+                    <div class="col-6 col-md-4 ">
+                        <label class="d-none d-sm-block" for="Des">Descuento Max</label>
+                        <label class="d-block d-sm-none" for="DesM">Des Max</label>
+                        <input type="text" class="form-control" data-inputmask="'alias': 'numeric'" name="DesM"
+                           onkeyup="CalcularUtilidad()" id="DesM" required>
+                    </div>
+
+
+                </div>
+
+                {{/ifEquals }}
+
+                <div class="col-12 p-4 ">
+                    <a class="btn text-center" data-toggle="collapse" href="#VariantesCollapse" role="button"
+                        aria-expanded="false" aria-controls="VariantesCollapse">
+                        <span><i class="fas fa-plus-circle fa-w-16 fa-2x "></i> Variantes </span>
+                    </a>
+                </div>
+
+                <div class="collapse" id="VariantesCollapse">
+                    <div class="card card-body">
+                        <div class="form-group row">
+
+                            <div class="col-6 col-md-7">
+                                <label for="Var">Variante</label>
+                                <input type="text" class="form-control" name="Var" id="Var" required>
+                            </div>
+
+                            <div class="col-6 col-md-3">
+                                <label for="CntVar"><span class="d-none d-sm-block"> Cantidad</span>
+                                    <span class="d-block d-sm-none">Cnt</span></label>
+                                <input type="text" class="form-control" data-inputmask="'alias': 'numeric'"
+                                    name="CntVar" id="CntVar" required>
+                            </div>
+
+
+                            <div class="col-12 p-3 col-md-6">
+                                <div class="custom-file">
+                                    <input class="custom-file-input" type="file" id="Variantes" accept="image/*"
+                                        capture />
+                                    <label class="custom-file-label" for="customFile" id="LVariantes">Elige una imagen
+                                        por variante
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="p-3 col-md-6">
+                                <img src="https://placehold.it/300x300" id="pVariantes" class="img-thumbnail">
+                            </div>
+
+                            <div class="col-6 col-md-2 p-2 my-auto">
+
+                                <a id="addVar" href="javascript:void(0)" onclick="agregarVar()">
+                                    <i class="fas fa-plus-circle fa-w-16 fa-3x"></i>
+                                </a>
+                                <a id="editVar" class="invisible" href="javascript:void(0)" onclick="editarVar()">
+                                    <i class="fas fa-pencil-alt fa-w-16 fa-3x"></i>
+                                </a>
+
+                            </div>
+                        </div>
+
+                        <table id="VariantesTabla" data-height="500" data-toggle="table" data-toolbar="#toolbar"
+                            data-ajax="VariantesData" data-pagination-parts="['pageList]" data-page-size="10"
+                            data-pagination="true" data-query-params="queryParams">
+                            <thead>
+                                <tr>
+                                    <th data-field="Codigo">Codigo</th>
+                                    <th data-field="Variacion">Variante</th>
+                                    <th data-field="Cantidad">Cantidad </th>
+                                    <th data-field="imgen" data-formatter="imgVariantes">Imagen</th>
+                                    <th data-field="operate" data-formatter="opsVariantes" data-events="eveVariantes">
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-12 p-4 ">
+                    <a class="btn text-center" data-toggle="collapse" href="#InvimaslotesFev" role="button"
+                        aria-expanded="false" aria-controls="InvimaslotesFev">
+                        <span><i class="fas fa-plus-circle fa-w-16 fa-2x "></i> Invimas Lotes y Fechas de
+                            Vencimiento </span>
+                    </a>
+                </div>
+
+                <div class="collapse" id="InvimaslotesFev">
+                    <div class="card card-body">
+                        <div class="form-group row">
+
+                            <div class="col-6 col-md-4">
+                                <label for="Iva">Invima</label>
+                                <input type="text" class="form-control" name="Inv" id="Inv" required>
+                            </div>
+
+                            <div class="col-6  col-md-3">
+                                <label for="Des">Lote </label>
+                                <input type="text" class="form-control" name="Lot" id="Lot" required>
+                            </div>
+
+                            <div class="col-6 col-md-3 ">
+                                <label class="d-none d-sm-block" for="FV">Fecha de vencimiento </label>
+                                <label class="d-block d-sm-none" for="FV">F.Ven</label>
+                                <div class="input-group date" id="FevILF" data-provide="datepicker">
+                                    <input type="text" class="form-control" name="Fvenc" id="Fev" required>
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-1 ">
+                                <label for="Cntilf"><span class="d-none d-sm-block"> Cantidad</span>
+                                    <span class="d-block d-sm-none">Cnt</span></label>
+                                <input type="text" class="form-control" data-inputmask="'alias': 'numeric'"
+                                    name="Cntilf" id="Cntilf" required>
+                            </div>
+
+                            <div class="col-6 col-md-1 p-3 my-auto">
+
+                                <a id="addILF" href="javascript:void(0)" onclick="agregarInvILF('Ninv')">
+                                    <i class="fas fa-plus-circle fa-w-16 fa-3x"></i>
+                                </a>
+                                <a id="editILF" class="invisible" href="javascript:void(0)" onclick="editarInvILF()">
+                                    <i class="fas fa-pencil-alt fa-w-16 fa-3x"></i>
+                                </a>
+
+                            </div>
+
+
+                        </div>
+                        <table id="InventILF" data-height="300" data-toggle="table" data-toolbar="#toolbar"
+                            data-ajax="InventInvLotFev" data-pagination-parts="['pageList]" data-page-size="10"
+                            data-pagination="true" data-query-params="queryParams">
+                            <thead>
+                                <tr>
+                                    <th data-field="Invima">Invima</th>
+                                    <th data-field="Lote">Lote</th>
+                                    <th data-field="FechaVencimiento">Fecha de Vencimiento </th>
+                                    <th data-field="Cnt">Cantidad</th>
+                                    <th data-field="operate" data-formatter="opsInventILF" data-events="eveInventILF">
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <div class="p-3  col-md-6">
+                    <img src="https://placehold.it/300x300" id="pGeneral" class="img-thumbnail">
+                </div>
+
+                {{!-- <form action="/inv/SubirImg" method="POST" enctype="multipart/form-data"> --}}
+                    <div class="col-12 col-md-6">
+
+                        <div class="custom-file">
+                            <input class="custom-file-input" type="file" name="image" id="capture" accept="image/*"
+                                required capture>
+                            <label class="custom-file-label" for="customFile" id="Lcapture">Elige una imagen</label>
+                        </div>
+
+                    </div>
+
+                    {{!--
+                </form> --}}
+
+                <script>
+                    // Add the following code if you want the name of the file appear on select
+                    $(document).on('change', '.custom-file-input', function (e) {
+                        id = $(this)[0].id;
+                        if (id == "Variantes") {
+                            var NV = $('#VariantesTabla').bootstrapTable('getData').length;
+                            Var = JSON.parse(localStorage.getItem('Var'))
+
+                            if (Var) {
+
+                                var fileName = Var.imagen + ".jpg";
+                            } else {
+                                var fileName = $('#CodigoP').val() + '-V-' + NV + '.jpg';
+                            }
+
+                        } else {
+
+                            var fileName = $('#CodigoP').val() + '-P.jpg';
+                        }
+
+                        //var fileName = $(this).val().split("\\").pop();
+                        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+
+                        //console.log(id)
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            // get loaded data and render thumbnail.
+                            if (id == "Variantes") {
+                                document.getElementById("pVariantes").src = e.target.result;
+                            } else {
+                                document.getElementById("pGeneral").src = e.target.result;
+                            }
+
+                        };
+                        // read the image file as a data URL.
+                        reader.readAsDataURL(this.files[0]);
+
+                    });
+
+                </script>
+
+
+
+                <div class="col-2 ml-auto text-center p-3 my-auto ">
+
+                    <a id="addNinv" href="javascript:void(0)" onclick="AgregarNinv()">
+                        <i class="fas fa-plus-circle fa-w-16 fa-3x " style="color:rgb(73, 197, 191)"></i>
+                    </a>
+                    <a id="editNinv" class="invisible" href="javascript:void(0)" onclick="EditarNinv()">
+                        <i class="fas fa-pencil-alt fa-w-16 fa-3x" style="color:rgb(73, 197, 191)"></i>
+                    </a>
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="mb-5">
+
+    <table id="NuevoInventario" data-height="900" data-toggle="table" data-toolbar="#toolbar" data-detail-view="true"
+        data-detail-view-icon="true" data-detail-formatter="NinvFomatter" data-ajax="NinvDatos"
+        data-pagination-parts="['pageList]" data-page-size="25" data-pagination="true" data-query-params="queryParams">
+        <thead>
+            <tr>
+                <th data-field="Codigo">Codigo</th>
+                <th data-field="Nombre">Nombre </th>
+                <th data-field="Cantidad">Cantidad </th>
+                <th data-field="PCompra">Precio compra </th>
+                <th data-field="PVenta">Precio venta </th>
+                <th data-field="Iva">iva </th>
+                <th data-field="Descuento">Descuento max </th>
+
+                <th data-field="" data-formatter="NinvOpcFormater" data-events="NinvOpcEvents"></th>
+
+            </tr>
+        </thead>
+    </table>
+</div>
+
+
+
+
+<script>
+    $(":input").inputmask();
+
+    $('#PrecioC').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#PrecioV').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#FevILF').datepicker({
+        format: 'dd/mm/yyyy',
+        startDate: '-3d'
+    });
+    $(document).ready(() => {
+        LlenarProv(0);
+        
+    });
+    
+</script>

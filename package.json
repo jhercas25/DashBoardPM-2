@@ -1,0 +1,37 @@
+{
+  "name": "testeo1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@ericblade/quagga2": "^1.2.2",
+    "bcryptjs": "^2.4.3",
+    "cleave.js": "^1.6.0",
+    "connect-flash": "^0.1.1",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.1.0",
+    "express-mysql-session": "^2.1.4",
+    "express-session": "^1.17.1",
+    "express-validator": "^6.6.1",
+    "handlebars": "^4.7.6",
+    "moment": "^2.29.1",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "mysql": "^2.18.1",
+    "openssl-nodejs": "^1.0.5",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "puppeteer": "^5.5.0",
+    "quagga": "^0.12.1",
+    "timeago.js": "^4.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}

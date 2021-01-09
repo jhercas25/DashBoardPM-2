@@ -1,0 +1,52 @@
+<script type='text/javascript'  src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js">    </script>
+<script src="/scrips/Transacciones.js"></script>
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h3 class="mb-3 m-4" id="TipoT"> {{Trans}} </h3>
+</div>
+
+<div class="row mx-auto">
+    <div class="col-md-4  ">
+        <div class="card m-2 p-2">
+            <div class="card-body">
+                
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 ">
+        <div class="card m-2 p-2">
+            <div class="card-body">
+                
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 ">
+        <div class="card m-2 p-2">
+            <div class="card-body">
+                
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<table id="tableTrans" data-height="500" data-toggle="table" data-toolbar="#toolbar" data-detail-view="true"
+    data-detail-view-icon="true" data-detail-formatter="DatosTransFormatter" data-ajax="DatosTrans"
+    data-pagination-parts="['pageList]" data-page-size="25" data-pagination="true" data-query-params="queryParams">
+    <thead>
+        <tr>
+            <th data-field="row.Documento">Documento</th>
+            {{#ifEquals Trans "Compras"}}
+            <th data-field="row.Nombre">Proveedor</th>
+            {{else}}
+            <th data-field="row.Nombre">Cliente</th>
+            {{/ifEquals}}
+            <th data-field="row.Plazo">Plazo</th>
+            <th data-field="row.Total">Total</th>
+            <th data-field="FechadeEmision">Fecha Emision</th>
+            <th data-field="operate" data-formatter="DatosTransOP" data-events="DatosTransOPEvents"></th>
+
+        </tr>
+    </thead>
+</table>

@@ -1,0 +1,128 @@
+<div class="row">
+    <div class="col-md-12 mx-auto ">
+        <div class="card m-2 p-2">
+            <div class="card-body">
+                <form class="needs-validation" action="/impCod/agregar/" method="POST" novalidate>
+                    <div class="form-group row">
+                        <div class="col-md-4 mb-1">
+
+                            <label for="Codido" class="col-sm col-form-label">Buscar por codigo</label>
+                            <div class=" input-group mb-1">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" aria-hidden="true"> <i class="fas fa-search"></i>
+                                    </span>
+                                </div>
+
+                                <input value="{{Cod}}" type="text" class="form-control" name="Nombre"
+                                    placeholder="Codigo" aria-label="Username" aria-describedby="basic-addon1"
+                                    style="text-transform: uppercase" id="Codigo" required>
+                            </div>
+                            <div class="mx-auto">
+                                <a type="button" href="#" class="btn btn-primary mt-2" data-toggle="modal"
+                                    data-target="#BarcodeReader"> Leer cordigo </a>
+                            </div>
+
+                        </div>
+                        <div class="col-md-7 mb-2">
+                            <label for="prod" class="col-sm col-form-label">Buscar por producto</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="Nombre2" aria-hidden="true"> <i
+                                            class="fas fa-search"></i></span>
+                                </div>
+                                <input type="text" class="form-control" name="Nombre" placeholder="Producto"
+                                    aria-label="Username" aria-describedby="basic-addon1"
+                                    style="text-transform: uppercase" value="{{stiker.Nombre}}" id="NombrePro" required>
+                            </div>
+
+
+                            <script>
+                                $(":input").inputmask();
+                                $('#Precio').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+
+                                $('#Codigo').inputmask();
+                                $('#Codigo').change(function () {
+                                    $('#Codigo').prop('value', $('#Codigo').val().toUpperCase());
+                                });
+                                $('#NombrePro').inputmask();
+                                $('#NombrePro').change(function () {
+                                    $('#NombrePro').prop('value', $('#NombrePro').val().toUpperCase());
+                                });
+                            </script>
+                            <script>
+                                // Example starter JavaScript for disabling form submissions if there are invalid fields
+                                (function () {
+                                    'use strict';
+                                    window.addEventListener('load', function () {
+                                        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                                        var forms = document.getElementsByClassName('needs-validation');
+                                        // Loop over them and prevent submission
+                                        var validation = Array.prototype.filter.call(forms, function (form) {
+                                            form.addEventListener('submit', function (event) {
+                                                if (form.checkValidity() === false) {
+                                                    event.preventDefault();
+                                                    event.stopPropagation();
+                                                }
+                                                form.classList.add('was-validated');
+                                            }, false);
+                                        });
+                                    }, false);
+                                })();
+                            </script>
+
+                        </div>
+
+                        <div class="col my-auto">
+                            <a href="#">
+                                <i class="fas fa-plus-circle fa-w-16 fa-3x"></i>
+                            </a>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="col-md-12">
+    <table id="table" data-height="800" data-toggle="table" data-toolbar="#toolbar" data-detail-view="true"
+        data-detail-view-icon="true" data-detail-formatter="detailFormatter" data-ajax="ajaxRequest"
+        data-pagination-parts="['pageList]" data-page-size="25" data-pagination="true" data-query-params="queryParams">
+        <thead>
+            <tr>
+                <th data-field="Codigo">Codidgo</th>
+                <th data-field="Nombre">Producto</th>
+                <th data-field="PVenta">P.Venta</th>
+                <th data-field="operate" data-formatter="FormatoT" data-events="operateEvents"></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+
+<div class="modal fade " id="EditP" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h5 class="modal-title" id="exampleModalLabel">Editar Producto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                {{>Editar}}
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+
+        </div>
+    </div>
+</div>

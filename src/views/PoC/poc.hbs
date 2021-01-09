@@ -1,0 +1,130 @@
+<script type='text/javascript'
+    src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h3 id="PoC" class="mb-3 m-4">{{#if prov }} Proveedores {{else}} Clientes {{/if}} </h3>
+</div>
+
+
+<div class="row">
+
+    <div class="col-md-12 mx-auto ">
+        <div class="card m-2 p-2">
+            <div class="card-body">
+                <form class="needs-validation" action="/impCod/agregar/" method="POST" novalidate>
+                    <div class="form-group row">
+                        <div class="col-md-4 mb-1">
+
+                            <label for="Codido" class="col-sm col-form-label">Buscar por Nit o CC </label>
+                            <div class=" input-group mb-1">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" aria-hidden="true"> <i class="fas fa-search"></i>
+                                    </span>
+                                </div>
+
+                                <input type="text" class="form-control" name="Nombre" placeholder="Codigo"
+                                    aria-label="Username" aria-describedby="basic-addon1"
+                                    style="text-transform: uppercase" id="NitoCC" required>
+                            </div>
+
+                        </div>
+                        <div class="col-md-7 mb-2">
+                            <label for="prod" class="col-sm col-form-label">Buscar por Nombre</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="Nombre2" aria-hidden="true"> <i
+                                            class="fas fa-search"></i></span>
+                                </div>
+                                <input type="text" class="form-control" name="Nombre" placeholder="Nombre"
+                                    aria-label="Username" aria-describedby="basic-addon1"
+                                    style="text-transform: uppercase" id="NombrePoC" required>
+                            </div>
+
+
+                            <script>
+                                $(":input").inputmask();
+                                $('#Precio').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+
+                                $('#Codigo').inputmask();
+                                $('#Codigo').change(function () {
+                                    $('#Codigo').prop('value', $('#Codigo').val().toUpperCase());
+                                });
+                                $('#Nombre').inputmask();
+                                $('#Nombre').change(function () {
+                                    $('#Nombre').prop('value', $('#Nombre').val().toUpperCase());
+                                });
+                            </script>
+                            <script>
+                                // Example starter JavaScript for disabling form submissions if there are invalid fields
+                                (function () {
+                                    'use strict';
+                                    window.addEventListener('load', function () {
+                                        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                                        var forms = document.getElementsByClassName('needs-validation');
+                                        // Loop over them and prevent submission
+                                        var validation = Array.prototype.filter.call(forms, function (form) {
+                                            form.addEventListener('submit', function (event) {
+                                                if (form.checkValidity() === false) {
+                                                    event.preventDefault();
+                                                    event.stopPropagation();
+                                                }
+                                                form.classList.add('was-validated');
+                                            }, false);
+                                        });
+                                    }, false);
+                                })();
+                            </script>
+
+                        </div>
+                        {{#if prov}}
+                        <a href="./Proveedores/NProv" class="my-auto" data-toggle="modal" data-target="#NuevoPoC" >
+                            {{else }}
+                            <a href="./Clientes/Ncliente" class="my-auto" data-toggle="modal" data-target="#NuevoPoC" >
+                            {{/if}}
+                            <i class="fas fa-plus-circle fa-w-16 fa-3x" ></i>
+                        </a>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+
+
+<table id="table" data-height="800" data-toggle="table" data-toolbar="#toolbar" data-detail-view="true"
+    data-detail-view-icon="true" data-detail-formatter="FormatoPoC" data-ajax="traerDatos"
+    data-pagination-parts="['pageList]" data-page-size="25" data-pagination="true" data-query-params="queryParams">
+    <thead>
+        <tr>
+            
+            <th data-field="NitoCC">Nit o CC</th>
+            <th data-field="Nombre">Nombre</th>
+            <th data-field="Direccion">Direccion</th>
+            <th data-field="Tel1">Telefono</th>
+            <th data-field="operate" data-formatter="FormatoOperadorPoC" data-events="EnventosPoC"></th>
+
+        </tr>
+    </thead>
+
+</table> <!-- Modal -->
+<div class="modal fade" id="NuevoPoC" tabindex="-1" role="dialog" aria-labelledby="PoCEdit"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="PoCEdit">Crear</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{>PoCNuevo}}
+            </div>
+            
+        </div>
+    </div>
+</div>
+

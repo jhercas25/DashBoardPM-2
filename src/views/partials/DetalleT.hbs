@@ -1,0 +1,90 @@
+<div class="form-group row pl-3 pr-3">
+    
+   <div class="col ">
+        <label for="NumeroT">
+
+            {{#switch Trans}}
+            {{#case "Ventas" }}
+            <span class="d-none d-sm-block"> Factura #</span>
+            <span class="d-block d-sm-none">Fac#</span>
+            {{/case}}
+            {{#case "Compras" }}
+            <span class="d-none d-sm-block"> Factura #</span>
+            <span class="d-block d-sm-none">Fac#</span>
+            {{/case}}
+            {{#case "Cotizaciones"}}
+            <span class="d-none d-sm-block"> Cotizacion #</span>
+            <span class="d-block d-sm-none">Cot#</span>
+            {{/case}}
+            {{#case "Pedidos" }}
+            <span class="d-none d-sm-block"> Pedido #</span>
+            <span class="d-block d-sm-none">Ped#</span>
+            {{/case}}
+            {{#case "Pagos" }}
+            <span class="d-none d-sm-block"> Pago #</span>
+            <span class="d-block d-sm-none">Pag#</span> {{/case}}
+            {{/switch}}
+
+        </label>
+    </div>
+    {{#ifEquals Trans "Compras" }}
+
+    <div class="col-8">
+        <input type="text" class="form-control" name="NumeroT" id="NumeroT" required value={{NumD}}>
+    </div>
+    <div class="col ">
+        <button class=" my-auto mr-auto btn btn-primary" onclick="GenerarFC()"> <span
+                class="d-none d-sm-block">Generar</span>
+            <span class="d-block d-sm-none">G</span> </button>
+    </div>
+
+    {{else}}
+    <div class="col-8">
+        <input type="text" class="form-control col-10" data-inputmask="'alias': 'numeric'" name="NumeroT" id="NumeroT"
+            value={{NumD}} required readonly>
+    </div>
+
+    {{/ifEquals }}
+
+
+</div>
+
+
+<div class="form-group  row">
+    <div class="col-6">
+        <label for="FEmicion"> Fecha emicion </label>
+        <input type="text" data-inputmask="'alias': 'date'" class="form-control" name="FEmicion" id="FEmicion"
+            value={{iftrue DT.row.FechaEmision "Hoy" }}  readonly>
+    </div>
+    <div class="col-6">
+        <label for="FVencimiento">Fecha vencimiento </label>
+        <input type="text" data-inputmask="'alias': 'date'" class="form-control" name="FVencimiento" value={{iftrue DT.row.FechaVencimiento "Hoy" }}
+            id="FVencimiento" readonly>
+    </div>
+</div>
+
+<div class="form-group row">
+    <div class="col-6">
+        <label for="MetodoPago">Metodo de pago</label>
+        <select id="MetodoPago" class="selectpicker form-control col-12" onchange="MP()"  required>
+            <option value="Contado" {{#ifEquals DT.row.Plazo "Contado" }} selected {{/ifEquals}}> Pago de Contado </option>
+            <option value="Credito30" {{#ifEquals DT.row.Plazo "Credito30" }} selected {{/ifEquals}}> Pago a 30 días </option>
+            <option value="Credito60" {{#ifEquals DT.row.Plazo "Credito60" }} selected {{/ifEquals}}> Pago a 60 días </option>
+            <option value="Credito90" {{#ifEquals DT.row.Plazo "Credito90" }} selected {{/ifEquals}}> Pago a 90 días </option>
+        </select>
+    </div>
+    <div class="col-6">
+        <label for="Responsable">Responsable</label>
+        <input type="text" class="form-control" value={{user.fullname}} name="Responsable" id="Responsable" readonly>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="Observaciones">Observaciones</label>
+    <input type="text" class="form-control" name="Observaciones" id="ObservacionesT">
+</div>
+
+<script>
+
+
+</script>

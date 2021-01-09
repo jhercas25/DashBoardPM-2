@@ -1,0 +1,388 @@
+﻿<IntegrationFile Version="5" ID="9ca405c7-b64c-42e5-85e9-e8fe7fd13f5d">
+  <ActionGroup Name="IntegrationFileActionGroup" ID="1bffadc0-0af5-48a0-bfc4-756369249bcf" RunMethod="Sequential" MessagingEnabled="false">
+    <Actions>
+      <DatabaseIntegration Name="Integración Base de datos" ID="31538c74-00fd-4f76-9179-c6e0ea24c930" IgnoreErrors="true" PollInterval="3000">
+        <Variables>
+          <Variable Name="__internal_UIMetaData_{10197317-68C1-4B0D-9BA4-0D5FEC3B6338}__" Type="Seagull.Integrations.VariableDictionary">
+            <Value>
+              <Variable Name="CanSupportUpdate" Type="System.Boolean">
+                <Value>true</Value>
+              </Variable>
+              <Variable Name="TableList" Type="System.Collections.Generic.List`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]">
+                <Value>
+                  <string>accounts</string>
+                  <string>actor</string>
+                  <string>actor_info</string>
+                  <string>address</string>
+                  <string>aperturas</string>
+                  <string>binary_log_transaction_compression_stats</string>
+                  <string>caracteristica</string>
+                  <string>cartera</string>
+                  <string>category</string>
+                  <string>city</string>
+                  <string>city</string>
+                  <string>columns_priv</string>
+                  <string>component</string>
+                  <string>cond_instances</string>
+                  <string>country</string>
+                  <string>country</string>
+                  <string>countrylanguage</string>
+                  <string>customer</string>
+                  <string>customer_list</string>
+                  <string>data_lock_waits</string>
+                  <string>data_locks</string>
+                  <string>db</string>
+                  <string>default_roles</string>
+                  <string>engine_cost</string>
+                  <string>events_errors_summary_by_account_by_error</string>
+                  <string>events_errors_summary_by_host_by_error</string>
+                  <string>events_errors_summary_by_thread_by_error</string>
+                  <string>events_errors_summary_by_user_by_error</string>
+                  <string>events_errors_summary_global_by_error</string>
+                  <string>events_stages_current</string>
+                  <string>events_stages_history</string>
+                  <string>events_stages_history_long</string>
+                  <string>events_stages_summary_by_account_by_event_name</string>
+                  <string>events_stages_summary_by_host_by_event_name</string>
+                  <string>events_stages_summary_by_thread_by_event_name</string>
+                  <string>events_stages_summary_by_user_by_event_name</string>
+                  <string>events_stages_summary_global_by_event_name</string>
+                  <string>events_statements_current</string>
+                  <string>events_statements_histogram_by_digest</string>
+                  <string>events_statements_histogram_global</string>
+                  <string>events_statements_history</string>
+                  <string>events_statements_history_long</string>
+                  <string>events_statements_summary_by_account_by_event_name</string>
+                  <string>events_statements_summary_by_digest</string>
+                  <string>events_statements_summary_by_host_by_event_name</string>
+                  <string>events_statements_summary_by_program</string>
+                  <string>events_statements_summary_by_thread_by_event_name</string>
+                  <string>events_statements_summary_by_user_by_event_name</string>
+                  <string>events_statements_summary_global_by_event_name</string>
+                  <string>events_transactions_current</string>
+                  <string>events_transactions_history</string>
+                  <string>events_transactions_history_long</string>
+                  <string>events_transactions_summary_by_account_by_event_name</string>
+                  <string>events_transactions_summary_by_host_by_event_name</string>
+                  <string>events_transactions_summary_by_thread_by_event_name</string>
+                  <string>events_transactions_summary_by_user_by_event_name</string>
+                  <string>events_transactions_summary_global_by_event_name</string>
+                  <string>events_waits_current</string>
+                  <string>events_waits_history</string>
+                  <string>events_waits_history_long</string>
+                  <string>events_waits_summary_by_account_by_event_name</string>
+                  <string>events_waits_summary_by_host_by_event_name</string>
+                  <string>events_waits_summary_by_instance</string>
+                  <string>events_waits_summary_by_thread_by_event_name</string>
+                  <string>events_waits_summary_by_user_by_event_name</string>
+                  <string>events_waits_summary_global_by_event_name</string>
+                  <string>file_instances</string>
+                  <string>file_summary_by_event_name</string>
+                  <string>file_summary_by_instance</string>
+                  <string>film</string>
+                  <string>film_actor</string>
+                  <string>film_category</string>
+                  <string>film_list</string>
+                  <string>film_text</string>
+                  <string>func</string>
+                  <string>general_log</string>
+                  <string>global_grants</string>
+                  <string>global_status</string>
+                  <string>global_variables</string>
+                  <string>gtid_executed</string>
+                  <string>help_category</string>
+                  <string>help_keyword</string>
+                  <string>help_relation</string>
+                  <string>help_topic</string>
+                  <string>host_cache</string>
+                  <string>host_summary</string>
+                  <string>host_summary_by_file_io</string>
+                  <string>host_summary_by_file_io_type</string>
+                  <string>host_summary_by_stages</string>
+                  <string>host_summary_by_statement_latency</string>
+                  <string>host_summary_by_statement_type</string>
+                  <string>hosts</string>
+                  <string>imp_stiker</string>
+                  <string>impreso</string>
+                  <string>innodb_buffer_stats_by_schema</string>
+                  <string>innodb_buffer_stats_by_table</string>
+                  <string>innodb_index_stats</string>
+                  <string>innodb_lock_waits</string>
+                  <string>innodb_table_stats</string>
+                  <string>inventory</string>
+                  <string>io_by_thread_by_latency</string>
+                  <string>io_global_by_file_by_bytes</string>
+                  <string>io_global_by_file_by_latency</string>
+                  <string>io_global_by_wait_by_bytes</string>
+                  <string>io_global_by_wait_by_latency</string>
+                  <string>keyring_keys</string>
+                  <string>language</string>
+                  <string>latest_file_io</string>
+                  <string>links</string>
+                  <string>log_status</string>
+                  <string>memory_by_host_by_current_bytes</string>
+                  <string>memory_by_thread_by_current_bytes</string>
+                  <string>memory_by_user_by_current_bytes</string>
+                  <string>memory_global_by_current_bytes</string>
+                  <string>memory_global_total</string>
+                  <string>memory_summary_by_account_by_event_name</string>
+                  <string>memory_summary_by_host_by_event_name</string>
+                  <string>memory_summary_by_thread_by_event_name</string>
+                  <string>memory_summary_by_user_by_event_name</string>
+                  <string>memory_summary_global_by_event_name</string>
+                  <string>metadata_locks</string>
+                  <string>metrics</string>
+                  <string>mutex_instances</string>
+                  <string>nicer_but_slower_film_list</string>
+                  <string>objects_summary_global_by_type</string>
+                  <string>password_history</string>
+                  <string>payment</string>
+                  <string>performance_timers</string>
+                  <string>persisted_variables</string>
+                  <string>plugin</string>
+                  <string>prepared_statements_instances</string>
+                  <string>processlist</string>
+                  <string>procs_priv</string>
+                  <string>producto</string>
+                  <string>proxies_priv</string>
+                  <string>ps_check_lost_instrumentation</string>
+                  <string>rental</string>
+                  <string>replication_applier_configuration</string>
+                  <string>replication_applier_filters</string>
+                  <string>replication_applier_global_filters</string>
+                  <string>replication_applier_status</string>
+                  <string>replication_applier_status_by_coordinator</string>
+                  <string>replication_applier_status_by_worker</string>
+                  <string>replication_connection_configuration</string>
+                  <string>replication_connection_status</string>
+                  <string>replication_group_member_stats</string>
+                  <string>replication_group_members</string>
+                  <string>role_edges</string>
+                  <string>rwlock_instances</string>
+                  <string>sales_by_film_category</string>
+                  <string>sales_by_store</string>
+                  <string>schema_auto_increment_columns</string>
+                  <string>schema_index_statistics</string>
+                  <string>schema_object_overview</string>
+                  <string>schema_redundant_indexes</string>
+                  <string>schema_table_lock_waits</string>
+                  <string>schema_table_statistics</string>
+                  <string>schema_table_statistics_with_buffer</string>
+                  <string>schema_tables_with_full_table_scans</string>
+                  <string>schema_unused_indexes</string>
+                  <string>server_cost</string>
+                  <string>servers</string>
+                  <string>session</string>
+                  <string>session_account_connect_attrs</string>
+                  <string>session_connect_attrs</string>
+                  <string>session_ssl_status</string>
+                  <string>session_status</string>
+                  <string>session_variables</string>
+                  <string>sessions</string>
+                  <string>sessions</string>
+                  <string>setup_actors</string>
+                  <string>setup_consumers</string>
+                  <string>setup_instruments</string>
+                  <string>setup_objects</string>
+                  <string>setup_threads</string>
+                  <string>slave_master_info</string>
+                  <string>slave_relay_log_info</string>
+                  <string>slave_worker_info</string>
+                  <string>slow_log</string>
+                  <string>socket_instances</string>
+                  <string>socket_summary_by_event_name</string>
+                  <string>socket_summary_by_instance</string>
+                  <string>staff</string>
+                  <string>staff_list</string>
+                  <string>statement_analysis</string>
+                  <string>statements_with_errors_or_warnings</string>
+                  <string>statements_with_full_table_scans</string>
+                  <string>statements_with_runtimes_in_95th_percentile</string>
+                  <string>statements_with_sorting</string>
+                  <string>statements_with_temp_tables</string>
+                  <string>status_by_account</string>
+                  <string>status_by_host</string>
+                  <string>status_by_thread</string>
+                  <string>status_by_user</string>
+                  <string>stock</string>
+                  <string>store</string>
+                  <string>sys_config</string>
+                  <string>table_handles</string>
+                  <string>table_io_waits_summary_by_index_usage</string>
+                  <string>table_io_waits_summary_by_table</string>
+                  <string>table_lock_waits_summary_by_table</string>
+                  <string>tables_priv</string>
+                  <string>temp_stiker</string>
+                  <string>threads</string>
+                  <string>time_zone</string>
+                  <string>time_zone_leap_second</string>
+                  <string>time_zone_name</string>
+                  <string>time_zone_transition</string>
+                  <string>time_zone_transition_type</string>
+                  <string>tls_channel_status</string>
+                  <string>user</string>
+                  <string>user_defined_functions</string>
+                  <string>user_summary</string>
+                  <string>user_summary_by_file_io</string>
+                  <string>user_summary_by_file_io_type</string>
+                  <string>user_summary_by_stages</string>
+                  <string>user_summary_by_statement_latency</string>
+                  <string>user_summary_by_statement_type</string>
+                  <string>user_variables_by_thread</string>
+                  <string>users</string>
+                  <string>users</string>
+                  <string>users</string>
+                  <string>variables_by_thread</string>
+                  <string>variables_info</string>
+                  <string>version</string>
+                  <string>wait_classes_global_by_avg_latency</string>
+                  <string>wait_classes_global_by_latency</string>
+                  <string>waits_by_host_by_latency</string>
+                  <string>waits_by_user_by_latency</string>
+                  <string>waits_global_by_latency</string>
+                  <string>x$host_summary</string>
+                  <string>x$host_summary_by_file_io</string>
+                  <string>x$host_summary_by_file_io_type</string>
+                  <string>x$host_summary_by_stages</string>
+                  <string>x$host_summary_by_statement_latency</string>
+                  <string>x$host_summary_by_statement_type</string>
+                  <string>x$innodb_buffer_stats_by_schema</string>
+                  <string>x$innodb_buffer_stats_by_table</string>
+                  <string>x$innodb_lock_waits</string>
+                  <string>x$io_by_thread_by_latency</string>
+                  <string>x$io_global_by_file_by_bytes</string>
+                  <string>x$io_global_by_file_by_latency</string>
+                  <string>x$io_global_by_wait_by_bytes</string>
+                  <string>x$io_global_by_wait_by_latency</string>
+                  <string>x$latest_file_io</string>
+                  <string>x$memory_by_host_by_current_bytes</string>
+                  <string>x$memory_by_thread_by_current_bytes</string>
+                  <string>x$memory_by_user_by_current_bytes</string>
+                  <string>x$memory_global_by_current_bytes</string>
+                  <string>x$memory_global_total</string>
+                  <string>x$processlist</string>
+                  <string>x$ps_digest_95th_percentile_by_avg_us</string>
+                  <string>x$ps_digest_avg_latency_distribution</string>
+                  <string>x$ps_schema_table_statistics_io</string>
+                  <string>x$schema_flattened_keys</string>
+                  <string>x$schema_index_statistics</string>
+                  <string>x$schema_table_lock_waits</string>
+                  <string>x$schema_table_statistics</string>
+                  <string>x$schema_table_statistics_with_buffer</string>
+                  <string>x$schema_tables_with_full_table_scans</string>
+                  <string>x$session</string>
+                  <string>x$statement_analysis</string>
+                  <string>x$statements_with_errors_or_warnings</string>
+                  <string>x$statements_with_full_table_scans</string>
+                  <string>x$statements_with_runtimes_in_95th_percentile</string>
+                  <string>x$statements_with_sorting</string>
+                  <string>x$statements_with_temp_tables</string>
+                  <string>x$user_summary</string>
+                  <string>x$user_summary_by_file_io</string>
+                  <string>x$user_summary_by_file_io_type</string>
+                  <string>x$user_summary_by_stages</string>
+                  <string>x$user_summary_by_statement_latency</string>
+                  <string>x$user_summary_by_statement_type</string>
+                  <string>x$wait_classes_global_by_avg_latency</string>
+                  <string>x$wait_classes_global_by_latency</string>
+                  <string>x$waits_by_host_by_latency</string>
+                  <string>x$waits_by_user_by_latency</string>
+                  <string>x$waits_global_by_latency</string>
+                </Value>
+              </Variable>
+              <Variable Name="TableSchema" Type="System.Data.DataTable">
+                <Value>
+                  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+                    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="imp_trigger" msdata:UseCurrentLocale="true">
+                      <xs:complexType>
+                        <xs:choice minOccurs="0" maxOccurs="unbounded">
+                          <xs:element name="imp_trigger">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="id" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+                                <xs:element name="Tg" type="xs:unsignedByte" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:choice>
+                      </xs:complexType>
+                      <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+                        <xs:selector xpath=".//imp_trigger" />
+                        <xs:field xpath="id" />
+                      </xs:unique>
+                    </xs:element>
+                  </xs:schema>
+                  <diffgr:diffgram xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1" />
+                </Value>
+              </Variable>
+            </Value>
+          </Variable>
+        </Variables>
+        <ActionGroup ID="63c4e626-c5c7-4f0a-81b1-3645104806c9" RunMethod="Sequential" MessagingEnabled="false">
+          <Actions>
+            <ForEachDatabaseRecordAction Name="Para cada registro de base de datos" ID="5a03aa23-1b7b-40c7-80c6-28f3ad2b3795" RunMethod="Sequential" MessagingEnabled="false">
+              <Actions>
+                <PrintAction Name="Imprimir documento" ID="e61351b7-211e-412b-98a3-9eb9a271c6a5" IgnoreErrors="true" Document="C:\Users\ledde\Desktop\DASHBOARD\Formato codigosLED_Db.btw" Printer="TSC TTP-244 Plus" RecordRange="1..." UseDatabase="false" WarnWhenUsingTrueTypeFonts="true" ResendFailedJobs="false" NamedDataSourcePrefix="BTDS_" />
+              </Actions>
+              <RecordSet.DataTarget>
+                <Value>%EventData%</Value>
+              </RecordSet.DataTarget>
+            </ForEachDatabaseRecordAction>
+          </Actions>
+        </ActionGroup>
+        <ConnectionInfo>&lt;?xml version="1.0" encoding="utf-8"?&gt;&#xD;
+&lt;DatabaseSetup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;&#xD;
+  &lt;DatabaseConnections&gt;&#xD;
+    &lt;DatabaseConnection Name="@1" Type="MySQL" Credentials="r6ZtAiVh46eSlyHEmUQMX8jxnoLg8k23MRxEaN9/7Y8="&gt;database=dashboard;server=localhost&lt;FormatIDString&gt;134648&lt;/FormatIDString&gt;&lt;/DatabaseConnection&gt;&#xD;
+  &lt;/DatabaseConnections&gt;&#xD;
+  &lt;RecordSets&gt;&#xD;
+    &lt;RecordSet Name="dashboard" Connection="@1" Primary="true"&gt;&#xD;
+      &lt;SelectCommand Custom="false"&gt;SELECT `id`, `Tg` FROM `dashboard`.`imp_trigger`&lt;/SelectCommand&gt;&#xD;
+      &lt;ProviderParameters&gt;&lt;/ProviderParameters&gt;&#xD;
+      &lt;LastKnownSchema&gt;&#xD;
+        &lt;Field Name="[dashboard].[imp_trigger].[id]" Type="Int32" /&gt;&#xD;
+        &lt;Field Name="[dashboard].[imp_trigger].[Tg]" Type="Byte" /&gt;&#xD;
+      &lt;/LastKnownSchema&gt;&#xD;
+    &lt;/RecordSet&gt;&#xD;
+  &lt;/RecordSets&gt;&#xD;
+&lt;/DatabaseSetup&gt;</ConnectionInfo>
+        <DbDetectionMethod.FieldIncreasing FieldName="id" DefaultLastValue="5" />
+      </DatabaseIntegration>
+    </Actions>
+  </ActionGroup>
+  <Metadata>
+    <Properties>
+      <Properties Name="MostRecentlyUsedVariables" Type="System.String">
+        <Value>EventData</Value>
+      </Properties>
+      <Properties Name="SelectedDeploymentConfiguration" Type="System.String">
+        <Value>Producción</Value>
+      </Properties>
+      <Properties Name="SelectedIntegration" Type="System.Int32">
+        <Value>0</Value>
+      </Properties>
+      <Properties Name="SelectedOptionsPage" Type="System.String">
+        <Value>1;0;0</Value>
+      </Properties>
+    </Properties>
+  </Metadata>
+  <SourcePath>C:\Users\ledde\Desktop\DASHBOARD\IntegrationFile.btin</SourcePath>
+  <IsPrinting>false</IsPrinting>
+  <IsPrintPreview>false</IsPrintPreview>
+  <DeploymentConfigurations>
+    <DeploymentConfiguration CancelIfIntegrationFileExistsOnTargetServer="false">
+      <Name>_Probar</Name>
+      <TargetServers>
+        <TargetServer Name="This Computer" Description="" IsServerGroup="false" />
+      </TargetServers>
+      <DeploymentSchedule Method="Immediately" />
+    </DeploymentConfiguration>
+    <DeploymentConfiguration CancelIfIntegrationFileExistsOnTargetServer="false">
+      <Name>Producción</Name>
+      <TargetServers>
+        <TargetServer Name="This Computer" Description="" IsServerGroup="false" />
+      </TargetServers>
+      <DeploymentSchedule Method="OnSpecifiedDate" />
+    </DeploymentConfiguration>
+  </DeploymentConfigurations>
+</IntegrationFile>

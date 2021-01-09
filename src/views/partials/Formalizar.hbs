@@ -1,0 +1,160 @@
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Metodo de pago</h5>
+        <div class="form-row text-center mb-5">
+            <div class="col-4">
+                <label class="form-check-label" for="OpcEfectivo">
+                    Efectivo
+                    <i class="fas fa-money-bill-alt fa-w-16 fa-2x col-12"></i>
+                </label>
+            </div>
+            <div class="col-4">
+                <label class="form-check-label" for="OpcTarjeta">
+
+                    Tarjeta o Electronico
+                    <i class="far fa-credit-card fa-w-16 fa-2x col-12"></i>
+                </label>
+            </div>
+            <div class="col-4">
+                <label class="form-check-label" for="OpcMixto">
+
+                    <div class="col-12">
+                        Mixto
+                    </div>
+                    <div class="col-12">
+                        <i class="fas fa-money-bill-alt fa-w-16 fa-2x"></i>
+                        <i class="far fa-credit-card fa-w-16 fa-2x"></i>
+                    </div>
+                </label>
+            </div>
+
+            <div class="form-check col-4">
+                <input class="form-check-input" onchange="MPCambio(this)" type="radio" name="OpcMP" id="OpcEfectivo"
+                    checked>
+            </div>
+            <div class="form-check col-4">
+                <input class="form-check-input" onchange="MPCambio(this)" type="radio" name="OpcMP" id="OpcTarjeta">
+            </div>
+            <div class="form-check col-4">
+                <input class="form-check-input  " onchange="MPCambio(this)" type="radio" name="OpcMP" id="OpcMixto">
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Detalle</h5>
+
+        <div class="text-center ml-auto">
+
+            <div class="form-group row  ">
+                <div class="col-4">
+                    <label for="SubT">Subtotal</label></div>
+                <div class="col-8">
+                    <input type="text" class="form-control-lg form-control h4" data-inputmask="'alias': 'numeric'"
+                        name="SubT" id="SubT" readonly required></div>
+
+            </div>
+
+            <div class="form-group row  ">
+                <div class="col-4">
+                    <label for="Ivap" class="m-2">Iva</label>
+                </div>
+                <div class="col-8"><input type="text" class="form-control-lg form-control  h4"
+                        data-inputmask="'alias': 'numeric'" name="Ivap" id="Ivap" readonly required>
+                </div>
+
+            </div>
+            <div class="form-group row ">
+                <div class="col-4">
+                    <label for="Rte" class="m-2">Retenciones </label>
+                </div>
+                <div class="col-8">
+                    <input type="text" class="form-control-lg  form-control h4" data-inputmask="'alias': 'numeric'"
+                        name="Rte" id="Rte" readonly required>
+                </div>
+            </div>
+
+            <div class="form-group row ">
+                <div class="col-4">
+                    <label for="DesTotalT" class="m-2">Descuentos</label>
+                </div>
+                <div class="col-8">
+                    <input type="text" class="form-control-lg  form-control h4" data-inputmask="'alias': 'numeric'"
+                        name="DesTotalT" id="DesTotalT" readonly required>
+                </div>
+            </div>
+
+            <div class="form-group row ">
+                <div class="col-4">
+                    <label for="TotalP" class="m-2">Total a Pagar </label>
+                </div>
+                <div class="col-8">
+                    <input type="text" class="form-control-lg  form-control h4" data-inputmask="'alias': 'numeric'"
+                        name="TotalP" id="TotalP" readonly required>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class=" form-group row col-12" id="MEinput">
+                <label for="MontoEfe">Monto Efectivo</label>
+                <input type="text" class="form-control-lg form-control" name="MontoEfe" id="MontoEfe"
+                    data-inputmask="'alias': 'numeric'" onkeyup="CambioT()" required>
+            </div>
+
+            <div class=" form-group row col-12 " id="MTinput">
+                <label for="MontoTar">Monto Tarjeta</label>
+                <input type="text" class="form-control-lg form-control" name="MontoTar" id="MontoTar"
+                    data-inputmask="'alias': 'numeric'" onkeyup="CambioT()" required>
+            </div>
+        </div>
+
+        <div class="row mt-4 " id="MTInfoinput">
+            <div class="col-12">
+                <label for="TipoPagoElect">Tipo de pago electronico </label>
+                <select id="TipoPagoElect" class="selectpicker col-12 mb-4" title="Elija el medio electronico" required>
+                    <option value="TC">Tarjeta Credito</option>
+                    <option value="TD">Tarjeta Debito</option>
+                    <option value="TransBanc">Transferencia Bancaria</option>
+                    <option value="Daviplata">Daviplata</option>
+                    <option value="QRBancolombia">QR Bancolombia</option>
+                </select>
+            </div>
+            <div class=" form-group row col-12">
+                <label for="RefP">Referencia </label>
+                <input type="text" class="form-control" name="RefP" id="RefP" required>
+            </div>
+        </div>
+
+        <div class=" mt-5">
+            <div class=" form-group row ">
+                <div class="col-4">
+                    <label for="Cambio">Cambio</label>
+                </div>
+                <div class="col-8">
+                    <input type="text" class="form-control-lg form-control" name="Cambio" id="Cambio"
+                        data-inputmask="'alias': 'numeric'" readonly required>
+                </div>
+            </div>
+            <div class=" custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="imp">
+                <label class="custom-control-label" for="imp">Imprimir?</label>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script>
+
+    $(document).ready(() => {
+        $("#MTinput").hide();
+        $("#MTInfoinput").hide();
+    })
+
+</script>

@@ -1,0 +1,312 @@
+
+<form>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="CodProd">Codigo</label>
+            <input type="text" class="form-control" id="CodProd" required>
+        </div>
+        <div class="form-group col-md-6 my-auto">
+            <a id="GenCod"onclick="traerCodigo()" class="btn btn-primary">Generar</a>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="inputAddress">Marca</label>
+            <input type="text" class="form-control" id="Marca" placeholder="Marca" required>
+        </div>
+        <div class="form-group col-sm-6">
+            <div class="col-sm-6">
+            <label for="Proveedor">Proveedor</label>
+            </div>
+            <div class=" col-sm-6">
+            <select id="ProveedorSel"  class="selectpicker"  data-live-search="true" required>
+            </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-8">
+            <label for="NombreP">Nombre</label>
+            <input type="text" class="form-control" id="NombreP" placeholder="Nombre" required>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="Presentacion">Presentacion</label>
+            <input type="text" class="form-control" id="Presentacion" placeholder="Presentacion" required>
+        </div>
+
+    </div>
+
+        <div class="form-row">
+        <div class="form-group col">
+            <div class="accordion " id="detalle1">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                            <button class="btn btn-block text-left" type="button" data-toggle="collapse"
+                                data-target="#One" aria-expanded="true" aria-controls="One">
+                                Detalle 
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="One" class="collapse hide" aria-labelledby="headingOne"
+                        data-parent="#detalle1">
+                        <div class="card-body col-md-12 mx-auto">
+                            <textarea class="form-control "name="detalle" id="detalle" ></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="form-row">
+        <div class="form-group col">
+            <div class="accordion " id="accordionExample">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                            <button class="btn btn-block text-left" type="button" data-toggle="collapse"
+                                data-target="#Caract" aria-expanded="true" aria-controls="Two">
+                                Caracteristicas 
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="Caract" class="collapse hide" aria-labelledby="headingOne"
+                        data-parent="#accordionExample">
+                        <div class="card-body">
+                            {{>Caracteriaticas}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="form-row">
+            <div class="form-group col-3">
+            <label for="inputZip">Iva</label>
+            <input type="text"data-inputmask="'alias': 'numeric'" class="form-control" id="iva" required >
+            </div>
+            <div class="form-group col-3">
+            <label for="inputZip">Utilidad</label>
+            <input type="text"data-inputmask="'alias': 'numeric'" class="form-control" id="utilidad" readonly >
+            </div>
+            <div class="form-group col-3">
+            <label for="inputZip">Descuento</label>
+            <input type="text" data-inputmask="'alias': 'numeric'"class="form-control" id="descuento" required >
+            </div>
+            <div class="form-group col-3">
+            <label for="inputZip">Utilidad Des</label>
+            <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="udescuento" readonly>
+            </div>
+        
+    </div>
+    <div class="form-row">
+        <div class="form-group col-5">
+            <label for="inputCity">Precio compra</label>
+        </div>
+
+        <div class="form-group col-3">
+            <label for="PCompra">Sin Iva</label>
+            <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="PCompra" required>
+        </div>
+        <div class="form-group col-3">
+            <label for="PCompraI">Con Iva</label>
+            <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="PCompraI" readonly >
+        </div>
+        
+
+    </div>
+    <div class="form-row">
+        <div class="form-group col-5">
+            <label for="inputCity">Precio venta </label>
+        </div>
+
+        <div class="form-group col-3">
+            <label for="PVenta">Sin Iva</label>
+            <input type="text" data-inputmask="'alias': 'numeric'"class="form-control" id="PVenta" readonly>
+        </div>
+        <div class="form-group col-3">
+            <label for="PVentaI">Con Iva</label>
+            <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="PVentaI" required >
+        </div>
+        
+
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-5">
+            <label for="inputCity">Precio Minimo con descuento </label>
+        </div>
+        <div class="form-group col-3">
+            <label for="PDes">Sin Iva</label>
+            <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="PDes" readonly>
+        </div>
+        <div class="form-group col-3">
+            <label for="PDesI">Con Iva</label>
+            <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="PDesI" readonly>
+        </div>
+        
+    </div>
+    
+
+    <div class="form-group">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="gridCheck">
+            <label class="form-check-label" for="gridCheck">
+                Check me out
+            </label>
+        </div>
+    </div>
+
+</form>
+
+<script>
+    //$(':input').inputmask();
+    $('#iva').inputmask({"groupSeparator": ".","radixPoint": ",", "autoGroup": "true"});
+    $('#PVentaI').inputmask({"groupSeparator": ".","radixPoint": ",", "autoGroup": "true"});
+    $('#PVenta').inputmask({"groupSeparator": ".","radixPoint": ",", "autoGroup": "true"});
+    $('#PCompra').inputmask({"groupSeparator": ".","radixPoint": ",", "autoGroup": "true"});
+    $('#PCompraI').inputmask({"groupSeparator": ".","radixPoint": ",", "autoGroup": "true"});
+    $('#PDesI').inputmask({"groupSeparator": ".","radixPoint": ",", "autoGroup": "true"});
+    $('#PDes').inputmask({"groupSeparator": ".","radixPoint": ",", "autoGroup": "true"});
+           
+    $('#CodProd').keyup(function(){
+        $('#CodProd').val($('#CodProd').val().toUpperCase());
+        });
+
+    $('#Marca').keyup(function(){
+        $('#Marca').val($('#Marca').val().toUpperCase());
+        });
+
+    $('#NombreP').keyup(function(){
+            $('#NombreP').val($('#NombreP').val().toUpperCase());
+            });
+
+    $('#Presentacion').keyup(function(){
+            $('#Presentacion').val($('#Presentacion').val().toUpperCase());
+            });
+
+
+     $('#iva').keyup(function(){
+         Pc=$('#PCompra').val().replace('.', '');
+         U=1+($('#utilidad').val()/100);
+         Iva=(1+($('#iva').val()/100));
+
+         value = Math.round(Math.round(Pc*U*Iva)/100)*100;
+         $('#PVentaI').val((value));
+         value = Math.round(Math.round(Pc*U)/10)*10;
+         $('#PVenta').val((value));
+         ActualizarDes();
+        });
+
+    $('#PCompra').keyup(function(){
+         Pc=$('#PCompra').val().replace('.', '');
+         U=1+($('#utilidad').val()/100);
+         Iva=(1+($('#iva').val()/100));
+
+         value = Math.round(Math.round(Pc*U*Iva)/100)*100;
+         $('#PVentaI').val((value));
+         value = Math.round(Math.round(Pc*U)/10)*10;
+         $('#PVenta').val((value));
+        });
+    
+
+
+     $('#PVentaI').change(function(){
+         Pc=$('#PCompra').val().replace('.', '');
+         Pvi=$('#PVentaI').val().replace('.', '');
+         Iva=(1+($('#iva').val()/100));
+         Ua=1+($('#utilidad').val()/100);
+         U=(Pvi/(Iva))/(Pc)-1;
+         
+         if(!(U<0.10)){
+            $('#utilidad').val(Math.round(U*10000)/100);
+            value = Math.round(Math.round(Pc*(1+U))/10)*10;
+            $('#PVenta').val((value));
+         }else{
+
+            value = Math.round(Math.round(Pc*(1.1)*(Iva))/10)*10;
+            $('#PVentaI').val((value));
+            value = Math.round(Math.round(Pc*(1.1))/10)*10;
+            $('#PVenta').val((value));
+            $('#utilidad').val(Math.round(10));
+         }
+            ActualizarDes();
+        });
+
+    $('#PVentaI').keyup(function(){
+         Pc=$('#PCompra').val().replace('.', '');
+         Pvi=$('#PVentaI').val().replace('.', '');
+         Iva=(1+($('#iva').val()/100));
+         
+         U=(Pvi/(Iva))/(Pc)-1;
+                 
+            $('#utilidad').val(Math.round(U*10000)/100);
+            value = Math.round(Math.round(Pc*(1+U))/10)*10;
+            $('#PVenta').val((value));
+
+        });
+
+    
+     $('#descuento').change(function(){
+        ActualizarDes();
+        });
+    
+
+function ActualizarDes(){
+
+         Pc=$('#PCompra').val().replace('.', '');
+         Pvi=$('#PVentaI').val().replace('.', '');
+         Iva=(1+($('#iva').val()/100));
+         Ua=1+($('#utilidad').val()/100);
+         Des=($('#descuento').val()/100);
+            
+         if((Ua-Des)>1.10){
+            value = Math.round(Math.round(Pc*((Ua-Des)))/10)*10;
+            $('#PDes').val((value));
+            value = Math.round(Math.round(Pc*((Ua-Des))*Iva)/10)*10;
+            $('#PDesI').val((value));
+            $('#udescuento').val(Math.round((Ua-Des-1)*10000)/100);
+         }else{
+            Des=Ua-1.10;
+            value = Math.round(Math.round(Pc*((Ua-Des)))/10)*10;
+            $('#PDes').val((value));
+            value = Math.round(Math.round(Pc*((Ua-Des))*Iva)/10)*10;
+            $('#PDesI').val((value));
+            $('#descuento').val(Math.round(Des*10000)/100);
+            $('#udescuento').val(10);
+        }
+
+
+}
+
+
+</script>
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
