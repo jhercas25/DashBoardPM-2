@@ -261,7 +261,7 @@ $(function() {
             //$node.find("h4.code").html(code);
             $("#result_strip ul.thumbnails").prepend($node);
             $('#Codigo').keyup();
-            $('#CodigoT').keyup();
+            $('#CodigoT').change();
             CerrarModal();
 
         }

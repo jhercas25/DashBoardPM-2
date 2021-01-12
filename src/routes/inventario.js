@@ -59,20 +59,21 @@ router.get('/Tinv/:id', isLoggedin, async (req, res) => {
 
 });
 
-router.get('/TinvE/:id&:Trans&:Prov', isLoggedin, async (req, res) => {
-   const { id, Trans, Prov } = req.params;
-   //console.log(Trans);
+router.post('/TinvE/:Trans&:Prov', isLoggedin, async (req, res) => {
+   const { Trans, Prov } = req.params;
+   const{Cod}=req.body;
+   console.log(req.body);
    //console.log(Prov);
 
    if (Trans == "Compras") {
       sql = `SELECT * FROM Producto Where Codigo = '${id}' and Provedor = '${Prov}' `;
    } else {
-      sql = `SELECT * FROM Producto Where Codigo = '${id}' `;
+      sql = `SELECT Producto.*,Variaciones.Variacion FROM Producto,Variaciones Where Producto.Codigo = Variaciones.Codigo_p and Variaciones.Codigo= '${Cod}' `;
    }
 
    //console.log(sql);
    const Productos = await pool.query(sql);
-   //console.log(Productos);
+   console.log(Productos);
    Prod = Productos
    return res.send(Prod);
    //res.render('./inventario/inventario');
@@ -388,8 +389,9 @@ router.get('/UltimoCodigo/:Responsable', isLoggedin, async (req, res) => {
          await pool.query(`UPDATE RegistroInventario set estado='Edicion',Responsable='${Responsable}' where ID= ${Ccod[0].ID} `);
 
       } else {
-         Ccod = await pool.query(`Select Consecutivo FROM RegistroInventario WHERE estado = 'Finalizado' ORDER BY Consecutivo DESC`);
+         Ccod = await pool.query(`Select Consecutivo FROM RegistroInventario WHERE estado = 'Edicion' OR estado = 'Formalizado' ORDER BY Consecutivo DESC`);
          console.log(Ccod);
+
          if (Ccod.length > 0) { Cons = Ccod[0].Consecutivo + 1 } else { Cons = 1 }
 
          Codigo = (Cons.length >= 5) ? Cons : (new Array(5).join('0') + Cons).slice(-5);
@@ -416,13 +418,14 @@ router.get('/UltimoCodigo/:Responsable', isLoggedin, async (req, res) => {
 router.post('/VariantesAgg', isLoggedin, async (req, res) => {
    //console.log(req.body);
    Data = {
+      Codigo_P:req.body.Codp,
       Codigo: req.body.Cod,
       Variacion: req.body.Variante,
       Cantidad: req.body.CntVar,
       imagen: req.body.img
    };
 
-   //console.log(Data);
+   console.log(Data);
 
    await pool.query(`INSERT INTO variacionestemp SET ? `, [Data]);
 
@@ -434,6 +437,7 @@ router.get('/VariantesTemp/:Cod', isLoggedin, async (req, res) => {
    const { Cod } = req.params
    //console.log(Cod);
    //console.log(Data);
+   Variantes=[];
 
    Variantes = await pool.query(`Select * from variacionestemp Where Codigo like '%${Cod}%' `);
 
@@ -456,12 +460,13 @@ router.post('/VariantesEdit/:id', isLoggedin, async (req, res) => {
    const { id } = req.params
    //console.log(id);
    Data = {
+      Codigo_P:req.body.Codp,
       Codigo: req.body.Cod,
       Variacion: req.body.Variante,
       Cantidad: req.body.CntVar,
       imagen: req.body.img
    };
-   // console.log(Data);
+    console.log(Data);
    await pool.query(`UPDATE Variacionestemp set ? WHERE id = ${id} `, [Data]);
 
 
@@ -538,14 +543,14 @@ router.get('/NuevoInvDel/:id&:Cod', isLoggedin, async (req, res) => {
 router.get('/NuevoInvFormalizar/:id&:Cod', isLoggedin, async (req, res) => {
    const { id, Cod } = req.params
    //console.log(id);
-
+   await pool.query(`DELETE FROM IMPCODIGO WHERE id>0 `); 
    await pool.query(`INSERT INTO producto (Codigo,Nombre,Marca,Iva,Descuento,PCompra,PVenta,PoC,Responsable,FechaRegistro,Cantidad,Presentacion,ImagenP) SELECT Codigo,Nombre,Marca,Iva,Descuento,PCompra,PVenta,PoC,Responsable,FechaRegistro,Cantidad,Presentacion,ImagenP FROM productotemp WHERE id ='${id}' `);
-   await pool.query(`INSERT INTO variaciones (Codigo,Variacion,Cantidad,imagen) SELECT Codigo,Variacion,Cantidad,imagen FROM variacionestemp WHERE Codigo like '%${Cod}%'  `);
+   await pool.query(`INSERT INTO variaciones (Codigo_P,Codigo,Variacion,Cantidad,imagen) SELECT Codigo_P,Codigo,Variacion,Cantidad,imagen FROM variacionestemp WHERE Codigo like '%${Cod}%'  `);
    await pool.query(`INSERT INTO stockinvlotfev (Cantidad,FechaVencimiento,Invima,Lote,Producto ) SELECT Cantidad,FechaVencimiento,Invima,Lote,Producto FROM detalleinvlotfevtemp WHERE Producto = '${Cod}' && Tipo='Ninv' `);
    await pool.query(`INSERT INTO detalleinvlotfev (Cantidad,FechaVencimiento,Invima,Lote,Producto,Documento,Tipo) SELECT Cantidad,FechaVencimiento,Invima,Lote,Producto,Documento,Tipo FROM detalleinvlotfevtemp WHERE Producto = '${Cod}' && Tipo='Ninv' `);
-
-
-
+  
+   //SELECT variaciones.Codigo,producto.Nombre,variaciones.Variacion,variaciones.Cantidad,round(producto.PVenta*(1+(producto.iva/100)),-1) FROM variaciones,producto  WHERE  (variaciones.Codigo_p = producto.Codigo) and (producto.Codigo = '${Cod}');
+   await pool.query( `INSERT INTO impCodigo (Codigo,Nombre,Variacion,Cantidad, Precio) SELECT variaciones.Codigo,producto.Nombre,variaciones.Variacion,variaciones.Cantidad, round(producto.PVenta*(1+(producto.iva/100)),-1) FROM variaciones,producto  WHERE  (variaciones.Codigo_p = producto.Codigo) and (producto.Codigo = '${Cod}')`); 
    await pool.query(`DELETE FROM productotemp WHERE id ='${id}' `);
    await pool.query(`DELETE FROM variacionestemp WHERE Codigo like '%${Cod}%' `);
    await pool.query(`DELETE FROM DetalleInvLotFevTemp WHERE Producto = '${Cod}' && Tipo='Ninv'`);

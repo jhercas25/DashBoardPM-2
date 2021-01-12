@@ -392,7 +392,7 @@ $(document).on('show.bs.modal', '#EditP', function () {
   $('#iva').val(Producto.Iva);
   $('#GenCod').addClass('disabled');
 
-  let Uti = Math.round(((Producto.PVenta/ (Producto.PCompra * ((Producto.Iva * 0.01) + 1))) - 1) * 100);
+  let Uti = Math.round(((Producto.PVenta / (Producto.PCompra * ((Producto.Iva * 0.01) + 1))) - 1) * 100);
   let Utides = Math.round(((Uti - Producto.Descuento)));
 
   $('#utilidad').val(Uti);
@@ -400,7 +400,7 @@ $(document).on('show.bs.modal', '#EditP', function () {
   $('#udescuento').val(Utides);
 
   $('#PCompra').val(Producto.PCompra);
-  $('#PCompraI').val(Math.round(Producto.PCompra* (1 + (Producto.Iva / 100))));
+  $('#PCompraI').val(Math.round(Producto.PCompra * (1 + (Producto.Iva / 100))));
 
   $('#PVenta').val(Math.round(Producto.PVenta / (1 + (Producto.Iva / 100))));
   $('#PVentaI').val(Producto.PVenta);
@@ -819,14 +819,14 @@ async function traerPro(Trans) {
   }
 
   Cod = $('#CodigoT').val();
-  //console.log(Cod + "desde evn");
+  console.log(Cod + "desde evn");
   var url = '/inv/TinvE';
   var text = '';
   text = quitarAcentos(Cod);
   //
   if (text != '') {
 
-    await $.get(url + '/' + text + '&' + Trans + '&' + Prov).then(function (res) {
+    await $.post(url + '/'+ Trans + '&' + Prov,{Cod}).then(function (res) {
       // console.log(res);
       Prod = res[0];
       if (Prod) {
@@ -1392,7 +1392,7 @@ function MprecioV() {
 
 async function FormalizarTran(Editar) {
 
-  imp = 0;
+  imp = $('#imp').prop('checked');
   DocT = $('#NumeroT').val();
 
 
@@ -1462,9 +1462,17 @@ async function FormalizarTran(Editar) {
           if (Transaccion.Tipo == "Ventas" || Transaccion.Tipo == "Compras") {
 
             Ainv = ActualizarInv(Transaccion.Tipo, DocT, Editar);
+
             console.log(Ainv);
+            if (imp) 
+            { 
+              imprimir(DocT, Transaccion.Tipo); 
+            }
+            else {
+              window.location.href = '/Tran/' + Transaccion.Tipo;
+            };
           }
-          window.location.href = '/Tran/' + Transaccion.Tipo;
+          
         }
 
       });
@@ -1481,15 +1489,23 @@ async function FormalizarTran(Editar) {
       // console.log(url);
       await $.post(url + '/' + DocT + '&' + Editar, { bodyMsg }).then(function (res) {
         //console.log(res);
-        if (res = 'Ok') {
+        if (res == 'OK') {
           //console.log('listoss');
           if (Transaccion.Tipo == "Ventas" || Transaccion.Tipo == "Compras") {
+
 
             Ainv = ActualizarInv(Transaccion.Tipo, DocT, Editar);
             ActReg(Transaccion.PoC);
             //   console.log(Ainv);
+            if (imp) 
+            { 
+              imprimir(DocT, Transaccion.Tipo); 
+            }
+            else {
+              window.location.href = '/Tran/' + Transaccion.Tipo;
+            };
           }
-          window.location.href = '/Tran/' + Transaccion.Tipo;
+
         }
       });
 
@@ -1529,7 +1545,7 @@ function ActReg(PoC) {
 
   url = '/PoC/ActReg';
   $.post(url + '/' + PoC).then(function (res) {
-    if (res = 'Ok') {
+    if (res == 'Ok') {
 
       console.log('listoss');
 
@@ -1625,3 +1641,42 @@ function SelectPoC() {
   $('#NitoCCT').change();
 
 }
+
+function imprimir(Doc, Tran) {
+
+  url = `/Tran/imprimir/${Doc}&${Tran}`;
+  $.get(url).then(function (res) {
+    // console.log(res);
+    if (res == "OK") {
+      
+      printJS({ printable: '/uploads/Facturas/page.pdf', type: 'pdf', onPrintDialogClose: redirigir });
+    }
+  });
+
+}
+
+function redirigir(){
+  Tran=document.getElementById('TipoT').innerText;
+  window.location.href = '/Tran/' + Tran;
+
+} 
+
+// function redirigir(Tran) {
+
+  
+//   window.onfocus = function () { 
+//     setTimeout(function () {// window.close(); 
+//       window.location.href = '/Tran/' + Tran;
+//     }, 500); 
+//   }
+  
+//   window.onclose = function () { 
+//     window.location.href = '/Tran/' + Tran;
+//   }
+
+//   console.log('listoss');
+ 
+
+// }
+
+

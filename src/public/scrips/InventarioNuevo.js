@@ -5,15 +5,18 @@ function VariantesData(params) {
   var url = '/inv/VariantesTemp';
 
   var Cod = $('#CodigoP').val();
+  console.log(Cod);
+  Variantes = []
+  if (Cod != "") {
+    
+    $.get(url + '/' + Cod).then(function (res) {
 
-  $.get(url + '/' + Cod).then(function (res) {
-
-    Variantes = res;
-    //console.log(Variantes);
-    params.success(Variantes);
-
-  });
-
+      Variantes = res;
+      console.log(Variantes);
+      return params.success(Variantes);
+    });
+  }
+  params.success(Variantes);
 }
 
 function imgVariantes(value, row, index) {
@@ -30,9 +33,10 @@ async function agregarVar() {
   CntT = 0;
   CntP = $('#CntP').val().replace(/\./g, '');
   Variantes = $('#VariantesTabla').bootstrapTable('getData');
-  CntVar = $('#CntVar').val();
+  CntVar = $('#CntVar').val()/1;
   Variante = $('#Var').val();
   imagefile = $('#Variantes').val();
+  Codp = $('#CodigoP').val();
   Cod = $('#CodigoP').val() + '#' + Variantes.length;
   img = $('#CodigoP').val() + '-V-' + Variantes.length;
 
@@ -44,17 +48,19 @@ async function agregarVar() {
 
 
     if (CntT != 0) {
-      $('#CntP').val(CntT);
+      $('#CntP').val(CntT-Var.Cantidad+CntVar);
     }
 
     url = '/inv/VariantesAgg'
 
-    await $.post(url, { Cod, Variante, CntVar, img }).then(function (res) {
+    await $.post(url, { Codp, Cod, Variante, CntVar, img }).then(function (res) {
 
       console.log(res);
       if (res == 'OK') {
         $('#VariantesTabla').bootstrapTable('refresh');
-        SubirFoto('Variantes');
+        if(imagefile.indexOf('Promyd_Principal')<0){
+          SubirFoto('Variantes');
+        }       
         LimpiarVariantes();
       }
 
@@ -75,9 +81,11 @@ async function editarVar() {
   CntT = 0;
   CntP = $('#CntP').val().replace(/\./g, '');
   Variantes = $('#VariantesTabla').bootstrapTable('getData');
-  CntVar = $('#CntVar').val();
+  CntVar = $('#CntVar').val()/1;
   Variante = $('#Var').val();
   imagefile = $('#Variantes').val();
+
+  Codp = Var.Codigo_P;
 
   Cod = Var.Codigo;
   img = Var.imagen;
@@ -90,12 +98,12 @@ async function editarVar() {
 
 
     if (CntT != 0) {
-      $('#CntP').val(CntT);
+      $('#CntP').val(CntT-Var.Cantidad+CntVar);
     }
 
     url = '/inv/VariantesEdit'
 
-    await $.post(url + '/' + Var.ID, { Cod, Variante, CntVar, img }).then(function (res) {
+    await $.post(url + '/' + Var.ID, { Codp, Cod, Variante, CntVar, img }).then(function (res) {
 
       console.log(res);
       if (res == 'OK') {
@@ -246,7 +254,7 @@ function LimpiarVariantes() {
 }
 
 $(document).on('show.bs.collapse', '#VariantesCollapse', function () {
-  //console.log('evento ejecutado');
+  console.log('evento ejecutado');
   $('#VariantesTabla').bootstrapTable('refresh');
 });
 $(document).on('show.bs.collapse', '#InvimaslotesFev', function () {
@@ -488,12 +496,12 @@ function NinvDatos(params) {
 
   Ninv = [];
 
-  rol=$('#Rol')[0].innerText
-  User=$('#User')[0].innerText
+  rol = $('#Rol')[0].innerText
+  User = $('#User')[0].innerText
 
-  if(rol=='Admin'){url = "/inv/NuevoInv";}else{url = "/inv/NuevoInv/"+User;}
-  
-  
+  if (rol == 'Admin') { url = "/inv/NuevoInv"; } else { url = "/inv/NuevoInv/" + User; }
+
+
 
 
   $.get(url).then(function (res) {
@@ -625,6 +633,16 @@ function AgregarNinv() {
 
   };
 
+  Variantes = $('#VariantesTabla').bootstrapTable('getData');
+  if(Variantes.length==0){
+
+    $('#CntVar').val(Data.Cantidad);
+    $('#Var').val(' ');
+    $('#Variantes').val('Promyd_Principal');
+    agregarVar()
+  }
+
+
 
   if (Data.Nombre != "" && Data.Cantidad != 0 && Data.Marca != "" && Data.Presentacion != "" && Data.PCompra !== 0 && Data.PVenta !== 0 && Data.PoC != null && Data.ImagenP != "Elige una imagen") {
     console.log(url);
@@ -680,7 +698,8 @@ function EditarNinv() {
         SubirFoto('capture');
         LimpiarNInventario();
         $('#NuevoInventario').bootstrapTable('refresh');
-
+        localStorage.removeItem('Var');
+        localStorage.removeItem('editNinv');
         btnadd = document.getElementById("addNinv");
         btnedit = document.getElementById("editNinv");
         btnadd.classList.remove("invisible");

@@ -291,6 +291,7 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
         await pool.query(`INSERT INTO transacciones SET ? `, [Transaccion]);
         await pool.query(`INSERT INTO pagos SET ?`, [Pago]);
         await pool.query(`INSERT INTO detalleinvlotfev(ILF,FechaRegistro, Cantidad, Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto) SELECT ILF,FechaRegistro,Cantidad,Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto FROM detalleinvlotfevtemp WHERE (Documento = '${id}' )`);
+        
         await pool.query(`DELETE FROM detalleinvlotfevtemp WHERE Documento = '${id}' `);
         
 
@@ -316,7 +317,7 @@ const CrearPDF= async (req,res,next)=>{
     const { Doc, Tp } = req.params;
     console.log(Doc+' tipo '+Tp);
     const Detalle = await pool.query(`SELECT detallet.* , producto.Nombre FROM detallet,producto where (detallet.Producto=producto.Codigo) and (Documento = '${Doc}' and Tipo= '${Tp}')`);
-    r=PDFcreator.Crear(0,Detalle);
+    r=await PDFcreator.Crear(0,Detalle);
     
     return next();
 }
@@ -324,7 +325,7 @@ const CrearPDF= async (req,res,next)=>{
 router.get('/imprimir/:Doc&:Tp', isLoggedin, CrearPDF, async (req, res) => {
     
     console.log('Redirigiendo');
-    res.redirect('/Tran/Ventas');
+    res.sendStatus(200);
 
 });
 
