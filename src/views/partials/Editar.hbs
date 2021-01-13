@@ -1,13 +1,11 @@
-
 <form>
-
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="CodProd">Codigo</label>
             <input type="text" class="form-control" id="CodProd" required>
         </div>
         <div class="form-group col-md-6 my-auto">
-            <a id="GenCod"onclick="traerCodigo()" class="btn btn-primary">Generar</a>
+            <a id="GenCod" onclick="traerCodigo()" class="btn btn-primary">Generar</a>
         </div>
     </div>
     <div class="form-row">
@@ -17,11 +15,11 @@
         </div>
         <div class="form-group col-sm-6">
             <div class="col-sm-6">
-            <label for="Proveedor">Proveedor</label>
+                <label for="Proveedor">Proveedor</label>
             </div>
             <div class=" col-sm-6">
-            <select id="ProveedorSel"  class="selectpicker"  data-live-search="true" required>
-            </select>
+                <select id="ProveedorSel" class="selectpicker" data-live-search="true" required>
+                </select>
             </div>
         </div>
     </div>
@@ -38,7 +36,7 @@
 
     </div>
 
-        <div class="form-row">
+    <div class="form-row">
         <div class="form-group col">
             <div class="accordion " id="detalle1">
                 <div class="card">
@@ -46,15 +44,14 @@
                         <h2 class="mb-0">
                             <button class="btn btn-block text-left" type="button" data-toggle="collapse"
                                 data-target="#One" aria-expanded="true" aria-controls="One">
-                                Detalle 
+                                Detalle
                             </button>
                         </h2>
                     </div>
 
-                    <div id="One" class="collapse hide" aria-labelledby="headingOne"
-                        data-parent="#detalle1">
+                    <div id="One" class="collapse hide" aria-labelledby="headingOne" data-parent="#detalle1">
                         <div class="card-body col-md-12 mx-auto">
-                            <textarea class="form-control "name="detalle" id="detalle" ></textarea>
+                            <textarea class="form-control " name="detalle" id="detalle"></textarea>
                         </div>
                     </div>
                 </div>
@@ -70,13 +67,13 @@
                     <div class="card-header" id="headingOne">
                         <h2 class="mb-0">
                             <button class="btn btn-block text-left" type="button" data-toggle="collapse"
-                                data-target="#Caract" aria-expanded="true" aria-controls="Two">
-                                Caracteristicas 
+                                data-target="#VariantesCollapse" aria-expanded="true" aria-controls="Two">
+                                Variaciones
                             </button>
                         </h2>
                     </div>
 
-                    <div id="Caract" class="collapse hide" aria-labelledby="headingOne"
+                    <div id="VariantesCollapse" class="collapse hide" aria-labelledby="headingOne"
                         data-parent="#accordionExample">
                         <div class="card-body">
                             {{>Caracteriaticas}}
@@ -90,23 +87,23 @@
     </div>
 
     <div class="form-row">
-            <div class="form-group col-3">
+        <div class="form-group col-3">
             <label for="inputZip">Iva</label>
-            <input type="text"data-inputmask="'alias': 'numeric'" class="form-control" id="iva" required >
-            </div>
-            <div class="form-group col-3">
+            <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="iva" required>
+        </div>
+        <div class="form-group col-3">
             <label for="inputZip">Utilidad</label>
-            <input type="text"data-inputmask="'alias': 'numeric'" class="form-control" id="utilidad" readonly >
-            </div>
-            <div class="form-group col-3">
+            <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="utilidad" readonly>
+        </div>
+        <div class="form-group col-3">
             <label for="inputZip">Descuento</label>
-            <input type="text" data-inputmask="'alias': 'numeric'"class="form-control" id="descuento" required >
-            </div>
-            <div class="form-group col-3">
+            <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="descuento" required>
+        </div>
+        <div class="form-group col-3">
             <label for="inputZip">Utilidad Des</label>
             <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="udescuento" readonly>
-            </div>
-        
+        </div>
+
     </div>
     <div class="form-row">
         <div class="form-group col-5">
@@ -119,9 +116,9 @@
         </div>
         <div class="form-group col-3">
             <label for="PCompraI">Con Iva</label>
-            <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="PCompraI" readonly >
+            <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="PCompraI" readonly>
         </div>
-        
+
 
     </div>
     <div class="form-row">
@@ -131,13 +128,13 @@
 
         <div class="form-group col-3">
             <label for="PVenta">Sin Iva</label>
-            <input type="text" data-inputmask="'alias': 'numeric'"class="form-control" id="PVenta" readonly>
+            <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="PVenta" readonly>
         </div>
         <div class="form-group col-3">
             <label for="PVentaI">Con Iva</label>
-            <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="PVentaI" required >
+            <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="PVentaI" required>
         </div>
-        
+
 
     </div>
 
@@ -153,9 +150,9 @@
             <label for="PDesI">Con Iva</label>
             <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="PDesI" readonly>
         </div>
-        
+
     </div>
-    
+
 
     <div class="form-group">
         <div class="form-check">
@@ -170,123 +167,165 @@
 
 <script>
     //$(':input').inputmask();
-    $('#iva').inputmask({"groupSeparator": ".","radixPoint": ",", "autoGroup": "true"});
-    $('#PVentaI').inputmask({"groupSeparator": ".","radixPoint": ",", "autoGroup": "true"});
-    $('#PVenta').inputmask({"groupSeparator": ".","radixPoint": ",", "autoGroup": "true"});
-    $('#PCompra').inputmask({"groupSeparator": ".","radixPoint": ",", "autoGroup": "true"});
-    $('#PCompraI').inputmask({"groupSeparator": ".","radixPoint": ",", "autoGroup": "true"});
-    $('#PDesI').inputmask({"groupSeparator": ".","radixPoint": ",", "autoGroup": "true"});
-    $('#PDes').inputmask({"groupSeparator": ".","radixPoint": ",", "autoGroup": "true"});
-           
-    $('#CodProd').keyup(function(){
+    $('#iva').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#PVentaI').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#PVenta').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#PCompra').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#PCompraI').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#PDesI').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#PDes').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+
+    $('#CodProd').keyup(function () {
         $('#CodProd').val($('#CodProd').val().toUpperCase());
-        });
+    });
 
-    $('#Marca').keyup(function(){
+    $('#Marca').keyup(function () {
         $('#Marca').val($('#Marca').val().toUpperCase());
-        });
+    });
 
-    $('#NombreP').keyup(function(){
-            $('#NombreP').val($('#NombreP').val().toUpperCase());
-            });
+    $('#NombreP').keyup(function () {
+        $('#NombreP').val($('#NombreP').val().toUpperCase());
+    });
 
-    $('#Presentacion').keyup(function(){
-            $('#Presentacion').val($('#Presentacion').val().toUpperCase());
-            });
+    $('#Presentacion').keyup(function () {
+        $('#Presentacion').val($('#Presentacion').val().toUpperCase());
+    });
+
+    $(document).on('show.bs.collapse', '#VariantesCollapse', function () {
+        //console.log('evento ejecutado');
+        $('#VariantesTabla').bootstrapTable('refresh');
+    });
+
+    $(document).on('change', '.custom-file-input', function (e) {
+        id = $(this)[0].id;
+        if (id == "Variantes") {
+            var NV = $('#VariantesTabla').bootstrapTable('getData').length;
+            Var = JSON.parse(localStorage.getItem('Var'))
+
+            if (Var) {
+
+                var fileName = Var.imagen + ".jpg";
+            } else {
+                var fileName = $('#CodProd').val() + '-V-' + NV + '.jpg';
+            }
+
+        } else {
+
+            var fileName = $('#CodProd').val() + '-P.jpg';
+        }
+
+        //var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+
+        //console.log(id)
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            // get loaded data and render thumbnail.
+            if (id == "Variantes") {
+                document.getElementById("pVariantes").src = e.target.result;
+            } else {
+                document.getElementById("pGeneral").src = e.target.result;
+            }
+
+        };
+        // read the image file as a data URL.
+        reader.readAsDataURL(this.files[0]);
+
+    });
 
 
-     $('#iva').keyup(function(){
-         Pc=$('#PCompra').val().replace('.', '');
-         U=1+($('#utilidad').val()/100);
-         Iva=(1+($('#iva').val()/100));
+    $('#iva').keyup(function () {
+        Pc = $('#PCompra').val().replace('.', '');
+        U = 1 + ($('#utilidad').val() / 100);
+        Iva = (1 + ($('#iva').val() / 100));
 
-         value = Math.round(Math.round(Pc*U*Iva)/100)*100;
-         $('#PVentaI').val((value));
-         value = Math.round(Math.round(Pc*U)/10)*10;
-         $('#PVenta').val((value));
-         ActualizarDes();
-        });
+        value = Math.round(Math.round(Pc * U * Iva) / 10) * 10;
+        $('#PVentaI').val((value));
+        value = Math.round(Math.round(Pc * U) / 10) * 10;
+        $('#PVenta').val((value));
+        ActualizarDes();
+    });
 
-    $('#PCompra').keyup(function(){
-         Pc=$('#PCompra').val().replace('.', '');
-         U=1+($('#utilidad').val()/100);
-         Iva=(1+($('#iva').val()/100));
+    $('#PCompra').keyup(function () {
+        Pc = $('#PCompra').val().replace('.', '');
+        U = 1 + ($('#utilidad').val() / 100);
+        Iva = (1 + ($('#iva').val() / 100));
 
-         value = Math.round(Math.round(Pc*U*Iva)/100)*100;
-         $('#PVentaI').val((value));
-         value = Math.round(Math.round(Pc*U)/10)*10;
-         $('#PVenta').val((value));
-        });
-    
+        value = Math.round(Math.round(Pc * U * Iva) / 100) * 100;
+        $('#PVentaI').val((value));
+        value = Math.round(Math.round(Pc * U) / 10) * 10;
+        $('#PVenta').val((value));
+    });
 
 
-     $('#PVentaI').change(function(){
-         Pc=$('#PCompra').val().replace('.', '');
-         Pvi=$('#PVentaI').val().replace('.', '');
-         Iva=(1+($('#iva').val()/100));
-         Ua=1+($('#utilidad').val()/100);
-         U=(Pvi/(Iva))/(Pc)-1;
-         
-         if(!(U<0.10)){
-            $('#utilidad').val(Math.round(U*10000)/100);
-            value = Math.round(Math.round(Pc*(1+U))/10)*10;
+
+    $('#PVentaI').change(function () {
+        Pc = $('#PCompra').val().replace('.', '');
+        Pvi = $('#PVentaI').val().replace('.', '');
+        Iva = (1 + ($('#iva').val() / 100));
+        Ua = 1 + ($('#utilidad').val() / 100);
+        U = (Pvi / (Iva)) / (Pc) - 1;
+
+        if (!(U < 0.10)) {
+            $('#utilidad').val(Math.round(U * 10000) / 100);
+            value = Math.round(Math.round(Pc * (1 + U)) / 10) * 10;
             $('#PVenta').val((value));
-         }else{
+        } else {
 
-            value = Math.round(Math.round(Pc*(1.1)*(Iva))/10)*10;
+            value = Math.round(Math.round(Pc * (1.1) * (Iva)) / 10) * 10;
             $('#PVentaI').val((value));
-            value = Math.round(Math.round(Pc*(1.1))/10)*10;
+            value = Math.round(Math.round(Pc * (1.1)) / 10) * 10;
             $('#PVenta').val((value));
             $('#utilidad').val(Math.round(10));
-         }
-            ActualizarDes();
-        });
-
-    $('#PVentaI').keyup(function(){
-         Pc=$('#PCompra').val().replace('.', '');
-         Pvi=$('#PVentaI').val().replace('.', '');
-         Iva=(1+($('#iva').val()/100));
-         
-         U=(Pvi/(Iva))/(Pc)-1;
-                 
-            $('#utilidad').val(Math.round(U*10000)/100);
-            value = Math.round(Math.round(Pc*(1+U))/10)*10;
-            $('#PVenta').val((value));
-
-        });
-
-    
-     $('#descuento').change(function(){
+        }
         ActualizarDes();
-        });
-    
+    });
 
-function ActualizarDes(){
+    $('#PVentaI').keyup(function () {
+        Pc = $('#PCompra').val().replace('.', '');
+        Pvi = $('#PVentaI').val().replace('.', '');
+        Iva = (1 + ($('#iva').val() / 100));
 
-         Pc=$('#PCompra').val().replace('.', '');
-         Pvi=$('#PVentaI').val().replace('.', '');
-         Iva=(1+($('#iva').val()/100));
-         Ua=1+($('#utilidad').val()/100);
-         Des=($('#descuento').val()/100);
-            
-         if((Ua-Des)>1.10){
-            value = Math.round(Math.round(Pc*((Ua-Des)))/10)*10;
+        U = (Pvi / (Iva)) / (Pc) - 1;
+
+        $('#utilidad').val(Math.round(U * 10000) / 100);
+        value = Math.round(Math.round(Pc * (1 + U)) / 10) * 10;
+        $('#PVenta').val((value));
+
+    });
+
+
+    $('#descuento').change(function () {
+        ActualizarDes();
+    });
+
+
+    function ActualizarDes() {
+
+        Pc = $('#PCompra').val().replace('.', '');
+        Pvi = $('#PVentaI').val().replace('.', '');
+        Iva = (1 + ($('#iva').val() / 100));
+        Ua = 1 + ($('#utilidad').val() / 100);
+        Des = ($('#descuento').val() / 100);
+
+        if ((Ua - Des) > 1.10) {
+            value = Math.round(Math.round(Pc * ((Ua - Des))) / 10) * 10;
             $('#PDes').val((value));
-            value = Math.round(Math.round(Pc*((Ua-Des))*Iva)/10)*10;
+            value = Math.round(Math.round(Pc * ((Ua - Des)) * Iva) / 10) * 10;
             $('#PDesI').val((value));
-            $('#udescuento').val(Math.round((Ua-Des-1)*10000)/100);
-         }else{
-            Des=Ua-1.10;
-            value = Math.round(Math.round(Pc*((Ua-Des)))/10)*10;
+            $('#udescuento').val(Math.round((Ua - Des - 1) * 10000) / 100);
+        } else {
+            Des = Ua - 1.10;
+            value = Math.round(Math.round(Pc * ((Ua - Des))) / 10) * 10;
             $('#PDes').val((value));
-            value = Math.round(Math.round(Pc*((Ua-Des))*Iva)/10)*10;
+            value = Math.round(Math.round(Pc * ((Ua - Des)) * Iva) / 10) * 10;
             $('#PDesI').val((value));
-            $('#descuento').val(Math.round(Des*10000)/100);
+            $('#descuento').val(Math.round(Des * 10000) / 100);
             $('#udescuento').val(10);
         }
 
 
-}
+    }
 
 
 </script>

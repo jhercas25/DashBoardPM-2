@@ -219,7 +219,7 @@ router.get('/DetalleT/:id&:Tp', isLoggedin, async (req, res) => {
     const { id, Tp } = req.params;
     // console.log(id+' tipo '+Tp);
 
-    Detalle = await pool.query(`SELECT detallettemp.* , producto.Nombre FROM detallettemp,producto where (detallettemp.Producto=producto.Codigo) and (Documento = '${id}' and Tipo= '${Tp}')`);
+    Detalle = await pool.query(`SELECT detallettemp.* , producto.Nombre, Variaciones.variacion FROM detallettemp,producto,Variaciones where (detallettemp.Codigo=producto.Codigo) and  (detallettemp.Producto=Variaciones.Codigo)  and (Documento = '${id}' and Tipo= '${Tp}')`);
     //console.log(id);
     res.send(Detalle);
 });
@@ -227,17 +227,19 @@ router.get('/DetalleT/:id&:Tp', isLoggedin, async (req, res) => {
 router.post('/DetalleT/:tipo', isLoggedin, async (req, res) => {
     const { tipo } = req.params;
     const body = req.body;
+    Codigo = req.body.Cod.split('#')
     //console.log(body);
-    await pool.query(`INSERT INTO detallettemp (Documento,Item,Producto,Valor,Iva,Descuento,Cantidad,Total,Tipo) values ('${body.DocT}','${body.Item}','${body.Cod}','${body.ValorU}','${body.Iva}','${body.Des}','${body.Cnt}','${body.ValorT}','${tipo}' )`);
+    await pool.query(`INSERT INTO detallettemp (Documento,Item,Producto,Codigo,Valor,Iva,Descuento,Cantidad,Total,Tipo) values ('${body.DocT}','${body.Item}','${body.Cod}','${Codigo[0]}','${body.ValorU}','${body.Iva}','${body.Des}','${body.Cnt}','${body.ValorT}','${tipo}' )`);
     res.sendStatus(200);
 });
 
 router.post('/DetalleT/Editar/:id&:Tp', isLoggedin, async (req, res) => {
     const { id, Tp } = req.params;
     const body = req.body;
+    Codigo = req.body.Cod.split('#')
     // console.log(body);
 
-    await pool.query(`UPDATE detallettemp SET Documento='${body.DocT}', Item='${body.Item}', Producto='${body.Cod}', Valor='${body.ValorU}', Iva='${body.Iva}', Descuento='${body.Des}', Cantidad='${body.Cnt}', Total='${body.ValorT}'  WHERE  (Item=${body.Item} and Documento = '${id}' and Tipo= '${Tp}')`);
+    await pool.query(`UPDATE detallettemp SET Codigo='${Codigo[0]}', Documento='${body.DocT}', Item='${body.Item}', Producto='${body.Cod}', Valor='${body.ValorU}', Iva='${body.Iva}', Descuento='${body.Des}', Cantidad='${body.Cnt}', Total='${body.ValorT}'  WHERE  (Item=${body.Item} and Documento = '${id}' and Tipo= '${Tp}')`);
 
 
     res.sendStatus(200);

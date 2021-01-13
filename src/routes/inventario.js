@@ -389,7 +389,7 @@ router.get('/UltimoCodigo/:Responsable', isLoggedin, async (req, res) => {
          await pool.query(`UPDATE RegistroInventario set estado='Edicion',Responsable='${Responsable}' where ID= ${Ccod[0].ID} `);
 
       } else {
-         Ccod = await pool.query(`Select Consecutivo FROM RegistroInventario WHERE estado = 'Edicion' OR estado = 'Formalizado' ORDER BY Consecutivo DESC`);
+         Ccod = await pool.query(`Select Consecutivo FROM RegistroInventario WHERE estado = 'Edicion' OR estado = 'Formalizado' OR estado = 'Finalizado' ORDER BY Consecutivo DESC`);
          console.log(Ccod);
 
          if (Ccod.length > 0) { Cons = Ccod[0].Consecutivo + 1 } else { Cons = 1 }
@@ -415,6 +415,79 @@ router.get('/UltimoCodigo/:Responsable', isLoggedin, async (req, res) => {
 
 });
 
+
+router.post('/VariantesPAgg', isLoggedin, async (req, res) => {
+   //console.log(req.body);
+   Data = {
+      Codigo_P:req.body.Codp,
+      Codigo: req.body.Cod,
+      Variacion: req.body.Variante,
+      Cantidad: req.body.CntVar,
+      imagen: req.body.img
+   };
+
+   console.log(Data);
+
+   await pool.query(`INSERT INTO variaciones SET ? `, [Data]);
+
+   res.sendStatus(200);
+
+});
+
+router.post('/VariantesPEdit/:id', isLoggedin, async (req, res) => {
+   const { id } = req.params
+   //console.log(id);
+   Data = {
+      Codigo_P:req.body.Codp,
+      Codigo: req.body.Cod,
+      Variacion: req.body.Variante,
+      Cantidad: req.body.CntVar,
+      imagen: req.body.img
+   };
+    console.log(Data);
+   await pool.query(`UPDATE Variaciones set ? WHERE id = ${id} `, [Data]);
+
+
+   res.sendStatus(200);
+
+});
+
+router.get('/VariantesPDel/:id', isLoggedin, async (req, res) => {
+   const { id } = req.params
+   //console.log(id);
+
+   await pool.query(`DELETE FROM Variaciones WHERE id ='${id}' `);
+   //console.log(Data);
+
+   res.sendStatus(200);
+
+});
+
+router.get('/Variantes/:Cod', isLoggedin, async (req, res) => {
+   const { Cod } = req.params
+   console.log(Cod);
+   //console.log(Data);
+   Variantes=[];
+
+   Variantes = await pool.query(`Select * from variaciones Where Codigo like '%${Cod}%' `);
+
+   res.send(Variantes);
+
+});
+
+
+router.get('/VariantesTemp/:Cod', isLoggedin, async (req, res) => {
+   const { Cod } = req.params
+   //console.log(Cod);
+   //console.log(Data);
+   Variantes=[];
+
+   Variantes = await pool.query(`Select * from variacionestemp Where Codigo like '%${Cod}%' `);
+
+   res.send(Variantes);
+
+});
+
 router.post('/VariantesAgg', isLoggedin, async (req, res) => {
    //console.log(req.body);
    Data = {
@@ -430,18 +503,6 @@ router.post('/VariantesAgg', isLoggedin, async (req, res) => {
    await pool.query(`INSERT INTO variacionestemp SET ? `, [Data]);
 
    res.sendStatus(200);
-
-});
-
-router.get('/VariantesTemp/:Cod', isLoggedin, async (req, res) => {
-   const { Cod } = req.params
-   //console.log(Cod);
-   //console.log(Data);
-   Variantes=[];
-
-   Variantes = await pool.query(`Select * from variacionestemp Where Codigo like '%${Cod}%' `);
-
-   res.send(Variantes);
 
 });
 
@@ -476,7 +537,7 @@ router.post('/VariantesEdit/:id', isLoggedin, async (req, res) => {
 
 router.post('/NuevoInv', isLoggedin, async (req, res) => {
 
-   //console.log(id);
+   console.log('Nuevo');
    const { Data } = req.body
    // console.log(Data);
    await pool.query(`INSERT INTO  productotemp set ?`, [Data]);

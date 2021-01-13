@@ -392,7 +392,7 @@ $(document).on('show.bs.modal', '#EditP', function () {
   $('#iva').val(Producto.Iva);
   $('#GenCod').addClass('disabled');
 
-  let Uti = Math.round(((Producto.PVenta / (Producto.PCompra * ((Producto.Iva * 0.01) + 1))) - 1) * 100);
+  let Uti = Math.round(((Producto.PVenta / Producto.PCompra) - 1) * 100);
   let Utides = Math.round(((Uti - Producto.Descuento)));
 
   $('#utilidad').val(Uti);
@@ -402,11 +402,11 @@ $(document).on('show.bs.modal', '#EditP', function () {
   $('#PCompra').val(Producto.PCompra);
   $('#PCompraI').val(Math.round(Producto.PCompra * (1 + (Producto.Iva / 100))));
 
-  $('#PVenta').val(Math.round(Producto.PVenta / (1 + (Producto.Iva / 100))));
-  $('#PVentaI').val(Producto.PVenta);
+  $('#PVentaI').val(Math.round(Producto.PVenta *0.1* (1 + (Producto.Iva / 100)))*10);
+  $('#PVenta').val(Producto.PVenta);
 
   $('#PDes').val(Math.round((Producto.PCompra) * (1 + (Utides / 100))));
-  $('#PDesI').val(Math.round((Producto.PCompra) * (1 + (Utides / 100)) * (1 + (Producto.Iva / 100))));
+  $('#PDesI').val(Math.round((Producto.PCompra) *0.1* (1 + (Utides / 100)) * (1 + (Producto.Iva / 100)))*10);
 
 
   url = '/inv/Prov'
@@ -439,94 +439,94 @@ $(document).on('hide.bs.modal', '#EditP', function () {
 
 })
 
-$(document).on('show.bs.modal', '#EditP', function () {
+// $(document).on('show.bs.modal', '#EditP', function () {
 
-  id = $('#CodProd').val();
-  url = `/inv/Carr/${id}`;
+//   id = $('#CodProd').val();
+//   url = `/inv/Carr/${id}`;
 
-  $.get(url).then(function (res) {
+//   $.get(url).then(function (res) {
 
-    Tipos = res[0];
-    CarPro = res[1][0];
-
-
-    ProCarA = [CarPro.TipoCaracteristica1,
-    CarPro.TipoCaracteristica2,
-    CarPro.TipoCaracteristica3,
-    CarPro.TipoCaracteristica4,
-    CarPro.TipoCaracteristica5];
+//     Tipos = res[0];
+//     CarPro = res[1][0];
 
 
-    Car = res[2];
-    CarProItem = res[3];
-
-    localStorage.setItem('MatTipoCar', JSON.stringify(CarProItem));
-    localStorage.setItem('MatCar', JSON.stringify(CarPro));
-    CarProItemA = [];
-
-
-    for (i = 0; i < CarProItem.length; i++) {
-      CarProItemA.push(CarProItem[i].Caracteristica1);
-      CarProItemA.push(CarProItem[i].Caracteristica2);
-      CarProItemA.push(CarProItem[i].Caracteristica3);
-      CarProItemA.push(CarProItem[i].Caracteristica4)
-      CarProItemA.push(CarProItem[i].Caracteristica5);
-    }
+//     ProCarA = [CarPro.TipoCaracteristica1,
+//     CarPro.TipoCaracteristica2,
+//     CarPro.TipoCaracteristica3,
+//     CarPro.TipoCaracteristica4,
+//     CarPro.TipoCaracteristica5];
 
 
+//     Car = res[2];
+//     CarProItem = res[3];
 
-    //console.log(CarProItemA);
-    $('#list-tab').empty();
-    $('#nav-tabContent').empty();
-    for (i = 0; i < Tipos.length; i++) {
-      const child = `<a class="list-group-item 
-                      list-group-item-action 
-                      " id="${Tipos[i].Nombre_TipoCaracteristica}-list" 
-                      data-toggle="list" 
-                      href="#${Tipos[i].Nombre_TipoCaracteristica}" 
-                      role="tab" 
-                      aria-controls="home">${Tipos[i].Nombre_TipoCaracteristica}</a>`;
+//     localStorage.setItem('MatTipoCar', JSON.stringify(CarProItem));
+//     localStorage.setItem('MatCar', JSON.stringify(CarPro));
+//     CarProItemA = [];
 
-      const child2 = `<div class="tab-pane fade show" 
-                      id="${Tipos[i].Nombre_TipoCaracteristica}" 
-                      role="tabpanel" 
-                      aria-labelledby="${Tipos[i].Nombre_TipoCaracteristica}-list">
-                      </div>`;
 
-      $('#list-tab').append(child);
-      $('#nav-tabContent').append(child2);
-      $(`#${Tipos[i].Nombre_TipoCaracteristica}`).empty();
-      if (Car.length > 0) {
-        //console.log(Car);
-        for (j = 0; j < Car.length; j++) {
-
-          if (Car[j].TipoCaracteristica == Tipos[i].idTipoCaracteristica) {
-            //console.log(Car[j])
-            const child3 = ` <a class="btn btn-secondary m-2" id="item-${j}"  onclick="SelCaract(this)" > ${Car[j].Nombre_Catacteristica}</a>`;
-            $(`#${Tipos[i].Nombre_TipoCaracteristica}`).append(child3);
-            //console.log(ProCarA);
-
-            if (ProCarA.indexOf(Tipos[i].Nombre_TipoCaracteristica) > -1 && CarProItemA.indexOf(Car[j].Nombre_Catacteristica) > -1) {
-              $(`#item-${j}`).removeClass("btn-secondary").addClass("btn-primary");
-              //console.log(Car[j].Nombre_Catacteristica);
-            }
-
-          }
-
-        }
-      }
-
-      //console.log(i);
-    }
+//     for (i = 0; i < CarProItem.length; i++) {
+//       CarProItemA.push(CarProItem[i].Caracteristica1);
+//       CarProItemA.push(CarProItem[i].Caracteristica2);
+//       CarProItemA.push(CarProItem[i].Caracteristica3);
+//       CarProItemA.push(CarProItem[i].Caracteristica4)
+//       CarProItemA.push(CarProItem[i].Caracteristica5);
+//     }
 
 
 
-    //  $('#ProveedorSel').val(Producto.Provedor_producto).selectpicker('refresh');
+//     //console.log(CarProItemA);
+//     $('#list-tab').empty();
+//     $('#nav-tabContent').empty();
+//     for (i = 0; i < Tipos.length; i++) {
+//       const child = `<a class="list-group-item 
+//                       list-group-item-action 
+//                       " id="${Tipos[i].Nombre_TipoCaracteristica}-list" 
+//                       data-toggle="list" 
+//                       href="#${Tipos[i].Nombre_TipoCaracteristica}" 
+//                       role="tab" 
+//                       aria-controls="home">${Tipos[i].Nombre_TipoCaracteristica}</a>`;
 
-  });
+//       const child2 = `<div class="tab-pane fade show" 
+//                       id="${Tipos[i].Nombre_TipoCaracteristica}" 
+//                       role="tabpanel" 
+//                       aria-labelledby="${Tipos[i].Nombre_TipoCaracteristica}-list">
+//                       </div>`;
+
+//       $('#list-tab').append(child);
+//       $('#nav-tabContent').append(child2);
+//       $(`#${Tipos[i].Nombre_TipoCaracteristica}`).empty();
+//       if (Car.length > 0) {
+//         //console.log(Car);
+//         for (j = 0; j < Car.length; j++) {
+
+//           if (Car[j].TipoCaracteristica == Tipos[i].idTipoCaracteristica) {
+//             //console.log(Car[j])
+//             const child3 = ` <a class="btn btn-secondary m-2" id="item-${j}"  onclick="SelCaract(this)" > ${Car[j].Nombre_Catacteristica}</a>`;
+//             $(`#${Tipos[i].Nombre_TipoCaracteristica}`).append(child3);
+//             //console.log(ProCarA);
+
+//             if (ProCarA.indexOf(Tipos[i].Nombre_TipoCaracteristica) > -1 && CarProItemA.indexOf(Car[j].Nombre_Catacteristica) > -1) {
+//               $(`#item-${j}`).removeClass("btn-secondary").addClass("btn-primary");
+//               //console.log(Car[j].Nombre_Catacteristica);
+//             }
+
+//           }
+
+//         }
+//       }
+
+//       //console.log(i);
+//     }
 
 
-})
+
+//     //  $('#ProveedorSel').val(Producto.Provedor_producto).selectpicker('refresh');
+
+//   });
+
+
+// })
 
 
 function SelCaract(idCar) {
@@ -852,12 +852,14 @@ async function traerPro(Trans) {
           $('#DesM').val(100);
 
         } else {
-          G = ((Vv / (Vc * ((Iva * 0.01) + 1))) - 1) * 100;
+          G = ((Vv / Vc) - 1) * 100;
           localStorage.setItem('G', G);
           localStorage.setItem('Vc', Vc);
           $('#G').val(Math.round(G * 100) / 100);
-          $('#PreUni').val(Vv);
-          $('#PreTotal').val(Vv * parseInt($('#Cnt').val()));
+
+          pVI=Vv * ((Iva * 0.01) + 1)
+          $('#PreUni').val(Math.round(pVI/10)*10);
+          $('#PreTotal').val((Math.round(pVI/10)*10)*  parseInt($('#Cnt').val()));
           DesM = Prod.Descuento;
           R = ActDes(Vc, (Iva / 100) + 1, (G / 100) + 1, 0, DesM / 100);
           //console.log(R);
@@ -933,7 +935,7 @@ function NDes() {
   $('#Des').val(Math.round((R.Des) * 10000) / 100);
 
   Vv = R.PvDesI;
-  Vv = Math.round(Vv / 100) * 100
+  Vv = Math.round(Vv / 10) * 10
 
   $('#PreUni').val(Vv);
   Vt = Vv * Cnt;

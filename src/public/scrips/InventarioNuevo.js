@@ -36,11 +36,13 @@ async function agregarVar() {
   CntVar = $('#CntVar').val()/1;
   Variante = $('#Var').val();
   imagefile = $('#Variantes').val();
+  imagen= $('#LVariantes')[0].innerText
+
   Codp = $('#CodigoP').val();
   Cod = $('#CodigoP').val() + '#' + Variantes.length;
   img = $('#CodigoP').val() + '-V-' + Variantes.length;
 
-  if (Variante != "" && CntVar != "" && imagefile != "") {
+  if (Variante != "" && CntVar != "" && imagen != "Elige una imagen por variante") {
 
     Variantes.forEach(e => {
       CntT += e.Cantidad
@@ -48,7 +50,7 @@ async function agregarVar() {
 
 
     if (CntT != 0) {
-      $('#CntP').val(CntT-Var.Cantidad+CntVar);
+      $('#CntP').val(CntT+CntVar);
     }
 
     url = '/inv/VariantesAgg'
@@ -58,7 +60,7 @@ async function agregarVar() {
       console.log(res);
       if (res == 'OK') {
         $('#VariantesTabla').bootstrapTable('refresh');
-        if(imagefile.indexOf('Promyd_Principal')<0){
+        if(imagen.indexOf('Promyd_Principal')<0){
           SubirFoto('Variantes');
         }       
         LimpiarVariantes();
@@ -66,11 +68,7 @@ async function agregarVar() {
 
     });
 
-
-
   }
-
-
 
 }
 
@@ -242,13 +240,11 @@ function AsignarCodigo() {
 function LimpiarVariantes() {
 
 
-
   $('#CntVar').val("");
   $('#Var').val("");
   $('#Variantes').val("");
-  $('#LVariantes').prop('innerText', "");
+  $('#LVariantes').prop('innerText', "Elige una imagen por variante");
   document.getElementById("pVariantes").src = "https://placehold.it/300x300";
-
 
 
 }
@@ -634,11 +630,12 @@ function AgregarNinv() {
   };
 
   Variantes = $('#VariantesTabla').bootstrapTable('getData');
-  if(Variantes.length==0){
 
+  if(Variantes.length==0){
     $('#CntVar').val(Data.Cantidad);
     $('#Var').val(' ');
-    $('#Variantes').val('Promyd_Principal');
+    $('#LVariantes').prop('innerText', "Promyd_Principal");
+    //$('#Variantes').val('Promyd_Principal');
     agregarVar()
   }
 

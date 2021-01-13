@@ -1,15 +1,238 @@
+<div class="col-12">
+  <label for="Var">Variante</label>
+  <input type="text" class="form-control" name="Var" id="Var" required>
+</div>
 
-<div class="row">
-  <div class="col-4">
-    <div class="list-group" id="list-tab" role="tablist">
-      <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home"
-        role="tab" aria-controls="home">Home</a>
-    </div>
-  </div>
-  <div class="col-8">
-    <div class="tab-content" id="nav-tabContent">
-      <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list"> aaaaaa
-      </div>
-    </div>
+<div class="col-12 p-3">
+  <div class="custom-file">
+    <input class="custom-file-input" type="file" id="Variantes" accept="image/*" capture />
+    <label class="custom-file-label" for="customFile" id="LVariantes">Elige una imagen
+      por variante
+    </label>
   </div>
 </div>
+<div class="p-3 col-6">
+  <img src="https://placehold.it/80x80" id="pVariantes" class="img-thumbnail-sm">
+</div>
+
+<div class="col-6  p-2 my-auto">
+
+  <a id="addVar" href="javascript:void(0)" onclick="agregarVarP()">
+    <i class="fas fa-plus-circle fa-w-16 fa-3x"></i>
+  </a>
+  <a id="editVar" class="invisible" href="javascript:void(0)" onclick="editarVarP()">
+    <i class="fas fa-pencil-alt fa-w-16 fa-3x"></i>
+  </a>
+
+</div>
+
+<table id="VariantesTabla" data-height="300" data-toggle="table" data-toolbar="#toolbar" data-ajax="VariantesData"
+  data-pagination-parts="['pageList]" data-page-size="10" data-pagination="true" data-query-params="queryParams">
+  <thead>
+    <tr>
+      <th data-field="Codigo">Codigo</th>
+      <th data-field="Variacion">Variante</th>
+      <th data-field="Cantidad">Cantidad </th>
+      <th data-field="imgen" data-formatter="imgVariantes">Imagen</th>
+      <th data-field="operate" data-formatter="opsVariantes" data-events="eveVariantes">
+      </th>
+    </tr>
+  </thead>
+</table>
+
+<script>
+
+  function VariantesData(params) {
+
+    var url = '/inv/Variantes';
+
+    var Cod = $('#CodProd').val();
+    console.log(Cod);
+    Variantes = []
+    if (Cod != "") {
+
+      $.get(url + '/' + Cod).then(function (res) {
+
+        Variantes = res;
+        console.log(Variantes);
+        return params.success(Variantes);
+      });
+    }
+    params.success(Variantes);
+  }
+
+  function imgVariantes(value, row, index) {
+
+    // console.log(row);
+    var d = new Date();
+    var n = d.getSeconds();
+    return `<img src="/uploads/${row.imagen}.jpg?${n}" class="img-thumbnail-sm">`
+
+  }
+
+  async function agregarVarP() {
+
+    CntT = 0;
+    CntP = 0;
+    Variantes = $('#VariantesTabla').bootstrapTable('getData');
+    CntVar = 0;
+    Variante = $('#Var').val();
+    imagefile = $('#Variantes').val();
+    imagen = $('#LVariantes')[0].innerText
+
+    Codp = $('#CodProd').val();
+    Cod = $('#CodProd').val() + '#' + Variantes.length;
+    img = $('#CodProd').val() + '-V-' + Variantes.length;
+
+    if (Variante != "" &&  imagen != "Elige una imagen por variante") {
+
+      url = '/inv/VariantesPAgg'
+
+      await $.post(url, { Codp, Cod, Variante, CntVar, img }).then(function (res) {
+
+        console.log(res);
+        if (res == 'OK') {
+          $('#VariantesTabla').bootstrapTable('refresh');
+          if (imagen.indexOf('Promyd_Principal') < 0) {
+            SubirFoto('Variantes');
+          }
+          LimpiarVariantesp();
+        }
+
+      });
+
+    }
+
+  }
+
+  window.eveVariantes = {
+
+    'click .editarVar': function (e, value, row, index) {
+      // console.log(row);
+      localStorage.setItem('Var', JSON.stringify(row))
+      btnadd = document.getElementById("addVar");
+      btnedit = document.getElementById("editVar");
+      btnadd.classList.add("invisible");
+      btnedit.classList.remove("invisible");
+
+      $('#Var').val(row.Variacion);
+      document.getElementById("pVariantes").src = "/uploads/" + row.imagen + ".jpg";
+      // console.log(row.Variacion);
+
+    }//,
+    // 'click .eliminarVar': function (e, value, row, index) {
+    //  url = '/inv/VariantesPDel';
+    //  ID = row.ID;
+    //  console.log(ID);
+    //  $.get(url + '/' + ID).then(function (res) {
+    //console.log(res);
+    //    if (res = "OK") {
+    //      $('#VariantesTabla').bootstrapTable('refresh');
+    //   }
+    // }); 
+
+    // }
+  }
+
+  async function editarVarP() {
+
+    Var = JSON.parse(localStorage.getItem('Var'))
+
+    CntT = 0;
+    CntP = 0;
+    Variantes = $('#VariantesTabla').bootstrapTable('getData');
+    CntVar = 0;
+    Variante = $('#Var').val();
+    imagefile = $('#Variantes').val();
+
+    Codp = Var.Codigo_P;
+
+    Cod = Var.Codigo;
+    img = Var.imagen;
+
+    if (Variante != "" ) {
+
+      url = '/inv/VariantesPEdit'
+
+      await $.post(url + '/' + Var.ID, { Codp, Cod, Variante, CntVar, img }).then(function (res) {
+
+        console.log(res);
+        if (res == 'OK') {
+
+
+          if (imagefile != "") { SubirFoto('Variantes'); }
+          LimpiarVariantesp();
+          $('#VariantesTabla').bootstrapTable('refresh');
+          localStorage.removeItem('Var');
+          btnadd = document.getElementById("addVar");
+          btnedit = document.getElementById("editVar");
+          btnadd.classList.remove("invisible");
+          btnedit.classList.add("invisible");
+
+
+        }
+
+      });
+
+
+
+    }
+
+
+
+  }
+
+  function opsVariantes(value, row, index) {
+    return [
+      '<a class="editarVar" href="javascript:void(0)" title="Editar">',
+      '<i class="fas fa-pencil-alt"></i>',
+      '</a>  ',
+
+    ].join('')
+  }
+
+function SubirFoto(campo) {
+
+  Nombre = $('#L' + campo)[0].innerText
+  url = '/inv/SubirImg/' + Nombre;
+
+  console.log(url);
+
+  file = $('#' + campo).prop('files')[0];
+  img = new FormData();
+  img.append("file", file);
+
+
+  $.ajax({
+
+    url,
+    dataType: 'text',
+    contentType: false,
+    processData: false,
+    data: img,
+    type: 'post',
+    success: function (respuesta) {
+      console.log(respuesta);
+      $('#VariantesTabla').bootstrapTable('refresh');
+    },
+    error: function () {
+      console.log("Ha ocurrido un error");
+    }
+  });
+
+
+}
+
+function LimpiarVariantesp() {
+
+
+ 
+  $('#Var').val("");
+  $('#Variantes').val("");
+  $('#LVariantes').prop('innerText', "Elige una imagen por variante");
+  document.getElementById("pVariantes").src = "https://placehold.it/80x80";
+
+
+}
+
+</script>
