@@ -319,7 +319,9 @@ const CrearPDF= async (req,res,next)=>{
     const { Doc, Tp } = req.params;
     console.log(Doc+' tipo '+Tp);
     const Detalle = await pool.query(`SELECT detallet.* , producto.Nombre FROM detallet,producto where (detallet.Producto=producto.Codigo) and (Documento = '${Doc}' and Tipo= '${Tp}')`);
-    r=await PDFcreator.Crear(0,Detalle);
+    const T= await pool.query(`SELECT transacciones.Documento,transacciones.FechaEmision,transacciones.Total,transacciones.poc,PoC.Nombre FROM transacciones,PoC where (transacciones.PoC=PoC.NitoCC) and (transacciones.Documento = '${Doc}' and transacciones.Tipo= '${Tp}')`);
+    console.log(T);
+    r=await PDFcreator.Crear(0,{Detalle,T});
     
     return next();
 }

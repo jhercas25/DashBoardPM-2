@@ -17,6 +17,14 @@ create table IMP_stiker(
     Cant varchar(60) not null
 );
 
+create table stock(
+    id int(11) not null primary key auto_increment ,
+    Codigo varchar (60) not null,
+    Codigo_p varchar (60) not null,
+    existencias varchar(60) not null,
+
+);
+
 
 DESCRIBE Temp_stiker
 

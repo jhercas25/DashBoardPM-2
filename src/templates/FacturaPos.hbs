@@ -153,7 +153,7 @@
 
 <body>
     <header class="clearfix">
-
+        
         <h1>PROMYD</h1>
         <div id="company" class="clearfix">
             <div>JHERSSON CASTAÑO</div>
@@ -163,11 +163,10 @@
             <div><a href="mailto:info@promyd.com">info@promyd.com</a></div>
         </div>
         <div id="project">
-            <div><span>D#</span>000000</div>
-            <div><span>CLIENTE</span> John Doe</div>
-            <div><span>NIT/CC</span> 796 Silver Harbour, TX 79273, US</div>
-            <div><span>FECHA </span> August 17, 2015</div>
-
+            <div><span>D#</span>{{info.T.[0].Documento}}</div>
+            <div><span>CLIENTE</span> {{info.T.[0].Nombre}}</div>
+            <div><span>NIT/CC</span> {{info.T.[0].poc}}</div>
+            <div><span>FECHA </span> {{Fecha info.T.[0].FechaEmision}}</div>
         </div>
     </header>
     <main>
@@ -184,7 +183,7 @@
             <tbody>
                 
 
-                {{#each info}}
+                {{#each info.Detalle}}
 
                 <tr>    
                     <td class="unit" rowspan="2" >{{Item}}</td>
@@ -196,28 +195,28 @@
                     <td class="unit">CNT</td>
                     <td class="unit">{{Cantidad}}</td>
                     <td class="unit">T.Uni</td>
-                    <td class="unit">{{Total}}</td>
+                    <td class="unit">${{Total}}</td>
                 </tr>
                 {{/each}}
 
 
                 <tr>
                     <td colspan="5">SUBTOTAL</td>
-                    <td colspan="2"class="total">{{TotalT}}</td>
+                    <td colspan="2"class="total">{{TotalST}}</td>
                 </tr>
                 <tr>
                     <td colspan="5">DESCUENTO </td>
-                    <td colspan="2"class="total">{{Total}}</td>
+                    <td colspan="2"class="total">{{TotalDes}}</td>
                 </tr>
                 <tr>
                     <td colspan="5" class="grand total">TOTAL</td>
-                    <td colspan="2" class="grand total">{{Total}}</td>
+                    <td colspan="2" class="grand total">${{info.T.[0].Total}}</td>
                 </tr>
             </tbody>
         </table>
         <div id="notices">
             <div>OBSERVACIONES :</div>
-            <div class="notice">No se hacen devoluciones en una fecha diferente a la emision de este documento
+            <div class="notice">No se hacen devoluciones en una fecha diferente a la de emision de este documento
             </div>
         </div>
     </main>

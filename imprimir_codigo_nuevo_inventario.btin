@@ -112,6 +112,7 @@
                   <string>hosts</string>
                   <string>imp_stiker</string>
                   <string>imp_trigger</string>
+                  <string>impcodigo</string>
                   <string>impreso</string>
                   <string>innodb_buffer_stats_by_schema</string>
                   <string>innodb_buffer_stats_by_table</string>
@@ -318,44 +319,28 @@
               <Variable Name="TableSchema" Type="System.Data.DataTable">
                 <Value>
                   <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-                    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="impcodigo" msdata:UseCurrentLocale="true">
+                    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="imp_trigger_2" msdata:UseCurrentLocale="true">
                       <xs:complexType>
                         <xs:choice minOccurs="0" maxOccurs="unbounded">
-                          <xs:element name="impcodigo">
+                          <xs:element name="imp_trigger_2">
                             <xs:complexType>
                               <xs:sequence>
-                                <xs:element name="ID" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
-                                <xs:element name="Codigo" minOccurs="0">
+                                <xs:element name="id" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+                                <xs:element name="Codigo">
                                   <xs:simpleType>
                                     <xs:restriction base="xs:string">
                                       <xs:maxLength value="60" />
                                     </xs:restriction>
                                   </xs:simpleType>
                                 </xs:element>
-                                <xs:element name="Nombre" minOccurs="0">
-                                  <xs:simpleType>
-                                    <xs:restriction base="xs:string">
-                                      <xs:maxLength value="120" />
-                                    </xs:restriction>
-                                  </xs:simpleType>
-                                </xs:element>
-                                <xs:element name="Variacion" minOccurs="0">
-                                  <xs:simpleType>
-                                    <xs:restriction base="xs:string">
-                                      <xs:maxLength value="60" />
-                                    </xs:restriction>
-                                  </xs:simpleType>
-                                </xs:element>
-                                <xs:element name="Cantidad" type="xs:int" minOccurs="0" />
-                                <xs:element name="Precio" type="xs:int" minOccurs="0" />
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element>
                         </xs:choice>
                       </xs:complexType>
                       <xs:unique name="Constraint1" msdata:PrimaryKey="true">
-                        <xs:selector xpath=".//impcodigo" />
-                        <xs:field xpath="ID" />
+                        <xs:selector xpath=".//imp_trigger_2" />
+                        <xs:field xpath="id" />
                       </xs:unique>
                     </xs:element>
                   </xs:schema>
@@ -380,24 +365,20 @@
         <ConnectionInfo>&lt;?xml version="1.0" encoding="utf-8"?&gt;&#xD;
 &lt;DatabaseSetup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;&#xD;
   &lt;DatabaseConnections&gt;&#xD;
-    &lt;DatabaseConnection Name="@1" Type="MySQL" Credentials="0wJGmplk/Zcq8TbyCjCnb5k9Mu0FRqJxxSqEQUpw7q+ybKj7oR1iAyhUvWLXnC0E"&gt;database=dashboard;server=localhost&lt;FormatIDString&gt;264822&lt;/FormatIDString&gt;&lt;/DatabaseConnection&gt;&#xD;
+    &lt;DatabaseConnection Name="@1" Type="MySQL" Credentials="0wJGmplk/Zcq8TbyCjCnb5k9Mu0FRqJxxSqEQUpw7q+ybKj7oR1iAyhUvWLXnC0E"&gt;database=dashboard;server=localhost&lt;FormatIDString&gt;658460&lt;/FormatIDString&gt;&lt;/DatabaseConnection&gt;&#xD;
   &lt;/DatabaseConnections&gt;&#xD;
   &lt;RecordSets&gt;&#xD;
     &lt;RecordSet Name="dashboard" Connection="@1" Primary="true"&gt;&#xD;
-      &lt;SelectCommand Custom="false"&gt;SELECT `ID`, `Codigo`, `Nombre`, `Variacion`, `Cantidad`, `Precio` FROM `dashboard`.`impcodigo`&lt;/SelectCommand&gt;&#xD;
+      &lt;SelectCommand Custom="false"&gt;SELECT `id`, `Codigo` FROM `dashboard`.`imp_trigger_2`&lt;/SelectCommand&gt;&#xD;
       &lt;ProviderParameters&gt;&lt;/ProviderParameters&gt;&#xD;
       &lt;LastKnownSchema&gt;&#xD;
-        &lt;Field Name="[dashboard].[impcodigo].[ID]" Type="Int32" /&gt;&#xD;
-        &lt;Field Name="[dashboard].[impcodigo].[Codigo]" Type="String" /&gt;&#xD;
-        &lt;Field Name="[dashboard].[impcodigo].[Nombre]" Type="String" /&gt;&#xD;
-        &lt;Field Name="[dashboard].[impcodigo].[Variacion]" Type="String" /&gt;&#xD;
-        &lt;Field Name="[dashboard].[impcodigo].[Cantidad]" Type="Int32" /&gt;&#xD;
-        &lt;Field Name="[dashboard].[impcodigo].[Precio]" Type="Int32" /&gt;&#xD;
+        &lt;Field Name="[dashboard].[imp_trigger_2].[id]" Type="Int32" /&gt;&#xD;
+        &lt;Field Name="[dashboard].[imp_trigger_2].[Codigo]" Type="String" /&gt;&#xD;
       &lt;/LastKnownSchema&gt;&#xD;
     &lt;/RecordSet&gt;&#xD;
   &lt;/RecordSets&gt;&#xD;
 &lt;/DatabaseSetup&gt;</ConnectionInfo>
-        <DbDetectionMethod.FieldIncreasing FieldName="ID" DefaultLastValue="19" />
+        <DbDetectionMethod.FieldIncreasing FieldName="id" />
       </DatabaseIntegration>
     </Actions>
   </ActionGroup>
@@ -413,7 +394,7 @@
         <Value>0</Value>
       </Properties>
       <Properties Name="SelectedOptionsPage" Type="System.String">
-        <Value>1;0;0</Value>
+        <Value>0;0</Value>
       </Properties>
     </Properties>
   </Metadata>

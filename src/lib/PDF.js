@@ -17,6 +17,11 @@ const compile =async function (Plantilla, info) {
 hbs.registerHelper('json', function(context) {
   return JSON.stringify(context);
 });
+hbs.registerHelper('Fecha', function(Fecha) {
+  FE=new Date(Fecha);
+  FEs=FE.getDate(FE) +'/'+ ((FE.getMonth(FE)/1)+1)+'/' +FE.getFullYear(FE) 
+  return FEs;
+});
 
 PDFcreator.Crear= async(imp,info) =>{
 

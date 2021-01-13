@@ -609,9 +609,12 @@ router.get('/NuevoInvFormalizar/:id&:Cod', isLoggedin, async (req, res) => {
    await pool.query(`INSERT INTO variaciones (Codigo_P,Codigo,Variacion,Cantidad,imagen) SELECT Codigo_P,Codigo,Variacion,Cantidad,imagen FROM variacionestemp WHERE Codigo like '%${Cod}%'  `);
    await pool.query(`INSERT INTO stockinvlotfev (Cantidad,FechaVencimiento,Invima,Lote,Producto ) SELECT Cantidad,FechaVencimiento,Invima,Lote,Producto FROM detalleinvlotfevtemp WHERE Producto = '${Cod}' && Tipo='Ninv' `);
    await pool.query(`INSERT INTO detalleinvlotfev (Cantidad,FechaVencimiento,Invima,Lote,Producto,Documento,Tipo) SELECT Cantidad,FechaVencimiento,Invima,Lote,Producto,Documento,Tipo FROM detalleinvlotfevtemp WHERE Producto = '${Cod}' && Tipo='Ninv' `);
-  
+   
+   await pool.query(`INSERT INTO stock (Existencias,Codigo,Codigo_p) SELECT Cantidad,Codigo,Codigo_P FROM variacionestemp WHERE Codigo like '%${Cod}%' `)
    //SELECT variaciones.Codigo,producto.Nombre,variaciones.Variacion,variaciones.Cantidad,round(producto.PVenta*(1+(producto.iva/100)),-1) FROM variaciones,producto  WHERE  (variaciones.Codigo_p = producto.Codigo) and (producto.Codigo = '${Cod}');
+   
    await pool.query( `INSERT INTO impCodigo (Codigo,Nombre,Variacion,Cantidad, Precio) SELECT variaciones.Codigo,producto.Nombre,variaciones.Variacion,variaciones.Cantidad, round(producto.PVenta*(1+(producto.iva/100)),-1) FROM variaciones,producto  WHERE  (variaciones.Codigo_p = producto.Codigo) and (producto.Codigo = '${Cod}')`); 
+   await pool.query(`INSERT INTO imp_trigger_2 set Codigo='1' `);
    await pool.query(`DELETE FROM productotemp WHERE id ='${id}' `);
    await pool.query(`DELETE FROM variacionestemp WHERE Codigo like '%${Cod}%' `);
    await pool.query(`DELETE FROM DetalleInvLotFevTemp WHERE Producto = '${Cod}' && Tipo='Ninv'`);

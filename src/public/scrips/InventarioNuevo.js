@@ -638,6 +638,7 @@ function AgregarNinv() {
     //$('#Variantes').val('Promyd_Principal');
     agregarVar()
   }
+  
 
 
 
