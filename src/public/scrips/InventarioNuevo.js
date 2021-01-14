@@ -677,8 +677,8 @@ function EditarNinv() {
     Presentacion: $('#Presentacion').val(),
     Iva: ($('#Iva').val()) ? $('#Iva').val() : "0",
     Descuento: ($('#DesM').val()) ? $('#DesM').val() : "0",
-    PCompra: ($('#PrecioC').val()) ? ($('#PrecioC').val().replace(/\./g, '') / 1) : "0",
-    PVenta: ($('#PrecioV').val()) ? ($('#PrecioV').val().replace(/\./g, '') / 1) : "0",
+    PCompra: ($('#PrecioC').val()) ? ($('#PrecioC').val().replace(/\./g, '').replace(/\,/g, '.')/ 1) : "0",
+    PVenta: ($('#PrecioV').val()) ? ($('#PrecioV').val().replace(/\./g, '').replace(/\,/g, '.') / 1) : "0",
     PoC: ($('#ProveedorSel').val()) ? $('#ProveedorSel').val() : "0",
     Responsable: $('#User')[0].innerText,
     ImagenP: $('#Lcapture')[0].innerText

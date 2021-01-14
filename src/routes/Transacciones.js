@@ -217,10 +217,10 @@ router.get('/Compras/Editar/:NumD', isLoggedin, async (req, res) => {
 
 router.get('/DetalleT/:id&:Tp', isLoggedin, async (req, res) => {
     const { id, Tp } = req.params;
-    // console.log(id+' tipo '+Tp);
+    //console.log(id+' tipo '+Tp);
 
     Detalle = await pool.query(`SELECT detallettemp.* , producto.Nombre, Variaciones.variacion FROM detallettemp,producto,Variaciones where (detallettemp.Codigo=producto.Codigo) and  (detallettemp.Producto=Variaciones.Codigo)  and (Documento = '${id}' and Tipo= '${Tp}')`);
-    //console.log(id);
+    console.log(Detalle);
     res.send(Detalle);
 });
 
@@ -288,7 +288,7 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
         await pool.query(`DELETE FROM detalleinvlotfev WHERE Documento = '${id}' `);
         await pool.query(`DELETE FROM transacciones WHERE Documento = '${id}' `);
 
-        await pool.query(`INSERT INTO detallet(Documento,Item,Producto,Cantidad,Valor,Descuento,Total,Iva,Tipo) SELECT Documento,Item,Producto,Cantidad,Valor,Descuento,Total,Iva,Tipo FROM detallettemp WHERE (Documento = '${id}' )`);
+        await pool.query(`INSERT INTO detallet(Documento,Item,Producto,Codigo,Cantidad,Valor,Descuento,Total,Iva,Tipo) SELECT Documento,Item,Producto,Codigo,Cantidad,Valor,Descuento,Total,Iva,Tipo FROM detallettemp WHERE (Documento = '${id}' )`);
         await pool.query(`DELETE FROM detallettemp WHERE Documento = '${id}' `);
         await pool.query(`INSERT INTO transacciones SET ? `, [Transaccion]);
         await pool.query(`INSERT INTO pagos SET ?`, [Pago]);
@@ -318,7 +318,7 @@ const CrearPDF= async (req,res,next)=>{
     
     const { Doc, Tp } = req.params;
     console.log(Doc+' tipo '+Tp);
-    const Detalle = await pool.query(`SELECT detallet.* , producto.Nombre FROM detallet,producto where (detallet.Producto=producto.Codigo) and (Documento = '${Doc}' and Tipo= '${Tp}')`);
+    const Detalle = await pool.query(`SELECT detallet.* , producto.Nombre FROM detallet,producto where (detallet.Codigo=producto.Codigo) and (Documento = '${Doc}' and Tipo= '${Tp}')`);
     const T= await pool.query(`SELECT transacciones.Documento,transacciones.FechaEmision,transacciones.Total,transacciones.poc,PoC.Nombre FROM transacciones,PoC where (transacciones.PoC=PoC.NitoCC) and (transacciones.Documento = '${Doc}' and transacciones.Tipo= '${Tp}')`);
     console.log(T);
     r=await PDFcreator.Crear(0,{Detalle,T});

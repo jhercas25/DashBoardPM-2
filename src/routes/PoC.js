@@ -83,9 +83,9 @@ router.get('/Proveedores/datos/nomb/:id',isLoggedin,async (req,res)  =>{
  //Editar o Crear 
 
  router.post('/Clientes/CoE',isLoggedin,async (req,res)  =>{
-    const {NitoCC,Nombre,Direccion,Telefono,Telefono2,Ciudad,Departamento,Email,Observaciones} = req.body;
+    const {NitoCC,Nombre,Direccion,Telefono,Telefono2,Ciudad,Departamento,Email,Observaciones,AE,Tica} = req.body;
     
-    const PoC={NitoCC,Nombre,Direccion,Tel1:Telefono,Tel2 : Telefono2,Ciudad,Departamento,Email,Observaciones,PoC:"0"}
+    const PoC={NitoCC,Nombre,Direccion,Tel1:Telefono,Tel2 : Telefono2,Ciudad,Departamento,Email,Observaciones,PoC:"0",AE,Tica}
     if(req.body.Editar =="0"){
         //console.log("Creando");
         await pool.query ('INSERT INTO poc SET ?',[PoC]) ;
@@ -103,9 +103,9 @@ router.get('/Proveedores/datos/nomb/:id',isLoggedin,async (req,res)  =>{
 
  router.post('/Proveedores/CoE',isLoggedin,async (req,res)  =>{
      
-    const {NitoCC,Nombre,Direccion,Telefono,Telefono2,Ciudad,Departamento,Email,Observaciones} = req.body;
+    const {NitoCC,Nombre,Direccion,Telefono,Telefono2,Ciudad,Departamento,Email,Observaciones,AE,Tica} = req.body;
     
-    const PoC={NitoCC,Nombre,Direccion,Tel1:Telefono,Tel2 : Telefono2,Ciudad,Departamento,Email,Observaciones,PoC:"1"}
+    const PoC={NitoCC,Nombre,Direccion,Tel1:Telefono,Tel2 : Telefono2,Ciudad,Departamento,Email,Observaciones,PoC:"1",AE,Tica}
      //const Provedores=await pool.query (`Select * from provedores where Nombre like '%${id}%'`) ;
      if(req.body.Editar =="0"){
        // console.log("Creando");
@@ -132,10 +132,6 @@ router.get('/Proveedores/datos/nomb/:id',isLoggedin,async (req,res)  =>{
 
  });
  
-
-
-
-
 
 
 module.exports =router;

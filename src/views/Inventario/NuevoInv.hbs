@@ -80,9 +80,17 @@
                         <div class="col-sm-6">
                             <label for="Proveedor">Proveedor</label>
                         </div>
-                        <div class=" col-sm-6">
-                            <select id="ProveedorSel" class="selectpicker" data-live-search="true" required>
-                            </select>
+                        <div class="row col">
+                            <div class="col-8">
+                                <select id="ProveedorSel" class="selectpicker" data-live-search="true" required>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <a type="button" href="javascript:void(0)" class="my-auto" data-toggle="modal"
+                                    data-target="#NuevoPoC">
+                                    <i class="fas fa-plus-circle fa-w-16 fa-3x"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -90,8 +98,8 @@
                         <label for="Ult">
                             <span class="d-none d-sm-block"> Utilidad</span>
                             <span class="d-block d-sm-none">Utl</span></label>
-                        <input type="text" class="form-control " data-inputmask="'alias': 'numeric'" 
-                        onchange="CalcularPV(G.value)" name="Util" id="G" required>
+                        <input type="text" class="form-control " data-inputmask="'alias': 'numeric'"
+                            onchange="CalcularPV(G.value)" name="Util" id="G" required>
                     </div>
 
                     <div class="col-6 col-md-4">
@@ -107,7 +115,7 @@
                         <label class="d-none d-sm-block" for="PrecioC">Precio Compra + Iva</label>
                         <label class="d-block d-sm-none" for="PrecioC">PCompra + iva</label>
                         <input type="text" class="form-control" data-inputmask="'alias': 'numeric'" name="PCiva"
-                            id="PCiva" required readonly >
+                            id="PCiva" required readonly>
 
                     </div>
 
@@ -141,21 +149,21 @@
                         <label class="d-none d-sm-block" for="PrecioV">Precio Descuento + iva </label>
                         <label class="d-block d-sm-none" for="PrecioV">PDescuento + iva </label>
                         <input type="text" class="form-control" data-inputmask="'alias': 'numeric'" name="PDesIva"
-                            id="PDesIva" required readonly >
+                            id="PDesIva" required readonly>
 
                     </div>
 
                     <div class="col-6 col-md-4">
                         <label for="Iva">Iva</label>
                         <input type="text" class="form-control" data-inputmask="'alias': 'numeric'" name="Iva" id="Iva"
-                           onkeyup="CalcularUtilidad()" required>
+                            onkeyup="CalcularUtilidad()" required>
                     </div>
 
                     <div class="col-6 col-md-4 ">
                         <label class="d-none d-sm-block" for="Des">Descuento Max</label>
                         <label class="d-block d-sm-none" for="DesM">Des Max</label>
                         <input type="text" class="form-control" data-inputmask="'alias': 'numeric'" name="DesM"
-                           onkeyup="CalcularUtilidad()" id="DesM" required>
+                            onkeyup="CalcularUtilidad()" id="DesM" required>
                     </div>
 
 
@@ -401,6 +409,24 @@
     </table>
 </div>
 
+</table> <!-- Modal -->
+<div class="modal fade" id="NuevoPoC" tabindex="-1" role="dialog" aria-labelledby="PoCEdit" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="PoCEdit">Crear</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{>PoCNuevo}}
+            </div>
+
+        </div>
+    </div>
+</div>
+
 
 
 
@@ -415,7 +441,7 @@
     });
     $(document).ready(() => {
         LlenarProv(0);
-        
+
     });
-    
+
 </script>

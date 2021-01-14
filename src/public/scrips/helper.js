@@ -10,7 +10,14 @@ function CerrarModal() {
   $('#NuevoPoC').modal('hide');
   $('body').removeClass('modal-open');
   $('.modal-backdrop').remove();
+  setTimeout(function () { $('#table').bootstrapTable('refresh'); }, 1000);
+  prov = document.getElementById('PoC') ? document.getElementById('PoC').innerText : null;
+  if (prov == null) {
+    LlenarProv(true);
+  }
+
 }
+
 
 function ajaxRequest(params) {
 
@@ -53,7 +60,7 @@ function DetalleT(params) {
 
   if (parametros != '') {
     $.get(url + '/' + parametros + '&' + Tipo).then(function (res) {
-      //console.log(res);
+      console.log(res);
       params.success(res);
       Totalizar();
     });
@@ -402,11 +409,11 @@ $(document).on('show.bs.modal', '#EditP', function () {
   $('#PCompra').val(Producto.PCompra);
   $('#PCompraI').val(Math.round(Producto.PCompra * (1 + (Producto.Iva / 100))));
 
-  $('#PVentaI').val(Math.round(Producto.PVenta *0.1* (1 + (Producto.Iva / 100)))*10);
+  $('#PVentaI').val(Math.round(Producto.PVenta * 0.1 * (1 + (Producto.Iva / 100))) * 10);
   $('#PVenta').val(Producto.PVenta);
 
   $('#PDes').val(Math.round((Producto.PCompra) * (1 + (Utides / 100))));
-  $('#PDesI').val(Math.round((Producto.PCompra) *0.1* (1 + (Utides / 100)) * (1 + (Producto.Iva / 100)))*10);
+  $('#PDesI').val(Math.round((Producto.PCompra) * 0.1 * (1 + (Utides / 100)) * (1 + (Producto.Iva / 100))) * 10);
 
 
   url = '/inv/Prov'
@@ -580,7 +587,7 @@ function DV(Nit) {
 function TraerPoC(NitoCC) {
 
   DV(NitoCC.value);
-  prov = document.getElementById('PoC').innerText;
+  prov = document.getElementById('PoC') ? document.getElementById('PoC').innerText : "Proveedores";
 
   url = `/PoC/${prov}/datos/nit/U/${NitoCC.value}`;
   console.log(url);
@@ -599,14 +606,16 @@ function TraerPoC(NitoCC) {
       $('#Observaciones').val(PoC.Observaciones);
       $('#AE').val(PoC.AE);
       $('#TIca').val(PoC.Tica);
-      tipo = document.getElementById('Tipo');
-      if (PoC.Tipo == "May") {
+      tipo = document.getElementById('Tipo') ? document.getElementById('Tipo') : null;
+      if (tipo != null) {
+        if (PoC.Tipo == "May") {
 
-        tipo.innerText = "Mayorista";
-      }
-      else {
+          tipo.innerText = "Mayorista";
+        }
+        else {
 
-        tipo.innerText = "Minorista";
+          tipo.innerText = "Minorista";
+        }
       }
 
       return
@@ -623,8 +632,9 @@ function TraerPoC(NitoCC) {
   $('#E-mail').val("");
   $('#Observaciones').val("");
 
-  tipo = document.getElementById('Tipo');
-  tipo.innerText = "Minorista";
+  tipo = document.getElementById('Tipo') ? document.getElementById('Tipo') : null;
+  if (tipo != null) { tipo.innerText = "Minorista"; }
+
 
 }
 
@@ -826,7 +836,7 @@ async function traerPro(Trans) {
   //
   if (text != '') {
 
-    await $.post(url + '/'+ Trans + '&' + Prov,{Cod}).then(function (res) {
+    await $.post(url + '/' + Trans + '&' + Prov, { Cod }).then(function (res) {
       // console.log(res);
       Prod = res[0];
       if (Prod) {
@@ -857,9 +867,9 @@ async function traerPro(Trans) {
           localStorage.setItem('Vc', Vc);
           $('#G').val(Math.round(G * 100) / 100);
 
-          pVI=Vv * ((Iva * 0.01) + 1)
-          $('#PreUni').val(Math.round(pVI/10)*10);
-          $('#PreTotal').val((Math.round(pVI/10)*10)*  parseInt($('#Cnt').val()));
+          pVI = Vv * ((Iva * 0.01) + 1)
+          $('#PreUni').val(Math.round(pVI / 10) * 10);
+          $('#PreTotal').val((Math.round(pVI / 10) * 10) * parseInt($('#Cnt').val()));
           DesM = Prod.Descuento;
           R = ActDes(Vc, (Iva / 100) + 1, (G / 100) + 1, 0, DesM / 100);
           //console.log(R);
@@ -1466,15 +1476,14 @@ async function FormalizarTran(Editar) {
             Ainv = ActualizarInv(Transaccion.Tipo, DocT, Editar);
 
             console.log(Ainv);
-            if (imp) 
-            { 
-              imprimir(DocT, Transaccion.Tipo); 
+            if (imp) {
+              imprimir(DocT, Transaccion.Tipo);
             }
             else {
               window.location.href = '/Tran/' + Transaccion.Tipo;
             };
           }
-          
+
         }
 
       });
@@ -1499,9 +1508,8 @@ async function FormalizarTran(Editar) {
             Ainv = ActualizarInv(Transaccion.Tipo, DocT, Editar);
             ActReg(Transaccion.PoC);
             //   console.log(Ainv);
-            if (imp) 
-            { 
-              imprimir(DocT, Transaccion.Tipo); 
+            if (imp) {
+              imprimir(DocT, Transaccion.Tipo);
             }
             else {
               window.location.href = '/Tran/' + Transaccion.Tipo;
@@ -1650,34 +1658,34 @@ function imprimir(Doc, Tran) {
   $.get(url).then(function (res) {
     // console.log(res);
     if (res == "OK") {
-      
+
       printJS({ printable: '/uploads/Facturas/page.pdf', type: 'pdf', onPrintDialogClose: redirigir });
     }
   });
 
 }
 
-function redirigir(){
-  Tran=document.getElementById('TipoT').innerText;
+function redirigir() {
+  Tran = document.getElementById('TipoT').innerText;
   window.location.href = '/Tran/' + Tran;
 
-} 
+}
 
 // function redirigir(Tran) {
 
-  
+
 //   window.onfocus = function () { 
 //     setTimeout(function () {// window.close(); 
 //       window.location.href = '/Tran/' + Tran;
 //     }, 500); 
 //   }
-  
+
 //   window.onclose = function () { 
 //     window.location.href = '/Tran/' + Tran;
 //   }
 
 //   console.log('listoss');
- 
+
 
 // }
 

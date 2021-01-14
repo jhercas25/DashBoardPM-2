@@ -30,7 +30,8 @@ router.get('/Nuevo', isLoggedin, async (req, res) => {
    //const Productos = await pool.query ('SELECT * FROM Producto') ;
    //console.log(Productos[0].idProducto);
    //Prod= Productos
-   res.render('./inventario/NuevoInv');
+   prov=true;
+   res.render('./inventario/NuevoInv',{prov});
    //res.render('./inventario/inventario');
 
 });
