@@ -268,10 +268,11 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
 
     //console.log(id);
     //console.log(req.body.bodyMsg);
-    //console.log(Transaccion);
-    //console.log(Pago);
+    console.log('Edita->');
+    console.log(Editar);
 
-    if (Editar) {
+    if (Editar == true) {
+
         if (Transaccion.Tipo=="Ventas") {
             inodec=false
         }
@@ -298,21 +299,22 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
         
 
     } else {
-        await pool.query(`INSERT INTO detallet(Documento,Item,Producto,Cantidad,Valor,Descuento,Total,Iva,Tipo) SELECT Documento,Item,Producto,Cantidad,Valor,Descuento,Total,Iva,Tipo FROM detallettemp WHERE (Documento = '${id}' )`);
+        
+        await pool.query(`INSERT INTO detallet(Documento,Item,Producto,Codigo,Cantidad,Valor,Descuento,Total,Iva,Tipo) SELECT Documento,Item,Producto,Codigo,Cantidad,Valor,Descuento,Total,Iva,Tipo FROM detallettemp WHERE (Documento = '${id}' )`);
         await pool.query(`DELETE FROM detallettemp WHERE Documento = '${id}' `);
         await pool.query(`INSERT INTO transacciones SET ? `, [Transaccion]);
         await pool.query(`INSERT INTO pagos SET ?`, [Pago]);
         await pool.query(`INSERT INTO detalleinvlotfev(ILF,FechaRegistro, Cantidad, Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto) SELECT ILF,FechaRegistro,Cantidad,Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto FROM detalleinvlotfevtemp WHERE (Documento = '${id}' )`);
         await pool.query(`DELETE FROM detalleinvlotfevtemp WHERE Documento = '${id}' `);
         await pool.query(`UPDATE registrotransacciones SET Consecutivo=Consecutivo+1 WHERE Transaccion = '${Transaccion.Tipo}' `);
+        
     }
-
-
 
     res.sendStatus(200);
 
 
 });
+
 
 const CrearPDF= async (req,res,next)=>{ 
     

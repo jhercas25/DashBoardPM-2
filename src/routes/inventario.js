@@ -196,7 +196,7 @@ router.get('/ILFinvTemp/:id', isLoggedin, async (req, res) => {
 router.post('/ILFinvAgr', isLoggedin, async (req, res) => {
 
    const body = req.body;
-   //console.log(body);
+   console.log(body);
 
    //console.log(FV);
 

@@ -107,23 +107,36 @@ function traerDatos(params) {
   $.get(url).then(function (res) { params.success(res) });
 }
 
-function detailFormatter(index, row) {
-  var html = []
-  st = 'style=" word-wrap: break-word;min-width: 60px;max-width: 160px;"'
-  html.push('<table class="table" style="text-align: center;" > <thead> <th>Marca</th> <th>Detalle</th>  <th>P.Compra</th> <th>Iva</th> <th>Proveedor</th> </thead> <tbody > <tr>')
+async function detailFormatter(index, row) {
 
-  $.each(row, function (key, value) {
+  var url = '/inv/Variantes';
+  await $.get(url + '/' + row.Codigo).then(function (res) {
+    var html = []
+    st = 'style=" word-wrap: break-word;min-width: 60px;max-width: 160px;"';
+    html.push('<table class="table" style="text-align: center;" > <thead> <th>Marca</th> <th>Detalle</th>  <th>P.Compra</th> <th>Iva</th> <th>Proveedor</th> </thead> <tbody > <tr>')
+    console.log(row)
+    $.each(row, function (key, value) {
+      var d = new Date();
+      var n = d.getSeconds();
 
-    if (key == 'Marca_Producto') { key = 'Marca', html.push('<td ' + st + ' >' + value + '</td>'); }
-    else if (key == 'Detalle_Producto') { key = 'Detalle', html.push('<td ' + st + ' >' + value + '</td>'); }
-    else if (key == 'PrecioCompra_Producto') { key = 'P.Compra'; html.push('<td ' + st + ' >' + value + '</td>'); }
-    else if (key == 'Iva_Producto') { key = 'Iva'; html.push('<td ' + st + ' >' + value + '</td  >'); }
-    else if (key == 'Provedor_producto') { key = 'Proveedor'; html.push('<td ' + st + ' >' + value + '</td>') }
+      if (key == 'Marca') { key = 'Marca', html.push('<td ' + st + ' >' + value + '</td>'); }
+      else if (key == 'ImagenP') { key = 'ImagenP', html.push('<td ' + st + ' >' + `<img src="/uploads/${value}?${n}" class="img-thumbnail-sm"> </img>` + '</td>'); }
+      else if (key == 'PCompra') { key = 'P.Compra', html.push('<td ' + st + ' >' + value + '</td>'); }
+      else if (key == 'Iva') { key = 'Iva', html.push('<td ' + st + ' >' + value + '</td>'); }
+      else if (key == 'PoC') { key = 'PoC', html.push('<td ' + st + ' >' + value + '</td>'); }
+
+    });
+
+    html.push('</tr> </tbody> </table>');
+
+    html.push(' </tbody> </table>');
+    return html.join('');
 
   });
 
-  html.push('</tr> </tbody> </table>');
   return html.join('');
+
+
 }
 
 function FormatoPoC(index, row) {
@@ -657,7 +670,7 @@ function InvLotFev(params) {
   var text = '';
 
   text = $('#NumeroT').val();
-  Cod = $('#CodigoT').val();
+  Cod = $('#CodigoT').val().split('#')[0];
   //console.log(Cod);
   Data = $('#tableDetalle').bootstrapTable('getData');
   Detalle = JSON.parse(localStorage.getItem('editDetalle'));
@@ -1670,6 +1683,10 @@ function redirigir() {
   window.location.href = '/Tran/' + Tran;
 
 }
+function actualizarINVT() {
+  $('#NuevoInventario').bootstrapTable('refresh');
+}
+
 
 // function redirigir(Tran) {
 
