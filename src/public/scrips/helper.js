@@ -29,13 +29,12 @@ function ajaxRequest(params) {
     if (text != '') {
 
       $.get(url + '/' + text).then(function (res) { params.success(res) })
-
-
       return;
     } else {
       $.get(url).then(function (res) { params.success(res) });
     }
   });
+  
   $('#NombrePro').keyup(function () {
     console.log("edv");
     text = quitarAcentos($('#NombrePro').val());
@@ -107,33 +106,66 @@ function traerDatos(params) {
   $.get(url).then(function (res) { params.success(res) });
 }
 
-async function detailFormatter(index, row) {
+ function detailFormatter(index, row) {
+  var html = []
+  st = 'style=" word-wrap: break-word;min-width: 60px;max-width: 160px;"';
+  html.push('<table class="table" style="text-align: center;" > <thead> <th>Marca</th> <th>Detalle</th>  <th>P.Compra</th> <th>Iva</th> <th>Proveedor</th> </thead> <tbody > <tr>')
+  console.log(row)
+  $.each(row, function (key, value) {
+    var d = new Date();
+    var n = d.getSeconds();
 
-  var url = '/inv/Variantes';
-  await $.get(url + '/' + row.Codigo).then(function (res) {
-    var html = []
-    st = 'style=" word-wrap: break-word;min-width: 60px;max-width: 160px;"';
-    html.push('<table class="table" style="text-align: center;" > <thead> <th>Marca</th> <th>Detalle</th>  <th>P.Compra</th> <th>Iva</th> <th>Proveedor</th> </thead> <tbody > <tr>')
-    console.log(row)
-    $.each(row, function (key, value) {
-      var d = new Date();
-      var n = d.getSeconds();
-
-      if (key == 'Marca') { key = 'Marca', html.push('<td ' + st + ' >' + value + '</td>'); }
-      else if (key == 'ImagenP') { key = 'ImagenP', html.push('<td ' + st + ' >' + `<img src="/uploads/${value}?${n}" class="img-thumbnail-sm"> </img>` + '</td>'); }
-      else if (key == 'PCompra') { key = 'P.Compra', html.push('<td ' + st + ' >' + value + '</td>'); }
-      else if (key == 'Iva') { key = 'Iva', html.push('<td ' + st + ' >' + value + '</td>'); }
-      else if (key == 'PoC') { key = 'PoC', html.push('<td ' + st + ' >' + value + '</td>'); }
-
-    });
-
-    html.push('</tr> </tbody> </table>');
-
-    html.push(' </tbody> </table>');
-    return html.join('');
+    if (key == 'Marca') { key = 'Marca', html.push('<td ' + st + ' >' + value + '</td>'); }
+    else if (key == 'ImagenP') { key = 'ImagenP', html.push('<td ' + st + ' >' + `<img src="/uploads/${value}?${n}" class="img-thumbnail-sm"> </img>` + '</td>'); }
+    else if (key == 'PCompra') { key = 'P.Compra', html.push('<td ' + st + ' >' + value + '</td>'); }
+    else if (key == 'Iva') { key = 'Iva', html.push('<td ' + st + ' >' + value + '</td>'); }
+    else if (key == 'PoC') { key = 'PoC', html.push('<td ' + st + ' >' + value + '</td>'); }
 
   });
 
+  var d = new Date();
+  var n = d.getSeconds();
+  html.push('</tr> </tbody> </table>');
+  html.push(`
+  <table class="table" style="text-align: center;" > 
+    <thead> 
+      <th>Codigo</th> 
+      <th>Variante</th> 
+      <th>Imagen</th>   
+      <th> </th>  
+    </thead> 
+  <tbody id="Tbody${n}"> 
+    
+     `);
+
+
+  var url = '/inv/Variantes';
+  $.get(url + '/' + row.Codigo ).then( function (res) {
+    console.log(res);
+    html2='';
+    res.forEach(e => {
+      
+      var d = new Date();
+      var n = d.getSeconds();
+      html2= html2+ `
+
+      <tr>
+      <td ${st}> ${e.Codigo}</td>
+      <td ${st}> ${e.Variacion}</td>
+      <td ${st}> <img src="/uploads/${e.imagen}.jpg?${n}" class="img-thumbnail-sm"> </img> </td>
+      <td> <a onclick= "add('${e.Codigo}')"  href="javascript:void(0)" title="Add"><i class="fas fa-plus"></i></a> </td>
+      </tr>
+
+         `;
+      element=document.getElementById('Tbody'+n);
+      element.innerHTML = html2;
+      
+    });
+    
+    
+  });
+
+  html.push(' </tbody> </table>');
   return html.join('');
 
 
@@ -154,9 +186,6 @@ function FormatoPoC(index, row) {
     else if (key == 'FechaActualizacion') { key = 'FechadeActualizacion'; html.push('<td ' + st + ' >' + value + '</td  >'); }
 
   });
-
-
-
 
   html.push('</tr> </tbody> </table>');
   return html.join('');
@@ -185,9 +214,6 @@ function FormatoT(value, row, index) {
   return [
     '<a class="edit" href="javascript:void(0)" title="Like">',
     '<i class="fas fa-pencil-alt"></i>',
-    '</a>  ',
-    '<a class="add" href="javascript:void(0)" title="Add">',
-    '<i class="fas fa-plus"></i>',
     '</a>  ',
   ].join('')
 }
@@ -236,6 +262,15 @@ window.operateEvents = {
 
     $('#BuscarPro').modal('hide');
   },
+}
+
+
+function add(Cod) 
+{
+  $('#CodigoT').val(Cod);
+  Tipo = document.getElementById('TipoT').innerText
+  traerPro(Tipo);
+  $('#BuscarPro').modal('hide');
 }
 
 window.EnventosPoC = {

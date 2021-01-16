@@ -89,13 +89,21 @@ router.get('/Pagos/His', isLoggedin, async (req, res) => {
 
 ///////////////////////////////////// NUEVAS TRANSACCIONES ///////////////////////////////////////////////
 
-router.get('/Ventas/Nuevo', isLoggedin, async (req, res) => {
-    let NumD = await pool.query(`SELECT Consecutivo FROM RegistroTransacciones where Transaccion = 'Ventas' and MetodoEjecucion ='Contado'`);
-    NumD = parseInt(NumD[0].Consecutivo) + 1;
+router.get('/Nuevo/:Tipo&:Responsable', isLoggedin, async (req, res) => {
+    const {Tipo,Responsable}=req.params
+    await pool.query(`Call NuevaTransaccion('${Tipo}','${Responsable}', @Salida3)`); 
+    let NumD = await pool.query(`SELECT @Salida3`);
+    NumD = NumD[0]['@Salida3'];
     //console.log(NumD);
-    const prov = false;
+    
+    if(Tipo!='Compras'){
+         prov = false;
+    }else{
+         prov = true;
+    }
+    
     const Hoy = Date(Date.now()).toString();
-    const Trans = "Ventas";
+    const Trans = Tipo;
     const Editar=false;
     res.render('Trans/transaccionesNuevos', { prov, Trans, NumD, Hoy, Editar });
 });
@@ -108,13 +116,17 @@ router.post('/MP', isLoggedin, async (req, res) => {
     NumD = parseInt(NumD[0].Consecutivo) + 1;
     //let NumD = await pool.query (`SELECT Consecutivo FROM RegistroTransacciones where Transaccion = 'Ventas' and MetodoEjecucion ='Credito'`);
     //NumD= parseInt(NumD[0].Consecutivo)+1;
-
     res.send({ NumD });
+
 });
 
-router.get('/Compras/Nuevo', isLoggedin, async (req, res) => {
-    let NumD = await pool.query(`SELECT Consecutivo FROM RegistroTransacciones where Transaccion = 'Compras' and MetodoEjecucion ='Contado'`);
-    NumD = parseInt(NumD[0].Consecutivo) + 1;
+router.get('/Compras/Nuevo/:Responsable', isLoggedin, async (req, res) => {
+    const {Responsable}=req.params
+    await pool.query(`Call NuevaTransaccion('Compras',${Responsable}, @Salida3)`); 
+    let NumD = await pool.query(`SELECT @Salida3`);
+
+    //let NumD = await pool.query(`SELECT Consecutivo FROM RegistroTransacciones where Transaccion = 'Compras' and MetodoEjecucion ='Contado'`);
+    //NumD = parseInt(NumD[0].Consecutivo) + 1;
     //console.log(NumD);
     const prov = true;
     const Hoy = Date(Date.now()).toString();
@@ -123,9 +135,12 @@ router.get('/Compras/Nuevo', isLoggedin, async (req, res) => {
     res.render('Trans/transaccionesNuevos', { prov, Trans, Hoy, Editar });
 });
 
-router.get('/Cotizaciones/Nuevo', isLoggedin, async (req, res) => {
-    let NumD = await pool.query(`SELECT Consecutivo FROM RegistroTransacciones where Transaccion = 'Cotizaciones' and MetodoEjecucion ='Contado'`);
-    NumD = parseInt(NumD[0].Consecutivo) + 1;
+router.get('/Cotizaciones/Nuevo/:Responsable', isLoggedin, async (req, res) => {
+    const {Responsable}=req.params
+    await pool.query(`Call NuevaTransaccion('Cotizaciones',${Responsable}, @Salida3)`); 
+    let NumD = await pool.query(`SELECT @Salida3`);
+    //let NumD = await pool.query(`SELECT Consecutivo FROM RegistroTransacciones where Transaccion = 'Cotizaciones' and MetodoEjecucion ='Contado'`);
+    //NumD = parseInt(NumD[0].Consecutivo) + 1;
     //console.log(NumD);
     const prov = false;
     const Hoy = Date(Date.now()).toString();
@@ -134,9 +149,12 @@ router.get('/Cotizaciones/Nuevo', isLoggedin, async (req, res) => {
     res.render('Trans/transaccionesNuevos', { prov, Trans, NumD, Hoy, Editar });
 });
 
-router.get('/Pedidos/Nuevo', isLoggedin, async (req, res) => {
-    let NumD = await pool.query(`SELECT Consecutivo FROM RegistroTransacciones where Transaccion = 'Pedidos' and MetodoEjecucion ='Contado'`);
-    NumD = parseInt(NumD[0].Consecutivo) + 1;
+router.get('/Pedidos/Nuevo/:Responsable', isLoggedin, async (req, res) => {
+    const {Responsable}=req.params
+    await pool.query(`Call NuevaTransaccion('Pedidos',${Responsable}, @Salida3)`); 
+    let NumD = await pool.query(`SELECT @Salida3`);
+    //let NumD = await pool.query(`SELECT Consecutivo FROM RegistroTransacciones where Transaccion = 'Pedidos' and MetodoEjecucion ='Contado'`);
+    //NumD = parseInt(NumD[0].Consecutivo) + 1;
     //console.log(NumD);
     const prov = false;
     const Hoy = Date(Date.now()).toString();
@@ -145,9 +163,12 @@ router.get('/Pedidos/Nuevo', isLoggedin, async (req, res) => {
     res.render('Trans/transaccionesNuevos', { prov, Trans, NumD, Hoy,Editar });
 });
 
-router.get('/Pagos/Nuevo', isLoggedin, async (req, res) => {
-    let NumD = await pool.query(`SELECT Consecutivo FROM RegistroTransacciones where Transaccion = 'Pagos' and MetodoEjecucion ='Contado'`);
-    NumD = parseInt(NumD[0].Consecutivo) + 1;
+router.get('/Pagos/Nuevo/:Responsable', isLoggedin, async (req, res) => {
+    const {Responsable}=req.params
+    await pool.query(`Call NuevaTransaccion('Pagos',${Responsable}, @Salida3)`); 
+    let NumD = await pool.query(`SELECT @Salida3`);
+    //let NumD = await pool.query(`SELECT Consecutivo FROM RegistroTransacciones where Transaccion = 'Pagos' and MetodoEjecucion ='Contado'`);
+    //NumD = parseInt(NumD[0].Consecutivo) + 1;
     //console.log(NumD);
     const prov = false;
     const Hoy = Date(Date.now()).toString();

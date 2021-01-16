@@ -613,6 +613,7 @@ function AgregarNinv() {
   Data = {
 
     Codigo: $('#CodigoP').val(),
+    CampoBus:quitarAcentos($('#NombreP').val()) ,
     Nombre: $('#NombreP').val(),
     Cantidad: $('#CntP').val().replace(/\./g, '') / 1,
     Marca: $('#Marca').val(),
@@ -643,7 +644,7 @@ function AgregarNinv() {
 
 
   if (Data.Nombre != "" && Data.Cantidad != 0 && Data.Marca != "" && Data.Presentacion != "" && Data.PCompra !== 0 && Data.PVenta !== 0 && Data.PoC != null && Data.ImagenP != "Elige una imagen") {
-    console.log(url);
+    //console.log(url);
     $.post(url, { Data }).then(function (res) {
       console.log(res);
 
@@ -672,6 +673,7 @@ function EditarNinv() {
 
     Codigo: $('#CodigoP').val(),
     Nombre: $('#NombreP').val(),
+    CampoBus:quitarAcentos($('#NombreP').val()) ,
     Cantidad: $('#CntP').val().replace(/\./g, '') / 1,
     Marca: $('#Marca').val(),
     Presentacion: $('#Presentacion').val(),

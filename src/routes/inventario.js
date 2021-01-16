@@ -67,7 +67,7 @@ router.post('/TinvE/:Trans&:Prov', isLoggedin, async (req, res) => {
    //console.log(Prov);
 
    if (Trans == "Compras") {
-      sql = `SELECT * FROM Producto Where Codigo = '${id}' and Provedor = '${Prov}' `;
+      sql = `SELECT * FROM Producto Where Codigo = '${Cod}' and PoC = '${Prov}' `;
    } else {
       sql = `SELECT Producto.*,Variaciones.Variacion FROM Producto,Variaciones Where Producto.Codigo = Variaciones.Codigo_p and Variaciones.Codigo= '${Cod}' `;
    }
@@ -539,7 +539,8 @@ router.post('/VariantesEdit/:id', isLoggedin, async (req, res) => {
 router.post('/NuevoInv', isLoggedin, async (req, res) => {
 
    console.log('Nuevo');
-   const { Data } = req.body
+
+   const { Data } = req.body;
    // console.log(Data);
    await pool.query(`INSERT INTO  productotemp set ?`, [Data]);
    await pool.query(`UPDATE RegistroInventario set estado='Finalizado' where Codigo= ${Data.Codigo} `);
@@ -606,7 +607,7 @@ router.get('/NuevoInvFormalizar/:id&:Cod', isLoggedin, async (req, res) => {
    const { id, Cod } = req.params
    //console.log(id);
    await pool.query(`DELETE FROM IMPCODIGO WHERE id>0 `); 
-   await pool.query(`INSERT INTO producto (Codigo,Nombre,Marca,Iva,Descuento,PCompra,PVenta,PoC,Responsable,FechaRegistro,Cantidad,Presentacion,ImagenP) SELECT Codigo,Nombre,Marca,Iva,Descuento,PCompra,PVenta,PoC,Responsable,FechaRegistro,Cantidad,Presentacion,ImagenP FROM productotemp WHERE id ='${id}' `);
+   await pool.query(`INSERT INTO producto (Codigo,Nombre,Marca,Iva,Descuento,PCompra,PVenta,PoC,Responsable,FechaRegistro,Cantidad,Presentacion,ImagenP,CampoBus) SELECT Codigo,Nombre,Marca,Iva,Descuento,PCompra,PVenta,PoC,Responsable,FechaRegistro,Cantidad,Presentacion,ImagenP,CampoBus FROM productotemp WHERE id ='${id}' `);
    await pool.query(`INSERT INTO variaciones (Codigo_P,Codigo,Variacion,Cantidad,imagen) SELECT Codigo_P,Codigo,Variacion,Cantidad,imagen FROM variacionestemp WHERE Codigo like '%${Cod}%'  `);
    await pool.query(`INSERT INTO stockinvlotfev (Cantidad,FechaVencimiento,Invima,Lote,Producto ) SELECT Cantidad,FechaVencimiento,Invima,Lote,Producto FROM detalleinvlotfevtemp WHERE Producto = '${Cod}' && Tipo='Ninv' `);
    await pool.query(`INSERT INTO detalleinvlotfev (Cantidad,FechaVencimiento,Invima,Lote,Producto,Documento,Tipo) SELECT Cantidad,FechaVencimiento,Invima,Lote,Producto,Documento,Tipo FROM detalleinvlotfevtemp WHERE Producto = '${Cod}' && Tipo='Ninv' `);
