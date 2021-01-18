@@ -5,8 +5,8 @@ const passport = require('passport');
 const { isLoggedin, isnotloggedin } = require('../lib/auth');
 const { query } = require('../database');
 const PDFcreator= require('../lib/PDF');
-////////////////////////////////// LISTA DE TRANSACCIONES ////////////////////////
 
+////////////////////////////////// LISTA DE TRANSACCIONES ////////////////////////
 
 router.get('/Ventas', isLoggedin, async (req, res) => {
 
@@ -91,14 +91,16 @@ router.get('/Pagos/His', isLoggedin, async (req, res) => {
 
 router.get('/Nuevo/:Tipo&:Responsable', isLoggedin, async (req, res) => {
     const {Tipo,Responsable}=req.params
-    await pool.query(`Call NuevaTransaccion('${Tipo}','${Responsable}', @Salida3)`); 
-    let NumD = await pool.query(`SELECT @Salida3`);
-    NumD = NumD[0]['@Salida3'];
-    //console.log(NumD);
+   
     
     if(Tipo!='Compras'){
-         prov = false;
+        await pool.query(`Call NuevaTransaccion('${Tipo}','${Responsable}', @Salida3)`); 
+        NumD = await pool.query(`SELECT Consecutivo FROM Registrotransacciones WHERE  Transaccion = '${Tipo}' and Responsable='${Responsable}' and estado= 'Edicion' `);
+        NumD = NumD[0].Consecutivo;
+        //console.log(NumD);
+        prov = false;
     }else{
+        NumD=0;
          prov = true;
     }
     
@@ -120,62 +122,6 @@ router.post('/MP', isLoggedin, async (req, res) => {
 
 });
 
-router.get('/Compras/Nuevo/:Responsable', isLoggedin, async (req, res) => {
-    const {Responsable}=req.params
-    await pool.query(`Call NuevaTransaccion('Compras',${Responsable}, @Salida3)`); 
-    let NumD = await pool.query(`SELECT @Salida3`);
-
-    //let NumD = await pool.query(`SELECT Consecutivo FROM RegistroTransacciones where Transaccion = 'Compras' and MetodoEjecucion ='Contado'`);
-    //NumD = parseInt(NumD[0].Consecutivo) + 1;
-    //console.log(NumD);
-    const prov = true;
-    const Hoy = Date(Date.now()).toString();
-    const Trans = "Compras";
-    const Editar=false;
-    res.render('Trans/transaccionesNuevos', { prov, Trans, Hoy, Editar });
-});
-
-router.get('/Cotizaciones/Nuevo/:Responsable', isLoggedin, async (req, res) => {
-    const {Responsable}=req.params
-    await pool.query(`Call NuevaTransaccion('Cotizaciones',${Responsable}, @Salida3)`); 
-    let NumD = await pool.query(`SELECT @Salida3`);
-    //let NumD = await pool.query(`SELECT Consecutivo FROM RegistroTransacciones where Transaccion = 'Cotizaciones' and MetodoEjecucion ='Contado'`);
-    //NumD = parseInt(NumD[0].Consecutivo) + 1;
-    //console.log(NumD);
-    const prov = false;
-    const Hoy = Date(Date.now()).toString();
-    const Trans = "Cotizaciones";
-    const Editar=false;
-    res.render('Trans/transaccionesNuevos', { prov, Trans, NumD, Hoy, Editar });
-});
-
-router.get('/Pedidos/Nuevo/:Responsable', isLoggedin, async (req, res) => {
-    const {Responsable}=req.params
-    await pool.query(`Call NuevaTransaccion('Pedidos',${Responsable}, @Salida3)`); 
-    let NumD = await pool.query(`SELECT @Salida3`);
-    //let NumD = await pool.query(`SELECT Consecutivo FROM RegistroTransacciones where Transaccion = 'Pedidos' and MetodoEjecucion ='Contado'`);
-    //NumD = parseInt(NumD[0].Consecutivo) + 1;
-    //console.log(NumD);
-    const prov = false;
-    const Hoy = Date(Date.now()).toString();
-    const Trans = "Pedidos";
-    const Editar=false;
-    res.render('Trans/transaccionesNuevos', { prov, Trans, NumD, Hoy,Editar });
-});
-
-router.get('/Pagos/Nuevo/:Responsable', isLoggedin, async (req, res) => {
-    const {Responsable}=req.params
-    await pool.query(`Call NuevaTransaccion('Pagos',${Responsable}, @Salida3)`); 
-    let NumD = await pool.query(`SELECT @Salida3`);
-    //let NumD = await pool.query(`SELECT Consecutivo FROM RegistroTransacciones where Transaccion = 'Pagos' and MetodoEjecucion ='Contado'`);
-    //NumD = parseInt(NumD[0].Consecutivo) + 1;
-    //console.log(NumD);
-    const prov = false;
-    const Hoy = Date(Date.now()).toString();
-    const Trans = "Pagos";
-    const Editar=false;
-    res.render('Trans/transaccionesNuevos', { prov, Trans, NumD, Hoy,Editar });
-});
 
 ///////////////////////////////////// EDITAR TRANSACCIONES ///////////////////////////////////////////////
 
@@ -187,7 +133,7 @@ router.get('/Ventas/Editar/:NumD', isLoggedin, async (req, res) => {
 
     info = await pool.query(`SELECT Transacciones.* , poc.Nombre FROM Transacciones, PoC where  (Transacciones.PoC=PoC.NitoCC) and Transacciones.Documento = '${NumD}' ORDER BY Transacciones.FechaEjecucion DESC`);
     Detalle = await pool.query(`select ID from Detallettemp where Documento='${NumD}' `);
-    console.log(Detalle.length);
+    //console.log(Detalle.length);
     if (Detalle.length == 0) {
         await pool.query(`INSERT INTO detallettemp (select * from Detallet where Documento='${NumD}') `);
         await pool.query(`INSERT INTO Detalleinvlotfevtemp (select * from Detalleinvlotfev where Documento='${NumD}') `);
@@ -213,7 +159,7 @@ router.get('/Compras/Editar/:NumD', isLoggedin, async (req, res) => {
 
     info = await pool.query(`SELECT Transacciones.* , poc.Nombre FROM Transacciones, PoC where  (Transacciones.PoC=PoC.NitoCC) and Transacciones.Documento = '${NumD}' ORDER BY Transacciones.FechaEjecucion DESC`);
     Detalle = await pool.query(`select ID from Detallettemp where Documento='${NumD}' `);
-    console.log(Detalle.length);
+    //console.log(Detalle.length);
     if (Detalle.length == 0) {
         await pool.query(`INSERT INTO detallettemp (select * from Detallet where Documento='${NumD}') `);
         await pool.query(`INSERT INTO Detalleinvlotfevtemp (select * from Detalleinvlotfev where Documento='${NumD}') `);
@@ -241,7 +187,7 @@ router.get('/DetalleT/:id&:Tp', isLoggedin, async (req, res) => {
     //console.log(id+' tipo '+Tp);
 
     Detalle = await pool.query(`SELECT detallettemp.* , producto.Nombre, Variaciones.variacion FROM detallettemp,producto,Variaciones where (detallettemp.Codigo=producto.Codigo) and  (detallettemp.Producto=Variaciones.Codigo)  and (Documento = '${id}' and Tipo= '${Tp}')`);
-    console.log(Detalle);
+    //console.log(Detalle);
     res.send(Detalle);
 });
 
@@ -289,8 +235,8 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
 
     //console.log(id);
     //console.log(req.body.bodyMsg);
-    console.log('Edita->');
-    console.log(Editar);
+    //console.log('Edita->');
+    //console.log(Editar);
 
     if (Editar == true) {
 
@@ -302,9 +248,9 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
         }
 
         await pool.query(`CALL ActualizarInv('${id}',${inodec},@salida1)`);
-        console.log('reversar inv ok');
+        //console.log('reversar inv ok');
         await pool.query(`CALL ActualizarStockILF('${id}',${inodec},@Salida2)`);
-        console.log('reversar invlotfev ok');
+        //console.log('reversar invlotfev ok');
 
         await pool.query(`DELETE FROM detallet WHERE Documento = '${id}' `);
         await pool.query(`DELETE FROM detalleinvlotfev WHERE Documento = '${id}' `);
@@ -317,6 +263,7 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
         await pool.query(`INSERT INTO detalleinvlotfev(ILF,FechaRegistro, Cantidad, Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto) SELECT ILF,FechaRegistro,Cantidad,Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto FROM detalleinvlotfevtemp WHERE (Documento = '${id}' )`);
         
         await pool.query(`DELETE FROM detalleinvlotfevtemp WHERE Documento = '${id}' `);
+        await pool.query(`UPDATE RegistroTransacciones Set Estado = 'Finalizado' where Consecutivo = '${id}'`)
         
 
     } else {
@@ -328,6 +275,7 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
         await pool.query(`INSERT INTO detalleinvlotfev(ILF,FechaRegistro, Cantidad, Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto) SELECT ILF,FechaRegistro,Cantidad,Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto FROM detalleinvlotfevtemp WHERE (Documento = '${id}' )`);
         await pool.query(`DELETE FROM detalleinvlotfevtemp WHERE Documento = '${id}' `);
         await pool.query(`UPDATE registrotransacciones SET Consecutivo=Consecutivo+1 WHERE Transaccion = '${Transaccion.Tipo}' `);
+        await pool.query(`UPDATE RegistroTransacciones Set Estado = 'Finalizado' where Consecutivo = '${id}'`)
         
     }
 
@@ -340,10 +288,10 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
 const CrearPDF= async (req,res,next)=>{ 
     
     const { Doc, Tp } = req.params;
-    console.log(Doc+' tipo '+Tp);
+    //console.log(Doc+' tipo '+Tp);
     const Detalle = await pool.query(`SELECT detallet.* , producto.Nombre FROM detallet,producto where (detallet.Codigo=producto.Codigo) and (Documento = '${Doc}' and Tipo= '${Tp}')`);
     const T= await pool.query(`SELECT transacciones.Documento,transacciones.FechaEmision,transacciones.Total,transacciones.poc,PoC.Nombre FROM transacciones,PoC where (transacciones.PoC=PoC.NitoCC) and (transacciones.Documento = '${Doc}' and transacciones.Tipo= '${Tp}')`);
-    console.log(T);
+    console.log(T,Detalle);
     r=await PDFcreator.Crear(0,{Detalle,T});
     
     return next();

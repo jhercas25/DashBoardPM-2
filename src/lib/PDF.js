@@ -9,7 +9,7 @@ const compile =async function (Plantilla, info) {
   const filePath =path.join(__dirname,'../templates',`${Plantilla}.hbs`);
   const html= await fs.readFileSync(filePath,'utf-8');
 
-  //console.log(html);
+  //console.log(info,info.T);
   return hbs.compile(html)(info);
 
 };
@@ -29,7 +29,7 @@ PDFcreator.Crear= async(imp,info) =>{
         headless:true,
     });
     console.log('Data ->');
-    //console.log(info[0]);
+    console.log(info.Detalle,info.T);
 
     const page =await browser.newPage();
     const content= await compile('FacturaPos',{info});

@@ -49,7 +49,7 @@ async function agregarVar() {
     });
 
 
-    if (CntT != 0) {
+    if (CntT != CntT+CntVar) {
       $('#CntP').val(CntT+CntVar);
     }
 
@@ -95,7 +95,7 @@ async function editarVar() {
     });
 
 
-    if (CntT != 0) {
+    if (CntT != CntT-Var.Cantidad+CntVar) {
       $('#CntP').val(CntT-Var.Cantidad+CntVar);
     }
 

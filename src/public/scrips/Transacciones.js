@@ -58,3 +58,4 @@ function imprimir(Doc,Tran){
   });
 
 }
+

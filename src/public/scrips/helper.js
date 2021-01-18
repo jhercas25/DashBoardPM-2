@@ -36,7 +36,7 @@ function ajaxRequest(params) {
   });
   
   $('#NombrePro').keyup(function () {
-    console.log("edv");
+    //console.log("edv");
     text = quitarAcentos($('#NombrePro').val());
     if (text != '') {
 
@@ -59,7 +59,7 @@ function DetalleT(params) {
 
   if (parametros != '') {
     $.get(url + '/' + parametros + '&' + Tipo).then(function (res) {
-      console.log(res);
+      //console.log(res);
       params.success(res);
       Totalizar();
     });
@@ -110,7 +110,7 @@ function traerDatos(params) {
   var html = []
   st = 'style=" word-wrap: break-word;min-width: 60px;max-width: 160px;"';
   html.push('<table class="table" style="text-align: center;" > <thead> <th>Marca</th> <th>Detalle</th>  <th>P.Compra</th> <th>Iva</th> <th>Proveedor</th> </thead> <tbody > <tr>')
-  console.log(row)
+  //console.log(row)
   $.each(row, function (key, value) {
     var d = new Date();
     var n = d.getSeconds();
@@ -134,14 +134,14 @@ function traerDatos(params) {
       <th>Imagen</th>   
       <th> </th>  
     </thead> 
-  <tbody id="Tbody${n}"> 
+  <tbody id="Tbody${row.id}"> 
     
      `);
 
 
   var url = '/inv/Variantes';
   $.get(url + '/' + row.Codigo ).then( function (res) {
-    console.log(res);
+    //console.log(res);
     html2='';
     res.forEach(e => {
       
@@ -157,7 +157,7 @@ function traerDatos(params) {
       </tr>
 
          `;
-      element=document.getElementById('Tbody'+n);
+      element=document.getElementById('Tbody'+row.id);
       element.innerHTML = html2;
       
     });
@@ -293,7 +293,7 @@ window.EnventosPoC = {
 window.eveILF = {
 
   'click .editarILF': function (e, value, row, index) {
-    console.log(row);
+   // console.log(row);
     localStorage.setItem('editILF', JSON.stringify(row));
     btnadd = document.getElementById("addILF");
     btnedit = document.getElementById("editILF");
@@ -370,7 +370,7 @@ window.DetalleTEvents = {
     ID = row.ID;
 
     Doc = $('#NumeroT').val()
-    console.log(row);
+    //console.log(row);
 
     $.get(url + '/' + ID + '&' + Doc).then(function (res) {
       //console.log(res);
@@ -638,10 +638,10 @@ function TraerPoC(NitoCC) {
   prov = document.getElementById('PoC') ? document.getElementById('PoC').innerText : "Proveedores";
 
   url = `/PoC/${prov}/datos/nit/U/${NitoCC.value}`;
-  console.log(url);
+  //console.log(url);
   $.get(url).then(function (res) {
 
-    console.log(res);
+    //console.log(res);
     if (res.length > 0) {
       PoC = res[0];
       $('#Nombre').val(PoC.Nombre);
@@ -724,7 +724,7 @@ function InvLotFev(params) {
       //console.log(res);
       const { ILF, DetalleILF } = res;
 
-      console.log(ILF);
+      //console.log(ILF);
       // console.log(DetalleILF);
       if (ILF.length >= 0) {
         ILF.forEach((row, index) => {
@@ -757,13 +757,13 @@ function CambioFeVen() {
   var FechaEmicion = $('#FEmicion').val();
   var MP = $('#MetodoPago').val();
   FV = FechaEmicion.split('/')
-  console.log('valor' + FV);
+  //console.log('valor' + FV);
   var FE = new Date(FV[2], FV[1] - 1, FV[0]);
-  console.log('valor' + FE);
+  //console.log('valor' + FE);
   switch (MP) {
     case 'Contado':
       var FV = new Date(SumarDias(FE, 0));
-      console.log(FV);
+      //console.log(FV);
       break;
     case 'Credito30':
       var FV = new Date(SumarDias(FE, 30));
@@ -1518,12 +1518,12 @@ async function FormalizarTran(Editar) {
       await $.post(url + '/' + DocT + '&' + Editar, { bodyMsg }).then(function (res) {
         if (res = 'Ok') {
 
-          console.log('listoss');
+          //console.log('listoss');
           if (Transaccion.Tipo == "Ventas" || Transaccion.Tipo == "Compras") {
 
             Ainv = ActualizarInv(Transaccion.Tipo, DocT, Editar);
 
-            console.log(Ainv);
+            //console.log(Ainv);
             if (imp) {
               imprimir(DocT, Transaccion.Tipo);
             }
@@ -1605,7 +1605,7 @@ function ActReg(PoC) {
   $.post(url + '/' + PoC).then(function (res) {
     if (res == 'Ok') {
 
-      console.log('listoss');
+      //console.log('listoss');
 
     }
   });

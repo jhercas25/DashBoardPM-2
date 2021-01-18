@@ -38,7 +38,7 @@ router.get('/Nuevo', isLoggedin, async (req, res) => {
 
 router.get('/Tinv', isLoggedin, async (req, res) => {
 
-   const Productos = await pool.query('SELECT * FROM Producto');
+   const Productos = await pool.query('select producto.* , Sum(variaciones.cantidad) as Existencias from producto,variaciones where (Producto.Codigo=variaciones.Codigo_P) GROUP BY variaciones.Codigo_P');
    //console.log(Productos);
    Prod = Productos
    return res.send(Prod);
