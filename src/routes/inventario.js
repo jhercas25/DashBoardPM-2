@@ -38,7 +38,7 @@ router.get('/Nuevo', isLoggedin, async (req, res) => {
 
 router.get('/Tinv', isLoggedin, async (req, res) => {
 
-   const Productos = await pool.query('select producto.* , Sum(variaciones.cantidad) as Existencias from producto,variaciones where (Producto.Codigo=variaciones.Codigo_P) GROUP BY variaciones.Codigo_P');
+   const Productos = await pool.query('select producto.*, round (Producto.PVenta*(1+(Producto.Iva/100)),-1) as PVentaI , Sum(variaciones.cantidad) as Existencias, poc.Nombre as Proveedor  from producto,variaciones,poc where (Producto.Codigo=variaciones.Codigo_P)  and (Producto.poc=poc.NitoCC) GROUP BY variaciones.Codigo_P');
    //console.log(Productos);
    Prod = Productos
    return res.send(Prod);
@@ -113,7 +113,7 @@ router.get('/Carr/:id', isLoggedin, async (req, res) => {
 
 router.get('/Prov', isLoggedin, async (req, res) => {
 
-   const Prov = await pool.query(`SELECT * FROM PoC`);
+   const Prov = await pool.query(`SELECT * FROM PoC Where PoC=1`);
    //console.log(Productos);
 
    return res.send(Prov);
@@ -333,10 +333,10 @@ router.post('/Actualizar/:Doc', isLoggedin, async (req, res) => {
    const { inodec } = req.body;
 
    //console.log(Doc);
-   //console.log(inodec);
+   console.log(inodec);
 
-   await pool.query(`Call ActualizarInv('${Doc}',${inodec},@salida)`);
-
+   resp=await pool.query(`Select ActualizarInv2('${Doc}',${inodec})`);
+   console.log(resp);
    await pool.query(`CAll ActualizarStockILF('${Doc}',${inodec},@Salida)`);
    salida = "Listo";
    // while (salida == "esperando") {

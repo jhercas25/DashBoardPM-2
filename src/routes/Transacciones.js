@@ -238,7 +238,7 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
     //console.log('Edita->');
     //console.log(Editar);
 
-    if (Editar == true) {
+    if (Editar == "true") {
 
         if (Transaccion.Tipo=="Ventas") {
             inodec=false
@@ -246,11 +246,14 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
         if (Transaccion.Tipo=="Compras") {
             inodec=true
         }
-
-        await pool.query(`CALL ActualizarInv('${id}',${inodec},@salida1)`);
-        //console.log('reversar inv ok');
+        console.log(inodec);
+        resp=await pool.query(`Select ActualizarInv2('${id}',${inodec})`);
+        
+        resp2=await pool.query(`select Cantidad from Variaciones where Codigo='00001#0'`);
+        console.log('reversar inv ok ',resp);
         await pool.query(`CALL ActualizarStockILF('${id}',${inodec},@Salida2)`);
-        //console.log('reversar invlotfev ok');
+        console.log('reversar invlotfev ok');
+        console.log(id);
 
         await pool.query(`DELETE FROM detallet WHERE Documento = '${id}' `);
         await pool.query(`DELETE FROM detalleinvlotfev WHERE Documento = '${id}' `);
@@ -259,12 +262,18 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
         await pool.query(`INSERT INTO detallet(Documento,Item,Producto,Codigo,Cantidad,Valor,Descuento,Total,Iva,Tipo) SELECT Documento,Item,Producto,Codigo,Cantidad,Valor,Descuento,Total,Iva,Tipo FROM detallettemp WHERE (Documento = '${id}' )`);
         await pool.query(`DELETE FROM detallettemp WHERE Documento = '${id}' `);
         await pool.query(`INSERT INTO transacciones SET ? `, [Transaccion]);
+
+        console.log(!inodec);
+  
+        
+
         await pool.query(`INSERT INTO pagos SET ?`, [Pago]);
         await pool.query(`INSERT INTO detalleinvlotfev(ILF,FechaRegistro, Cantidad, Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto) SELECT ILF,FechaRegistro,Cantidad,Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto FROM detalleinvlotfevtemp WHERE (Documento = '${id}' )`);
         
         await pool.query(`DELETE FROM detalleinvlotfevtemp WHERE Documento = '${id}' `);
         await pool.query(`UPDATE RegistroTransacciones Set Estado = 'Finalizado' where Consecutivo = '${id}'`)
         
+       
 
     } else {
         

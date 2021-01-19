@@ -109,28 +109,35 @@ function traerDatos(params) {
  function detailFormatter(index, row) {
   var html = []
   st = 'style=" word-wrap: break-word;min-width: 60px;max-width: 160px;"';
-  html.push('<table class="table" style="text-align: center;" > <thead> <th>Marca</th> <th>Detalle</th>  <th>P.Compra</th> <th>Iva</th> <th>Proveedor</th> </thead> <tbody > <tr>')
+  html.push('<table class="table" style="text-align: center;" > <thead> <th>Marca</th> <th>Detalle</th>  <th>P.Compra</th> <th>Iva</th> <th>Proveedor</th><th>Imagen </th> </thead> <tbody > <tr>')
   //console.log(row)
-  $.each(row, function (key, value) {
-    var d = new Date();
-    var n = d.getSeconds();
+  var d = new Date();
+  var n = d.getSeconds();
 
-    if (key == 'Marca') { key = 'Marca', html.push('<td ' + st + ' >' + value + '</td>'); }
-    else if (key == 'ImagenP') { key = 'ImagenP', html.push('<td ' + st + ' >' + `<img src="/uploads/${value}?${n}" class="img-thumbnail-sm"> </img>` + '</td>'); }
-    else if (key == 'PCompra') { key = 'P.Compra', html.push('<td ' + st + ' >' + value + '</td>'); }
-    else if (key == 'Iva') { key = 'Iva', html.push('<td ' + st + ' >' + value + '</td>'); }
-    else if (key == 'PoC') { key = 'PoC', html.push('<td ' + st + ' >' + value + '</td>'); }
+  html.push(`
+  <tr>
+  <td ${st}> ${row.Marca}</td>
+  <td ${st}> </td>
+  <td ${st}> ${row.PCompra}</td>
+  <td ${st}> ${row.Iva}</td>
+  <td ${st}> ${row.PoC} - ${row.Proveedor} </td>
+  <td ${st}> <img src="/uploads/${row.ImagenP}?${n}" class="img-thumbnail-sm"> </img> </td>
+  </tr>
+    
+     `);
 
-  });
+
 
   var d = new Date();
   var n = d.getSeconds();
+
   html.push('</tr> </tbody> </table>');
   html.push(`
   <table class="table" style="text-align: center;" > 
     <thead> 
       <th>Codigo</th> 
       <th>Variante</th> 
+      <th>Existencias</th>  
       <th>Imagen</th>   
       <th> </th>  
     </thead> 
@@ -152,6 +159,7 @@ function traerDatos(params) {
       <tr>
       <td ${st}> ${e.Codigo}</td>
       <td ${st}> ${e.Variacion}</td>
+      <td ${st}> ${e.Cantidad}</td>
       <td ${st}> <img src="/uploads/${e.imagen}.jpg?${n}" class="img-thumbnail-sm"> </img> </td>
       <td> <a onclick= "add('${e.Codigo}')"  href="javascript:void(0)" title="Add"><i class="fas fa-plus"></i></a> </td>
       </tr>
@@ -1576,13 +1584,10 @@ async function FormalizarTran(Editar) {
 
 function ActualizarInv(Tipo, Doc, Editar) {
 
-  if (Tipo == "Ventas") { inodec = true; }
+  if (Tipo == "Ventas") { 
+    inodec = true; }
   else {
     inodec = false;
-  }
-
-  if (Editar) {
-    inodec = !inodec;
   }
 
   url = '/inv/Actualizar';
