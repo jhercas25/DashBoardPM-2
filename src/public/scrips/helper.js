@@ -21,14 +21,19 @@ function CerrarModal() {
 
 function ajaxRequest(params) {
 
+  var Prov = $('#NitoCCT').val()? $('#NitoCCT').val():"p";
+  console.log('Actualizando',Prov);
   var url = '/inv/Tinv';
   var text = '';
+
   $('#Codigo').keyup(function () {
+    var Prov = $('#NitoCCT').val()? $('#NitoCCT').val():"p";
+    console.log(Prov);
     text = quitarAcentos($('#Codigo').val());
     //console.log("edv");
     if (text != '') {
 
-      $.get(url + '/' + text).then(function (res) { params.success(res) })
+      $.get(url + '/' + text +'&'+ Prov).then(function (res) { params.success(res) })
       return;
     } else {
       $.get(url).then(function (res) { params.success(res) });
@@ -36,11 +41,13 @@ function ajaxRequest(params) {
   });
   
   $('#NombrePro').keyup(function () {
-    //console.log("edv");
+    var Prov = $('#NitoCCT').val()? $('#NitoCCT').val():"p";
+    console.log(Prov);
+    console.log("edv");
     text = quitarAcentos($('#NombrePro').val());
     if (text != '') {
 
-      $.get(url + '/Prod/' + text).then(function (res) { params.success(res) })
+      $.get(url + '/Prod/' + text + '&'+Prov ).then(function (res) { params.success(res) })
 
       return;
     } else {
@@ -48,7 +55,7 @@ function ajaxRequest(params) {
     }
   });
 
-  $.get(url).then(function (res) { params.success(res) });
+  $.get(url+'/'+Prov).then(function (res) { params.success(res) });
 }
 
 function DetalleT(params) {
@@ -736,7 +743,7 @@ function InvLotFev(params) {
       // console.log(DetalleILF);
       if (ILF.length >= 0) {
         ILF.forEach((row, index) => {
-          if (row.Producto == Cod && DetalleILF[index].item == item) {
+          if (row.Producto.indexOf(Cod)>=0 && DetalleILF[index].item == item) {
             FV = row.FechaVencimiento.split('-');
             FVa = FV[2].split('T');
             ILFC = { Item: DetalleILF[index].item, ID: DetalleILF[index].ID, ILF: DetalleILF[index].ILF, Invima: row.Invima, FechaVencimiento: FVa[0] + '/' + FV[1] + '/' + FV[0], Lote: row.Lote, Cnt: DetalleILF[index].Cantidad }
@@ -1117,13 +1124,13 @@ function agregarILF(Trans) {
       }
 
       $.post(url, { DocT, ILF: '0', CntILF, Item, Tipo, Data }).then(function (res) {
-        // console.log(res);
+         console.log(res);
 
         if (res == "OK") {
           $('#tableILF').bootstrapTable('refresh');
           $('#InvLotFev').val("").selectpicker('refresh');
 
-          $('#Lot').val(""),
+            $('#Lot').val(""),
             $('#Fev').val(""),
             $('#Inv').val(""),
             $('#Cntilf').val("");
@@ -1702,6 +1709,7 @@ function SelectPoC() {
   PoC = $('#PoCSel').val();
   $('#NitoCCT').val(PoC);
   $('#NitoCCT').change();
+  $('#table').bootstrapTable('refresh');
 
 }
 

@@ -641,7 +641,7 @@ function AgregarNinv() {
   }
   
 
-
+  url = '/inv/NuevoInv';
 
   if (Data.Nombre != "" && Data.Cantidad != 0 && Data.Marca != "" && Data.Presentacion != "" && Data.PCompra !== 0 && Data.PVenta !== 0 && Data.PoC != null && Data.ImagenP != "Elige una imagen") {
     //console.log(url);

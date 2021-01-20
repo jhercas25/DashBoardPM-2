@@ -271,7 +271,7 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
         await pool.query(`INSERT INTO detalleinvlotfev(ILF,FechaRegistro, Cantidad, Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto) SELECT ILF,FechaRegistro,Cantidad,Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto FROM detalleinvlotfevtemp WHERE (Documento = '${id}' )`);
         
         await pool.query(`DELETE FROM detalleinvlotfevtemp WHERE Documento = '${id}' `);
-        await pool.query(`UPDATE RegistroTransacciones Set Estado = 'Finalizado' where Consecutivo = '${id}'`)
+        await pool.query(`UPDATE RegistroTransacciones Set Estado = 'Finalizado' where Documento = '${id}'`)
         
        
 
@@ -283,8 +283,8 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
         await pool.query(`INSERT INTO pagos SET ?`, [Pago]);
         await pool.query(`INSERT INTO detalleinvlotfev(ILF,FechaRegistro, Cantidad, Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto) SELECT ILF,FechaRegistro,Cantidad,Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto FROM detalleinvlotfevtemp WHERE (Documento = '${id}' )`);
         await pool.query(`DELETE FROM detalleinvlotfevtemp WHERE Documento = '${id}' `);
-        await pool.query(`UPDATE registrotransacciones SET Consecutivo=Consecutivo+1 WHERE Transaccion = '${Transaccion.Tipo}' `);
-        await pool.query(`UPDATE RegistroTransacciones Set Estado = 'Finalizado' where Consecutivo = '${id}'`)
+        //await pool.query(`UPDATE registrotransacciones SET Consecutivo=Consecutivo+1 WHERE Transaccion = '${Transaccion.Tipo}' `);
+        await pool.query(`UPDATE RegistroTransacciones Set Estado = 'Finalizado' where Documento = '${id}'`)
         
     }
 

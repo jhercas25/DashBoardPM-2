@@ -36,9 +36,14 @@ router.get('/Nuevo', isLoggedin, async (req, res) => {
 
 });
 
-router.get('/Tinv', isLoggedin, async (req, res) => {
-
-   const Productos = await pool.query('select producto.*, round (Producto.PVenta*(1+(Producto.Iva/100)),-1) as PVentaI , Sum(variaciones.cantidad) as Existencias, poc.Nombre as Proveedor  from producto,variaciones,poc where (Producto.Codigo=variaciones.Codigo_P)  and (Producto.poc=poc.NitoCC) GROUP BY variaciones.Codigo_P');
+router.get('/Tinv/:Prov', isLoggedin, async (req, res) => {
+   const{Prov}=req.params
+   if(Prov=="p"){
+       Productos = await pool.query('select producto.*, round (Producto.PVenta*(1+(Producto.Iva/100)),-1) as PVentaI , Sum(variaciones.cantidad) as Existencias, poc.Nombre as Proveedor  from producto,variaciones,poc where (Producto.Codigo=variaciones.Codigo_P)  and (Producto.poc=poc.NitoCC) GROUP BY variaciones.Codigo_P');
+   }else{
+       Productos = await pool.query(`select producto.*, round (Producto.PVenta*(1+(Producto.Iva/100)),-1) as PVentaI , Sum(variaciones.cantidad) as Existencias, poc.Nombre as Proveedor  from producto,variaciones,poc where (Producto.Codigo=variaciones.Codigo_P)  and (Producto.poc=poc.NitoCC)  and Producto.poc='${Prov}' GROUP BY variaciones.Codigo_P`);
+   }
+   
    //console.log(Productos);
    Prod = Productos
    return res.send(Prod);
@@ -46,10 +51,16 @@ router.get('/Tinv', isLoggedin, async (req, res) => {
 
 });
 
-router.get('/Tinv/:id', isLoggedin, async (req, res) => {
-   const { id } = req.params;
+router.get('/Tinv/:id&:Prov', isLoggedin, async (req, res) => {
+   const { id,Prov } = req.params;
+   console.log(Prov);
 
-   sql = `SELECT * FROM Producto Where Codigo like '%${id}%' `;
+   if(Prov=="p"){
+      sql = `SELECT * FROM Producto Where Codigo like '%${id}%' `;
+   }else{
+      sql = `SELECT * FROM Producto Where Codigo like '%${id}%'  and  PoC= '${Prov}' `;
+   }
+   
 
    //console.log(sql);
    const Productos = await pool.query(sql);
@@ -63,11 +74,11 @@ router.get('/Tinv/:id', isLoggedin, async (req, res) => {
 router.post('/TinvE/:Trans&:Prov', isLoggedin, async (req, res) => {
    const { Trans, Prov } = req.params;
    const{Cod}=req.body;
-   console.log(req.body);
+   //console.log(req.body);
    //console.log(Prov);
 
    if (Trans == "Compras") {
-      sql = `SELECT * FROM Producto Where Codigo = '${Cod}' and PoC = '${Prov}' `;
+      sql = `SELECT Producto.*,Variaciones.Variacion FROM Producto,Variaciones Where Producto.Codigo = Variaciones.Codigo_p and Variaciones.Codigo = '${Cod}' and Producto.PoC = '${Prov}' `;
    } else {
       sql = `SELECT Producto.*,Variaciones.Variacion FROM Producto,Variaciones Where Producto.Codigo = Variaciones.Codigo_p and Variaciones.Codigo= '${Cod}' `;
    }
@@ -81,10 +92,16 @@ router.post('/TinvE/:Trans&:Prov', isLoggedin, async (req, res) => {
 
 });
 
-router.get('/Tinv/Prod/:id', isLoggedin, async (req, res) => {
-   const { id } = req.params;
+router.get('/Tinv/Prod/:id&:Prov', isLoggedin, async (req, res) => {
+   const { id,Prov } = req.params;
+   console.log(Prov);
    //console.log(id);
-   const Productos = await pool.query(`SELECT * FROM Producto Where CampoBus like '%${id}%' `);
+   if(Prov=="p"){
+       Productos = await pool.query(`SELECT * FROM Producto Where CampoBus like '%${id}%' `);
+   }else{
+       Productos = await pool.query(`SELECT * FROM Producto Where CampoBus like '%${id}%' and PoC = '${Prov}' `);
+   }
+   
    //console.log(Productos);
    Prod = Productos
    return res.send(Prod);
