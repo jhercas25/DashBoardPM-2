@@ -21,33 +21,33 @@ function CerrarModal() {
 
 function ajaxRequest(params) {
 
-  var Prov = $('#NitoCCT').val()? $('#NitoCCT').val():"p";
-  console.log('Actualizando',Prov);
+  var Prov = $('#NitoCCT').val() ? ($('#TipoT')[0].innerText == "Compras" || $('#TipoT')[0].innerText == "Pedidos" ? $('#NitoCCT').val() : "p") : "p";
+  console.log('Actualizando', Prov);
   var url = '/inv/Tinv';
   var text = '';
 
   $('#Codigo').keyup(function () {
-    var Prov = $('#NitoCCT').val()? $('#NitoCCT').val():"p";
+    var Prov = $('#NitoCCT').val() ? $('#NitoCCT').val() : "p";
     console.log(Prov);
     text = quitarAcentos($('#Codigo').val());
     //console.log("edv");
     if (text != '') {
 
-      $.get(url + '/' + text +'&'+ Prov).then(function (res) { params.success(res) })
+      $.get(url + '/' + text + '&' + Prov).then(function (res) { params.success(res) })
       return;
     } else {
       $.get(url).then(function (res) { params.success(res) });
     }
   });
-  
+
   $('#NombrePro').keyup(function () {
-    var Prov = $('#NitoCCT').val()? $('#NitoCCT').val():"p";
+    var Prov = $('#NitoCCT').val() ? $('#NitoCCT').val() : "p";
     console.log(Prov);
     console.log("edv");
     text = quitarAcentos($('#NombrePro').val());
     if (text != '') {
 
-      $.get(url + '/Prod/' + text + '&'+Prov ).then(function (res) { params.success(res) })
+      $.get(url + '/Prod/' + text + '&' + Prov).then(function (res) { params.success(res) })
 
       return;
     } else {
@@ -55,7 +55,7 @@ function ajaxRequest(params) {
     }
   });
 
-  $.get(url+'/'+Prov).then(function (res) { params.success(res) });
+  $.get(url + '/' + Prov).then(function (res) { params.success(res) });
 }
 
 function DetalleT(params) {
@@ -113,7 +113,7 @@ function traerDatos(params) {
   $.get(url).then(function (res) { params.success(res) });
 }
 
- function detailFormatter(index, row) {
+function detailFormatter(index, row) {
   var html = []
   st = 'style=" word-wrap: break-word;min-width: 60px;max-width: 160px;"';
   html.push('<table class="table" style="text-align: center;" > <thead> <th>Marca</th> <th>Detalle</th>  <th>P.Compra</th> <th>Iva</th> <th>Proveedor</th><th>Imagen </th> </thead> <tbody > <tr>')
@@ -154,14 +154,14 @@ function traerDatos(params) {
 
 
   var url = '/inv/Variantes';
-  $.get(url + '/' + row.Codigo ).then( function (res) {
+  $.get(url + '/' + row.Codigo).then(function (res) {
     //console.log(res);
-    html2='';
+    html2 = '';
     res.forEach(e => {
-      
+
       var d = new Date();
       var n = d.getSeconds();
-      html2= html2+ `
+      html2 = html2 + `
 
       <tr>
       <td ${st}> ${e.Codigo}</td>
@@ -172,12 +172,12 @@ function traerDatos(params) {
       </tr>
 
          `;
-      element=document.getElementById('Tbody'+row.id);
+      element = document.getElementById('Tbody' + row.id);
       element.innerHTML = html2;
-      
+
     });
-    
-    
+
+
   });
 
   html.push(' </tbody> </table>');
@@ -280,8 +280,7 @@ window.operateEvents = {
 }
 
 
-function add(Cod) 
-{
+function add(Cod) {
   $('#CodigoT').val(Cod);
   Tipo = document.getElementById('TipoT').innerText
   traerPro(Tipo);
@@ -308,7 +307,7 @@ window.EnventosPoC = {
 window.eveILF = {
 
   'click .editarILF': function (e, value, row, index) {
-   // console.log(row);
+    // console.log(row);
     localStorage.setItem('editILF', JSON.stringify(row));
     btnadd = document.getElementById("addILF");
     btnedit = document.getElementById("editILF");
@@ -743,7 +742,7 @@ function InvLotFev(params) {
       // console.log(DetalleILF);
       if (ILF.length >= 0) {
         ILF.forEach((row, index) => {
-          if (row.Producto.indexOf(Cod)>=0 && DetalleILF[index].item == item) {
+          if (row.Producto.indexOf(Cod) >= 0 && DetalleILF[index].item == item) {
             FV = row.FechaVencimiento.split('-');
             FVa = FV[2].split('T');
             ILFC = { Item: DetalleILF[index].item, ID: DetalleILF[index].ID, ILF: DetalleILF[index].ILF, Invima: row.Invima, FechaVencimiento: FVa[0] + '/' + FV[1] + '/' + FV[0], Lote: row.Lote, Cnt: DetalleILF[index].Cantidad }
@@ -866,6 +865,7 @@ function GenerarFC() {
         Nombre = PoC.Nombre[0] + PoC.Nombre[1] + PoC.Nombre[2];
         //console.log();
         $('#NumeroT').val(Nombre + (PoC.NumFacturas + 1).toString());
+
         $('#tableDetalle').bootstrapTable('refresh');
         return
       }
@@ -885,7 +885,6 @@ async function traerPro(Trans) {
   limpiarProducto();
 
   if (Trans == "Compras") {
-
     Prov = $('#NitoCCT').val();
   } else {
     Prov = 'p';
@@ -911,7 +910,7 @@ async function traerPro(Trans) {
         $('#Cnt').val(1);
         $('#Iva').val(Iva);
 
-        if (Trans == "Compras") {
+        if (Trans == "Compras" ||Trans == "Pedidos") {
 
           $('#PreUni').val(Vc);
           $('#PreTotal').val(Vc * parseInt($('#Cnt').val()));
@@ -1124,13 +1123,13 @@ function agregarILF(Trans) {
       }
 
       $.post(url, { DocT, ILF: '0', CntILF, Item, Tipo, Data }).then(function (res) {
-         console.log(res);
+        console.log(res);
 
         if (res == "OK") {
           $('#tableILF').bootstrapTable('refresh');
           $('#InvLotFev').val("").selectpicker('refresh');
 
-            $('#Lot').val(""),
+          $('#Lot').val(""),
             $('#Fev').val(""),
             $('#Inv').val(""),
             $('#Cntilf').val("");
@@ -1268,7 +1267,7 @@ function AgregarDetalle() {
   Iva = $('#Iva').val() / 1;
 
   //console.log(ValorT);
-  Data = $('#tableILF').bootstrapTable('getData');
+  Data = $('#tableILF').innerHTML ? $('#tableILF').bootstrapTable('getData') : [];
 
   CntILFT = 0;
   Data.forEach(row => {
@@ -1478,6 +1477,7 @@ async function FormalizarTran(Editar) {
   FV = $('#FVencimiento').val().split('/');
 
   FechaVencimientoa = FV[2] + '-' + FV[1] + "-" + FV[0];
+  MedPag="";
 
   Tipo = document.getElementById('TipoT').innerText;
   document.getElementsByName('OpcMP').forEach((ele) => {
@@ -1485,6 +1485,7 @@ async function FormalizarTran(Editar) {
     if (ele.checked) {
       MedPag = ele.id;
     }
+
   });
 
   Transaccion = {
@@ -1513,13 +1514,12 @@ async function FormalizarTran(Editar) {
     MedioDePago: MedPag,
     TipoPagoEle: $('#TipoPagoElect').val(),
     Referencia: $('#RefP').val(),
-    MontoEfectivo: $('#MontoEfe').val().replace(/\./g, '').replace(/\,/g, '.') / 1,
-    MontoTarjeta: $('#MontoTar').val().replace(/\./g, '').replace(/\,/g, '.') / 1,
-    Cambio: $('#Cambio').val().replace(/\./g, '').replace(/\,/g, '.') / 1,
+    MontoEfectivo: $('#MontoEfe').val()?($('#MontoEfe').val().replace(/\./g, '').replace(/\,/g, '.') / 1):0,
+    MontoTarjeta: $('#MontoTar').val()?($('#MontoTar').val().replace(/\./g, '').replace(/\,/g, '.') / 1):0,
+    Cambio: $('#Cambio').val()?$('#Cambio').val().replace(/\./g, '').replace(/\,/g, '.') / 1:0,
     Total: $('#TotalP').val().replace(/\./g, '').replace(/\,/g, '.') / 1
 
   }
-
 
   // console.log(Transaccion);
   // console.log(Pago);
@@ -1535,16 +1535,18 @@ async function FormalizarTran(Editar) {
 
           //console.log('listoss');
           if (Transaccion.Tipo == "Ventas" || Transaccion.Tipo == "Compras") {
-
             Ainv = ActualizarInv(Transaccion.Tipo, DocT, Editar);
-
             //console.log(Ainv);
+          }
+          if (Transaccion.Tipo != "Compras") {
+
             if (imp) {
               imprimir(DocT, Transaccion.Tipo);
             }
             else {
               window.location.href = '/Tran/' + Transaccion.Tipo;
             };
+
           }
 
         }
@@ -1555,8 +1557,6 @@ async function FormalizarTran(Editar) {
 
   } else {
 
-
-
     if (Pago.Cambio >= 0) {
       bodyMsg = { Transaccion, Pago }
       url = '/Tran/Formalizar';
@@ -1566,11 +1566,11 @@ async function FormalizarTran(Editar) {
         if (res == 'OK') {
           //console.log('listoss');
           if (Transaccion.Tipo == "Ventas" || Transaccion.Tipo == "Compras") {
-
-
             Ainv = ActualizarInv(Transaccion.Tipo, DocT, Editar);
             ActReg(Transaccion.PoC);
-            //   console.log(Ainv);
+            //   console.log(Ainv); 
+          }
+          if (Transaccion.Tipo != "Compras") {
             if (imp) {
               imprimir(DocT, Transaccion.Tipo);
             }
@@ -1578,6 +1578,7 @@ async function FormalizarTran(Editar) {
               window.location.href = '/Tran/' + Transaccion.Tipo;
             };
           }
+
 
         }
       });
@@ -1591,8 +1592,9 @@ async function FormalizarTran(Editar) {
 
 function ActualizarInv(Tipo, Doc, Editar) {
 
-  if (Tipo == "Ventas") { 
-    inodec = true; }
+  if (Tipo == "Ventas") {
+    inodec = true;
+  }
   else {
     inodec = false;
   }
@@ -1627,21 +1629,26 @@ function ActReg(PoC) {
 
 function GuardarTran(imp) {
 
-  PoC = $('#NitoCCT').val()
-  Total = $('#TotalT').val().replace(/\./g, '').replace(/\,/g, '.') / 1
+  PoC = $('#NitoCCT').val();
+  Total = $('#TotalT').val().replace(/\./g, '').replace(/\,/g, '.') / 1;
+  Tran = $('#TipoT')[0].innerText;
+  debugger
+
+
   if (Total > 0) {
     if (PoC != "") {
       $('#SubT').val($('#Subtotal').val().replace(/\./g, ''));
       $('#Ivap').val($('#IvaT').val().replace(/\./g, ''));
       $('#TotalP').val($('#TotalT').val().replace(/\./g, ''));
+
       RteFte = $('#RteFte').val().replace(/\./g, '').replace(/\,/g, '.') / 1;
       RteIca = $('#RteIca').val().replace(/\./g, '').replace(/\,/g, '.') / 1;
       RteIva = $('#RteIva').val().replace(/\./g, '').replace(/\,/g, '.') / 1;
       Retenciones = RteFte + RteIca + RteIva;
-
       $('#Rte').val(Retenciones);
       $('#imp').prop('checked', imp);
       $('#Formalizar').modal('show');
+
     }
 
     else {
@@ -1649,6 +1656,8 @@ function GuardarTran(imp) {
       document.getElementById('NitoCCT').focus();
     }
   }
+
+
 
 
 
@@ -1715,43 +1724,33 @@ function SelectPoC() {
 
 function imprimir(Doc, Tran) {
 
-  url = `/Tran/imprimir/${Doc}&${Tran}`;
-  $.get(url).then(function (res) {
-    // console.log(res);
-    if (res == "OK") {
+  if (Tran != "Compras") {
 
-      printJS({ printable: '/uploads/Facturas/page.pdf', type: 'pdf', onPrintDialogClose: redirigir });
-    }
-  });
+    url = `/Tran/imprimir/${Doc}&${Tran}`;
+
+    $.get(url).then(function (res) {
+      // console.log(res);
+
+      if (res == "OK") {
+        printJS({ printable: `/uploads/Facturas/${Tran}/Doc.pdf`, type: 'pdf', onPrintDialogClose: redirigir });
+      }
+
+    });
+
+  }
+
 
 }
 
 function redirigir() {
   Tran = document.getElementById('TipoT').innerText;
   window.location.href = '/Tran/' + Tran;
-
 }
+
 function actualizarINVT() {
   $('#NuevoInventario').bootstrapTable('refresh');
 }
 
 
-// function redirigir(Tran) {
-
-
-//   window.onfocus = function () { 
-//     setTimeout(function () {// window.close(); 
-//       window.location.href = '/Tran/' + Tran;
-//     }, 500); 
-//   }
-
-//   window.onclose = function () { 
-//     window.location.href = '/Tran/' + Tran;
-//   }
-
-//   console.log('listoss');
-
-
-// }
 
 

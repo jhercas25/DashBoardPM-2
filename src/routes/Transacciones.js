@@ -94,13 +94,21 @@ router.get('/Nuevo/:Tipo&:Responsable', isLoggedin, async (req, res) => {
    
     
     if(Tipo!='Compras'){
+
+        
         await pool.query(`Call NuevaTransaccion('${Tipo}','${Responsable}', @Salida3)`); 
         NumD = await pool.query(`SELECT Consecutivo FROM Registrotransacciones WHERE  Transaccion = '${Tipo}' and Responsable='${Responsable}' and estado= 'Edicion' `);
         NumD = NumD[0].Consecutivo;
         //console.log(NumD);
-        prov = false;
-    }else{
-        NumD=0;
+        if (Tipo=='Pedidos'){
+            prov = true;
+        }else{
+            prov = false;
+        }
+        
+    }
+    else{
+         NumD=0;
          prov = true;
     }
     
@@ -236,24 +244,20 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
     //console.log(id);
     //console.log(req.body.bodyMsg);
     //console.log('Edita->');
-    //console.log(Editar);
+    //console.log(Transaccion);
 
     if (Editar == "true") {
 
         if (Transaccion.Tipo=="Ventas") {
-            inodec=false
+            inodec=false;
+            await pool.query(`Select ActualizarInv2('${id}',${inodec})`);
+            await pool.query(`CALL ActualizarStockILF('${id}',${inodec},@Salida2)`);
         }
         if (Transaccion.Tipo=="Compras") {
-            inodec=true
+            inodec=true;
+            await pool.query(`Select ActualizarInv2('${id}',${inodec})`);
+            await pool.query(`CALL ActualizarStockILF('${id}',${inodec},@Salida2)`);
         }
-        console.log(inodec);
-        resp=await pool.query(`Select ActualizarInv2('${id}',${inodec})`);
-        
-        resp2=await pool.query(`select Cantidad from Variaciones where Codigo='00001#0'`);
-        console.log('reversar inv ok ',resp);
-        await pool.query(`CALL ActualizarStockILF('${id}',${inodec},@Salida2)`);
-        console.log('reversar invlotfev ok');
-        console.log(id);
 
         await pool.query(`DELETE FROM detallet WHERE Documento = '${id}' `);
         await pool.query(`DELETE FROM detalleinvlotfev WHERE Documento = '${id}' `);
@@ -284,7 +288,14 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
         await pool.query(`INSERT INTO detalleinvlotfev(ILF,FechaRegistro, Cantidad, Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto) SELECT ILF,FechaRegistro,Cantidad,Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto FROM detalleinvlotfevtemp WHERE (Documento = '${id}' )`);
         await pool.query(`DELETE FROM detalleinvlotfevtemp WHERE Documento = '${id}' `);
         //await pool.query(`UPDATE registrotransacciones SET Consecutivo=Consecutivo+1 WHERE Transaccion = '${Transaccion.Tipo}' `);
-        await pool.query(`UPDATE RegistroTransacciones Set Estado = 'Finalizado' where Documento = '${id}'`)
+        
+        if (Transaccion.Tipo=="Compras") {
+            await pool.query(`INSERT INTO RegistroTransacciones Set Estado = 'Finalizado', Documento = '${id}', Transaccion = '${Transaccion.Tipo}', Consecutivo = 0, Responsable = '${Transaccion.Responsable}', MetodoEjecucion = '${Transaccion.Plazo}', Tipo = '0' `);
+        }
+
+        await pool.query(`UPDATE RegistroTransacciones Set Estado = 'Finalizado' where Documento = '${id}'`);
+
+        
         
     }
 
@@ -299,7 +310,7 @@ const CrearPDF= async (req,res,next)=>{
     const { Doc, Tp } = req.params;
     //console.log(Doc+' tipo '+Tp);
     const Detalle = await pool.query(`SELECT detallet.* , producto.Nombre FROM detallet,producto where (detallet.Codigo=producto.Codigo) and (Documento = '${Doc}' and Tipo= '${Tp}')`);
-    const T= await pool.query(`SELECT transacciones.Documento,transacciones.FechaEmision,transacciones.Total,transacciones.poc,PoC.Nombre FROM transacciones,PoC where (transacciones.PoC=PoC.NitoCC) and (transacciones.Documento = '${Doc}' and transacciones.Tipo= '${Tp}')`);
+    const T= await pool.query(`SELECT transacciones.Documento,transacciones.Tipo,transacciones.FechaEmision,transacciones.Total,transacciones.poc,PoC.Nombre FROM transacciones,PoC where (transacciones.PoC=PoC.NitoCC) and (transacciones.Documento = '${Doc}' and transacciones.Tipo= '${Tp}')`);
     console.log(T,Detalle);
     r=await PDFcreator.Crear(0,{Detalle,T});
     
@@ -312,6 +323,8 @@ router.get('/imprimir/:Doc&:Tp', isLoggedin, CrearPDF, async (req, res) => {
     res.sendStatus(200);
 
 });
+
+
 
 
 module.exports = router;

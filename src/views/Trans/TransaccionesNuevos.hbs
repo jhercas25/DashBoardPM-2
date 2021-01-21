@@ -265,7 +265,7 @@
                         </div>
                     </div>
 
-                    {{/ifEquals}}
+
 
 
                     <table id="tableILF" data-height="300" data-toggle="table" data-toolbar="#toolbar"
@@ -282,6 +282,7 @@
                             </tr>
                         </thead>
                     </table>
+                    {{/ifEquals}}
 
                     <div class="col p-3 my-auto ">
 
@@ -482,8 +483,6 @@
                     <i class="fas fa-file-signature fa-w-16 fa-2x ml-2 "></i>Formalizar</a>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
                             class="fas fa-times fa-w-16 fa-2x ml-2"></i> Cerrar</button>
-
-
             </div>
         </div>
     </div>
@@ -544,16 +543,16 @@
     $(document).ready(() => {
         $('#alertas').hide();
 
-            });
+    });
 
 </script>
 {{#if Editar}}
 <script>
 
-     $(document).ready(() => 
-     {$('#NitoCCT').change();
-     });
+    $(document).ready(() => {
+        $('#NitoCCT').change();
+    });
 
 </script>
-            
+
 {{/if}}

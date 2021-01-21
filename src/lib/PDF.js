@@ -17,6 +17,23 @@ const compile =async function (Plantilla, info) {
 hbs.registerHelper('json', function(context) {
   return JSON.stringify(context);
 });
+
+hbs.registerHelper('Repite', function() {
+  html='';
+  for (let i = 0; i < 100; i++) {
+    html+= `
+    <tr>
+      <td class="unit">sd</td>
+      <td class="desc">sds</td>
+      <td class="unit">dssddsg</td>
+      <td class="unit">w23fsdf</td>
+      <td class="unit">dfsg5454</td>
+    </tr>
+    `;
+  }
+    return html;
+});
+
 hbs.registerHelper('Fecha', function(Fecha) {
   FE=new Date(Fecha);
   FEs=FE.getDate(FE) +'/'+ ((FE.getMonth(FE)/1)+1)+'/' +FE.getFullYear(FE) 
@@ -29,17 +46,42 @@ PDFcreator.Crear= async(imp,info) =>{
         headless:true,
     });
     console.log('Data ->');
-    console.log(info.Detalle,info.T);
+    console.log(info.Detalle,info.T[0].Tipo);
 
     const page =await browser.newPage();
-    const content= await compile('FacturaPos',{info});
+    
+    switch (info.T[0].Tipo) {
+      case "Ventas":
+        content= await compile('FacturaPos',{info});
+        Tamaño="80mm"
+
+        break;
+      case "Cotizaciones":
+        content= await compile('Cotizacion',{info});
+        Tamaño="8.27in"
+       break;
+      
+      case "Pedidos":
+        content= await compile('Pedidos',{info});
+        Tamaño="8.27in"
+        break;
+      
+      case "Pago":
+        content= await compile('Pagos',{info});
+        Tamaño="80mm"
+          break;
+
+      default:
+        break;
+    }
+    
     //console.log(content);
     await page.setContent(content);
     await page.emulateMediaType('screen');
     
     
-    await page.pdf({path: path.join(__dirname, "../public/uploads/Facturas/page.pdf"),
-                                    width:"80mm"});
+    await page.pdf({path: path.join(__dirname, `../public/uploads/Facturas/${info.T[0].Tipo}/Doc.pdf`),
+                                    width:Tamaño});
 
     await browser.close();
     console.log('listos');

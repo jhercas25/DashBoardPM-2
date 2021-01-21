@@ -53,7 +53,7 @@ function imprimir(Doc,Tran){
     // console.log(res);
     if (res == "OK") {
       console.log('listoss');
-      printJS({printable:'/uploads/Facturas/page.pdf', type:'pdf', showModal:true});
+      printJS({printable:`/uploads/Facturas/${Tran}/Doc.pdf`, type:'pdf', showModal:true});
     }
   });
 

@@ -372,7 +372,7 @@ router.post('/Actualizar/:Doc', isLoggedin, async (req, res) => {
 
 const Upload = multer({
    storage,
-   dest: path.join(__dirname, "../public/uploads")
+   dest: path.join(__dirname, "../public/uploads/Imagenes-Producto")
 }).single('file');
 
 router.post('/SubirImg/:id', isLoggedin, Upload, async (req, res) => {
