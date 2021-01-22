@@ -452,7 +452,7 @@ $(document).on('hide.bs.modal', '#NuevoPoC', function () {
 
 $(document).on('show.bs.modal', '#EditP', function () {
   //console.log('evento ejecutado');
-  Producto = JSON.parse(localStorage.getItem('producto'));
+  Producto = localStorage.getItem('producto')?JSON.parse(localStorage.getItem('producto')):{} ;
   $('#CodProd').val(Producto.Codigo);
   $('#Marca').val(Producto.Marca);
   $('#NombreP').val(Producto.Nombre);
@@ -507,95 +507,6 @@ $(document).on('hide.bs.modal', '#EditP', function () {
   $('#One').collapse('hide');
 
 })
-
-// $(document).on('show.bs.modal', '#EditP', function () {
-
-//   id = $('#CodProd').val();
-//   url = `/inv/Carr/${id}`;
-
-//   $.get(url).then(function (res) {
-
-//     Tipos = res[0];
-//     CarPro = res[1][0];
-
-
-//     ProCarA = [CarPro.TipoCaracteristica1,
-//     CarPro.TipoCaracteristica2,
-//     CarPro.TipoCaracteristica3,
-//     CarPro.TipoCaracteristica4,
-//     CarPro.TipoCaracteristica5];
-
-
-//     Car = res[2];
-//     CarProItem = res[3];
-
-//     localStorage.setItem('MatTipoCar', JSON.stringify(CarProItem));
-//     localStorage.setItem('MatCar', JSON.stringify(CarPro));
-//     CarProItemA = [];
-
-
-//     for (i = 0; i < CarProItem.length; i++) {
-//       CarProItemA.push(CarProItem[i].Caracteristica1);
-//       CarProItemA.push(CarProItem[i].Caracteristica2);
-//       CarProItemA.push(CarProItem[i].Caracteristica3);
-//       CarProItemA.push(CarProItem[i].Caracteristica4)
-//       CarProItemA.push(CarProItem[i].Caracteristica5);
-//     }
-
-
-
-//     //console.log(CarProItemA);
-//     $('#list-tab').empty();
-//     $('#nav-tabContent').empty();
-//     for (i = 0; i < Tipos.length; i++) {
-//       const child = `<a class="list-group-item 
-//                       list-group-item-action 
-//                       " id="${Tipos[i].Nombre_TipoCaracteristica}-list" 
-//                       data-toggle="list" 
-//                       href="#${Tipos[i].Nombre_TipoCaracteristica}" 
-//                       role="tab" 
-//                       aria-controls="home">${Tipos[i].Nombre_TipoCaracteristica}</a>`;
-
-//       const child2 = `<div class="tab-pane fade show" 
-//                       id="${Tipos[i].Nombre_TipoCaracteristica}" 
-//                       role="tabpanel" 
-//                       aria-labelledby="${Tipos[i].Nombre_TipoCaracteristica}-list">
-//                       </div>`;
-
-//       $('#list-tab').append(child);
-//       $('#nav-tabContent').append(child2);
-//       $(`#${Tipos[i].Nombre_TipoCaracteristica}`).empty();
-//       if (Car.length > 0) {
-//         //console.log(Car);
-//         for (j = 0; j < Car.length; j++) {
-
-//           if (Car[j].TipoCaracteristica == Tipos[i].idTipoCaracteristica) {
-//             //console.log(Car[j])
-//             const child3 = ` <a class="btn btn-secondary m-2" id="item-${j}"  onclick="SelCaract(this)" > ${Car[j].Nombre_Catacteristica}</a>`;
-//             $(`#${Tipos[i].Nombre_TipoCaracteristica}`).append(child3);
-//             //console.log(ProCarA);
-
-//             if (ProCarA.indexOf(Tipos[i].Nombre_TipoCaracteristica) > -1 && CarProItemA.indexOf(Car[j].Nombre_Catacteristica) > -1) {
-//               $(`#item-${j}`).removeClass("btn-secondary").addClass("btn-primary");
-//               //console.log(Car[j].Nombre_Catacteristica);
-//             }
-
-//           }
-
-//         }
-//       }
-
-//       //console.log(i);
-//     }
-
-
-
-//     //  $('#ProveedorSel').val(Producto.Provedor_producto).selectpicker('refresh');
-
-//   });
-
-
-// })
 
 
 function SelCaract(idCar) {

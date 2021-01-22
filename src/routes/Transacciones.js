@@ -97,8 +97,8 @@ router.get('/Nuevo/:Tipo&:Responsable', isLoggedin, async (req, res) => {
 
         
         await pool.query(`Call NuevaTransaccion('${Tipo}','${Responsable}', @Salida3)`); 
-        NumD = await pool.query(`SELECT Consecutivo FROM Registrotransacciones WHERE  Transaccion = '${Tipo}' and Responsable='${Responsable}' and estado= 'Edicion' `);
-        NumD = NumD[0].Consecutivo;
+        NumD = await pool.query(`SELECT Documento FROM Registrotransacciones WHERE  Transaccion = '${Tipo}' and Responsable='${Responsable}' and estado= 'Edicion' `);
+        NumD = NumD[0].Documento;
         //console.log(NumD);
         if (Tipo=='Pedidos'){
             prov = true;

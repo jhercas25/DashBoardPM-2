@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Example 1</title>
+    <title> {{info.T.[0].Tipo}} </title>
     <style type="text/css">
         .clearfix:after {
             content: "";
@@ -19,13 +19,13 @@
         body {
             position: relative;
             overflow-x: hidden;
-            width: 400px;
+            width: 800px;
             height: auto;
             margin: 0 10px;
             color: #000000;
             background: #FFFFFF;
             font-family: Arial, sans-serif;
-            font-size: 18px;
+            font-size: 12px;
             font-family: Arial;
         }
 
@@ -80,10 +80,10 @@
         }
 
         table {
-            width: 380px;
+            width: 800px;
             border-collapse: collapse;
             border-spacing: 0;
-            margin-bottom: 20px;
+            margin: 20px  ;
         }
 
         table tr:nth-child(2n-1) td {
@@ -153,15 +153,9 @@
 
 <body>
     <header class="clearfix">
-        
-        <h1>PROMYD</h1>
-        <div id="company" class="clearfix">
-            <div>JHERSSON CASTAÑO</div>
-            <div>1032459578 - NO RESPONSABLE DE IVA </div>
-            <div>Carrera 13 #41-36 -LC15 <br /> BOGOTA D.C</div>
-            <div>CEL 3115292678</div>
-            <div><a href="mailto:info@promyd.com">info@promyd.com</a></div>
-        </div>
+
+        <h1>COTIZACION</h1>
+
         <div id="project">
             <div><span>D#</span>{{info.T.[0].Documento}}</div>
             <div><span>CLIENTE</span> {{info.T.[0].Nombre}}</div>
@@ -176,37 +170,42 @@
                 <tr>
                     <th class="desc">ITEM </th>
                     <th class="desc">DETALLE </th>
-                    
+                    <th class="desc">PRECIO</th>
+                    <th class="desc">CANTIDAD</th>
+                    <th class="desc">T.UNITARIO</th>
                 </tr>
             </thead>
             <tbody>
+
                 
-
                 {{#each info.Detalle}}
-
-                <tr>    
-                    <td class="unit" rowspan="2" >{{Item}}</td>
-                    <td colspan="6" class="desc">{{Nombre}}</td>
-                </tr>
+               
                 <tr>
-                    <td class="unit">Precio</td>
+                    <td class="unit">{{Item}}</td>
+                    <td class="desc">{{Nombre}}</td>
                     <td class="unit">{{Valor}}</td>
-                    <td class="unit">CNT</td>
                     <td class="unit">{{Cantidad}}</td>
-                    <td class="unit">T.Uni</td>
                     <td class="unit">${{Total}}</td>
                 </tr>
-                
+            
                 {{/each}}
 
+            </tbody>
+        </table>
+
+    </main>
+    <footer>
+        <table>
+            <tbody>
 
                 <tr>
                     <td colspan="5">SUBTOTAL</td>
-                    <td colspan="2"class="total">{{TotalST}}</td>
+                    <td colspan="2" class="total">{{TotalST}}</td>
                 </tr>
+                
                 <tr>
                     <td colspan="5">DESCUENTO </td>
-                    <td colspan="2"class="total">{{TotalDes}}</td>
+                    <td colspan="2" class="total">{{TotalDes}}</td>
                 </tr>
                 <tr>
                     <td colspan="5" class="grand total">TOTAL</td>
@@ -216,12 +215,9 @@
         </table>
         <div id="notices">
             <div>OBSERVACIONES :</div>
-            <div class="notice">No se hacen devoluciones en una fecha diferente a la de emision de este documento
-            </div>
+            <div class="notice"> </div>
         </div>
-    </main>
-    <footer>
-        ¡ Gracias por su compra !
+        ¡ Gracias por su tiempo !
     </footer>
 </body>
 

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Example 1</title>
+    <title> {{info.T.[0].Tipo}} </title>
     <style type="text/css">
         .clearfix:after {
             content: "";
@@ -83,8 +83,7 @@
             width: 800px;
             border-collapse: collapse;
             border-spacing: 0;
-            margin-bottom: 20px;
-            margin: 20px auto  20px auto ;
+            margin: 20px  ;
         }
 
         table tr:nth-child(2n-1) td {
@@ -155,17 +154,11 @@
 <body>
     <header class="clearfix">
 
-        <h1>PROMYD</h1>
-        <div id="company" class="clearfix">
-            <div>JHERSSON CASTAÑO</div>
-            <div>1032459578 - NO RESPONSABLE DE IVA </div>
-            <div>Carrera 13 #41-36 -LC15 <br /> BOGOTA D.C</div>
-            <div>CEL 3115292678</div>
-            <div><a href="mailto:info@promyd.com">info@promyd.com</a></div>
-        </div>
+        <h1>PEDIDOS</h1>
+
         <div id="project">
             <div><span>D#</span>{{info.T.[0].Documento}}</div>
-            <div><span>CLIENTE</span> {{info.T.[0].Nombre}}</div>
+            <div><span>PROVEEDOR</span> {{info.T.[0].Nombre}}</div>
             <div><span>NIT/CC</span> {{info.T.[0].poc}}</div>
             <div><span>FECHA </span> {{Fecha info.T.[0].FechaEmision}}</div>
         </div>
@@ -197,12 +190,6 @@
             
                 {{/each}}
 
-                {{Repite}}
-               
-                
-                
-
-
             </tbody>
         </table>
 
@@ -210,10 +197,12 @@
     <footer>
         <table>
             <tbody>
+
                 <tr>
                     <td colspan="5">SUBTOTAL</td>
                     <td colspan="2" class="total">{{TotalST}}</td>
                 </tr>
+                
                 <tr>
                     <td colspan="5">DESCUENTO </td>
                     <td colspan="2" class="total">{{TotalDes}}</td>
@@ -226,10 +215,9 @@
         </table>
         <div id="notices">
             <div>OBSERVACIONES :</div>
-            <div class="notice">No se hacen devoluciones en una fecha diferente a la de emision de este documento
-            </div>
+            <div class="notice"> </div>
         </div>
-        ¡ Gracias por su compra !
+        ¡ Gracias por su tiempo !
     </footer>
 </body>
 
