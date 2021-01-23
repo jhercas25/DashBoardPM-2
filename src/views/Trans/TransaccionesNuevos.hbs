@@ -139,8 +139,8 @@
                             <input type="text" class="form-control" data-inputmask="'alias': 'numeric'"
                                 onkeyup="MTotal()" name="Cnt" id="Cnt" required>
                         </div>
-
-                        <div class="col-6 col-md-2">
+                        
+                        <div {{#ifEquals user.rol "Admin" }}class="col-6 col-md-2 " {{else}}  class="col-6 col-md-2 invisible " {{/ifEquals}} >
                             <label for="Cnt">
                                 <span class="d-none d-sm-block"> Utilidad</span>
                                 <span class="d-block d-sm-none">Utl</span></label>
@@ -232,6 +232,20 @@
 
                         </div>
                     </div>
+                                        <table id="tableILF" data-height="300" data-toggle="table" data-toolbar="#toolbar"
+                        data-ajax="InvLotFev" data-pagination-parts="['pageList]" data-page-size="10"
+                        data-pagination="true" data-query-params="queryParams">
+                        <thead>
+                            <tr>
+                                <th data-field="Invima">Invima</th>
+                                <th data-field="FechaVencimiento">Fecha de Vencimiento </th>
+                                <th data-field="Lote">Lote</th>
+                                <th data-field="Cnt">Cantidad</th>
+                                <th data-field="operate" data-formatter="opsILF" data-events="eveILF">
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
 
                     {{/ifEquals}}
 
@@ -264,10 +278,6 @@
                             </a>
                         </div>
                     </div>
-
-
-
-
                     <table id="tableILF" data-height="300" data-toggle="table" data-toolbar="#toolbar"
                         data-ajax="InvLotFev" data-pagination-parts="['pageList]" data-page-size="10"
                         data-pagination="true" data-query-params="queryParams">
@@ -282,6 +292,7 @@
                             </tr>
                         </thead>
                     </table>
+
                     {{/ifEquals}}
 
                     <div class="col p-3 my-auto ">

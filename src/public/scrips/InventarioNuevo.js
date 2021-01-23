@@ -38,11 +38,11 @@ async function agregarVar() {
   imagefile = $('#Variantes').val();
   imagen= $('#LVariantes')[0].innerText
 
-  Codp = $('#CodigoP').val();
-  Cod = $('#CodigoP').val() + '#' + Variantes.length;
-  img = $('#CodigoP').val() + '-V-' + Variantes.length;
+  Codp = $('#CodigoP').val()?$('#CodigoP').val():$('#CodProd').val();
+  Cod = Codp+ '#' + Variantes.length;
+  img = Codp + '-V-' + Variantes.length;
 
-  if (Variante != "" && CntVar != "" && imagen != "Elige una imagen por variante") {
+  if (Codp!="" && Variante != "" && CntVar != "" && imagen != "Elige una imagen por variante") {
 
     Variantes.forEach(e => {
       CntT += e.Cantidad
@@ -606,8 +606,6 @@ window.NinvOpcEvents = {
 }
 
 function AgregarNinv() {
-
-
 
   url = '/inv/NuevoInv';
   Data = {

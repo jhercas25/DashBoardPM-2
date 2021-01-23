@@ -4,7 +4,7 @@ const path = require('path');
 
 const multer = require('multer');
 const storage = multer.diskStorage({
-   destination: path.join(__dirname, '../public/uploads'),
+   destination: path.join(__dirname, '../public/uploads/Imagenes-Producto'),
    filename: (req, file, cb) => {
       //console.log(req.params);
       cb(null, req.params.id);
@@ -384,7 +384,7 @@ router.post('/SubirImg/:id', isLoggedin, Upload, async (req, res) => {
 const lapd = (s, width, char) => {
    return (s.length >= width) ? s : (new Array(width).join(char) + s).slice(-width);
 }
-
+ 
 router.get('/UltimoCodigo/:Responsable', isLoggedin, async (req, res) => {
 
    const { Responsable } = req.params;
@@ -561,6 +561,31 @@ router.post('/NuevoInv', isLoggedin, async (req, res) => {
    // console.log(Data);
    await pool.query(`INSERT INTO  productotemp set ?`, [Data]);
    await pool.query(`UPDATE RegistroInventario set estado='Finalizado' where Codigo= ${Data.Codigo} `);
+
+   res.sendStatus(200);
+
+});
+
+router.post('/NuevoProF', isLoggedin, async (req, res) => {
+
+   console.log('Nuevo Producto');
+
+   const { Data } = req.body;
+   // console.log(Data);
+   await pool.query(`INSERT INTO  producto set ?`, [Data]);
+   await pool.query(`UPDATE RegistroInventario set estado='Finalizado' where Codigo= ${Data.Codigo} `);
+
+   res.sendStatus(200);
+
+});
+router.post('/EditProF/:Cod', isLoggedin, async (req, res) => {
+   const {Cod}=req.params
+   console.log('Nuevo Producto');
+
+   const { Data } = req.body;
+   // console.log(Data);
+   await pool.query(`UPDATE producto set ? WHERE Codigo = ${Cod}`, [Data]);
+   //await pool.query(`UPDATE RegistroInventario set estado='Finalizado' where Codigo= ${Data.Codigo} `);
 
    res.sendStatus(200);
 

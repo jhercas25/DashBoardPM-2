@@ -128,7 +128,7 @@ function detailFormatter(index, row) {
   <td ${st}> ${row.PCompra}</td>
   <td ${st}> ${row.Iva}</td>
   <td ${st}> ${row.PoC} - ${row.Proveedor} </td>
-  <td ${st}> <img src="/uploads/${row.ImagenP}?${n}" class="img-thumbnail-sm"> </img> </td>
+  <td ${st}> <img src="/uploads/Imagenes-Producto/${row.ImagenP}?${n}" class="img-thumbnail-sm"> </img> </td>
   </tr>
     
      `);
@@ -167,7 +167,7 @@ function detailFormatter(index, row) {
       <td ${st}> ${e.Codigo}</td>
       <td ${st}> ${e.Variacion}</td>
       <td ${st}> ${e.Cantidad}</td>
-      <td ${st}> <img src="/uploads/${e.imagen}.jpg?${n}" class="img-thumbnail-sm"> </img> </td>
+      <td ${st}> <img src="/uploads/Imagenes-Producto/${e.imagen}.jpg?${n}" class="img-thumbnail-sm"> </img> </td>
       <td> <a onclick= "add('${e.Codigo}')"  href="javascript:void(0)" title="Add"><i class="fas fa-plus"></i></a> </td>
       </tr>
 
@@ -242,13 +242,13 @@ function FormatoOperadorPoC(value, row, index) {
 }
 
 function traerCodigo() {
-  var url = '/inv/TCod';
-  $.get(url).then(function (res) {
-
-    Cod = lpad(parseInt(res[0].Cod) + 1 + "", 5, "0");
-    //console.log(Cod);
-    $('#CodProd').val(Cod)
-
+  url = '/inv/UltimoCodigo'
+  Responsable = $('#User')[0].innerText;
+  $.get(url + '/' + Responsable).then(function (res) {
+    $('#CodProd').val(res)
+    console.log(res);
+    $('#VariantesTabla').bootstrapTable('refresh');
+    $('#InventILF').bootstrapTable('refresh');
   });
 }
 
@@ -353,7 +353,7 @@ window.DetalleTEvents = {
 
   'click .editarDetalle': async function (e, value, row, index) {
     // console.log('RowDetalle');
-    // console.log(row);
+    console.log(row);
     LimpiarProdDetalle();
 
     localStorage.setItem('editDetalle', JSON.stringify(row));
@@ -370,6 +370,8 @@ window.DetalleTEvents = {
       await traerPro(Tipo);
       $('#Cnt').val(row.Cantidad);
       $('#Des').val(row.Descuento);
+      $('#PreUni').val(row.Valor);
+      
       NDes();
     }
 
@@ -452,37 +454,12 @@ $(document).on('hide.bs.modal', '#NuevoPoC', function () {
 
 $(document).on('show.bs.modal', '#EditP', function () {
   //console.log('evento ejecutado');
-  Producto = localStorage.getItem('producto')?JSON.parse(localStorage.getItem('producto')):{} ;
-  $('#CodProd').val(Producto.Codigo);
-  $('#Marca').val(Producto.Marca);
-  $('#NombreP').val(Producto.Nombre);
-  $('#Presentacion').val(Producto.Presentacion);
-  $('#detalle').val(Producto.Detalle);
-  $('#iva').val(Producto.Iva);
-  $('#GenCod').addClass('disabled');
-
-  let Uti = Math.round(((Producto.PVenta / Producto.PCompra) - 1) * 100);
-  let Utides = Math.round(((Uti - Producto.Descuento)));
-
-  $('#utilidad').val(Uti);
-  $('#descuento').val(Producto.Descuento);
-  $('#udescuento').val(Utides);
-
-  $('#PCompra').val(Producto.PCompra);
-  $('#PCompraI').val(Math.round(Producto.PCompra * (1 + (Producto.Iva / 100))));
-
-  $('#PVentaI').val(Math.round(Producto.PVenta * 0.1 * (1 + (Producto.Iva / 100))) * 10);
-  $('#PVenta').val(Producto.PVenta);
-
-  $('#PDes').val(Math.round((Producto.PCompra) * (1 + (Utides / 100))));
-  $('#PDesI').val(Math.round((Producto.PCompra) * 0.1 * (1 + (Utides / 100)) * (1 + (Producto.Iva / 100))) * 10);
-
-
+  Producto = localStorage.getItem('producto')?JSON.parse(localStorage.getItem('producto')):null ;
+  //console.log(Producto);
   url = '/inv/Prov'
   var htmlsel = ['<option selected>---Seleccione el proveedor---</option>'];
 
   htmlsel.push()
-
   $.get(url).then(function (res) {
 
     $('#ProveedorSel').empty();
@@ -491,12 +468,70 @@ $(document).on('show.bs.modal', '#EditP', function () {
       $('#ProveedorSel').append(`<option  value ="${res[i].NitoCC}" data-subtext="${res[i].NitoCC}">${res[i].Nombre}</option`).selectpicker('refresh');
       //console.log(i);
     }
-
-    $('#ProveedorSel').val(Producto.PoC).selectpicker('refresh');
-
+    $('#ProveedorSel').val(Producto?Producto.PoC:0).selectpicker('refresh');
+    
   });
 
+  if (Producto != null) {
+
+    $('#CodProd').val(Producto.Codigo);
+    $('#Marca').val(Producto.Marca);
+    $('#NombreP').val(Producto.Nombre);
+    $('#Presentacion').val(Producto.Presentacion);
+    $('#detalle').val(Producto.Detalle);
+    $('#iva').val(Producto.Iva);
+    $('#GenCod').addClass('disabled');
+
+    let Uti = Math.round(((Producto.PVenta / Producto.PCompra) - 1) * 100);
+    let Utides = Math.round(((Uti - Producto.Descuento)));
+  
+    $('#utilidad').val(Uti);
+    $('#descuento').val(Producto.Descuento);
+    $('#udescuento').val(Utides);
+  
+    $('#PCompra').val(Producto.PCompra);
+    $('#PCompraI').val(Math.round(Producto.PCompra * (1 + (Producto.Iva / 100))));
+  
+    $('#PVentaI').val(Math.round(Producto.PVenta * 0.1 * (1 + (Producto.Iva / 100))) * 10);
+    $('#PVenta').val(Producto.PVenta);
+  
+    $('#PDes').val(Math.round((Producto.PCompra) * (1 + (Utides / 100))));
+    $('#PDesI').val(Math.round((Producto.PCompra) * 0.1 * (1 + (Utides / 100)) * (1 + (Producto.Iva / 100))) * 10);
+
+    $('#Lcapture')[0].innerText = Producto.ImagenP;
+
+    var d = new Date();
+    var n = d.getSeconds();
+  
+    document.getElementById("pGeneral").src = "/uploads/imagenes-producto/" + Producto.ImagenP + "?" + n;
+
+    
+  }
+
+
 })
+
+function LimpiarDatosProducto() {
+  $('#CodProd').val("");
+  $('#Marca').val("");
+  $('#NombreP').val("");
+  $('#Presentacion').val("");
+  $('#detalle').val("");
+  $('#iva').val("0");
+  $('#GenCod').removeClass('disabled');
+  $('#utilidad').val("0");
+  $('#descuento').val("0");
+  $('#udescuento').val("0");
+  $('#PCompra').val("0");
+  $('#PCompraI').val("0");
+  $('#PVentaI').val("0");
+  $('#PVenta').val("0");
+  $('#PDes').val("0");
+  $('#PDesI').val("0");
+  $('#Lcapture')[0].innerText = "Elija una imagen"
+  document.getElementById("pGeneral").src = "https://placehold.it/300x300";
+  
+}
 
 $(document).on('hide.bs.modal', '#EditP', function () {
 
@@ -505,9 +540,9 @@ $(document).on('hide.bs.modal', '#EditP', function () {
   localStorage.removeItem('MatCar');
   $('#Caract').collapse('hide');
   $('#One').collapse('hide');
+  LimpiarDatosProducto();
 
 })
-
 
 function SelCaract(idCar) {
 
@@ -1458,7 +1493,9 @@ async function FormalizarTran(Editar) {
               window.location.href = '/Tran/' + Transaccion.Tipo;
             };
 
-          }
+          }else {
+            window.location.href = '/Tran/' + Transaccion.Tipo;
+          };
 
         }
 
@@ -1488,7 +1525,9 @@ async function FormalizarTran(Editar) {
             else {
               window.location.href = '/Tran/' + Transaccion.Tipo;
             };
-          }
+          }else {
+            window.location.href = '/Tran/' + Transaccion.Tipo;
+          };
 
 
         }
@@ -1543,9 +1582,7 @@ function GuardarTran(imp) {
   PoC = $('#NitoCCT').val();
   Total = $('#TotalT').val().replace(/\./g, '').replace(/\,/g, '.') / 1;
   Tran = $('#TipoT')[0].innerText;
-  debugger
-
-
+ 
   if (Total > 0) {
     if (PoC != "") {
       $('#SubT').val($('#Subtotal').val().replace(/\./g, ''));
@@ -1660,6 +1697,75 @@ function redirigir() {
 
 function actualizarINVT() {
   $('#NuevoInventario').bootstrapTable('refresh');
+}
+
+function CrearNuevoProducto() {
+
+  Editar= localStorage.getItem('producto')?true:false ;
+  
+  Data = {
+
+    Codigo: $('#CodProd').val(),
+    CampoBus:quitarAcentos($('#NombreP').val()) ,
+    Nombre: $('#NombreP').val(),
+    Cantidad:"0",
+    Marca: $('#Marca').val(),
+    Presentacion: $('#Presentacion').val(),
+
+    Iva: ($('#iva').val()) ? $('#iva').val() : "0",
+    Descuento: ($('#descuento').val()) ? $('#descuento').val() : "0",
+    PCompra: ($('#PCompra').val()) ? ($('#PCompra').val().replace(/\./g, '') / 1) : "0",
+    PVenta: ($('#PVenta').val()) ? ($('#PVenta').val().replace(/\./g, '') / 1) : "0",
+
+    PoC: ($('#ProveedorSel').val()) ? $('#ProveedorSel').val() : "0",
+
+    Responsable: $('#User')[0].innerText.split(' ')[0],
+    ImagenP: $('#Lcapture')[0].innerText
+
+  };
+
+  //console.log(Data);
+
+  Variantes = $('#VariantesTabla').bootstrapTable('getData');
+  
+  if (Editar) {
+    url = '/inv/EditProF/'+Data.Codigo;
+  }else{
+
+    if(Variantes.length==0){
+
+      $('#CntVar').val(Data.Cantidad);
+      $('#Var').val(' ');
+      $('#LVariantes').prop('innerText', "Promyd_Principal");
+      //$('#Variantes').val('Promyd_Principal');
+      
+      agregarVarP ();
+    }
+    
+    url = '/inv/NuevoProF';
+  }
+  console.log(url);
+  if (Data.Nombre != "" &&  Data.Marca != "" && Data.Presentacion != "" && Data.PCompra !== 0 && Data.PVenta !== 0 && Data.PoC != null && Data.ImagenP != "Elige una imagen") {
+    //console.log(url);
+    $.post(url, { Data }).then(function (res) {
+      console.log(res);
+
+      if (res == "OK") {
+
+        SubirFoto('capture');
+        $('#EditP').modal("hide");
+        $('#table').bootstrapTable('refresh');
+        $('#NuevoInventario').bootstrapTable('refresh');
+
+      }
+
+    });
+
+  }
+
+
+
+
 }
 
 

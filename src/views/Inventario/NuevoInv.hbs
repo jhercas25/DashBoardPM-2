@@ -310,18 +310,15 @@
                     <img src="https://placehold.it/300x300" id="pGeneral" class="img-thumbnail">
                 </div>
 
-                {{!-- <form action="/inv/SubirImg" method="POST" enctype="multipart/form-data"> --}}
-                    <div class="col-12 col-md-6">
-
-                        <div class="custom-file">
-                            <input class="custom-file-input" type="file" name="image" id="capture" accept="image/*"
-                                required capture>
-                            <label class="custom-file-label" for="customFile" id="Lcapture">Elige una imagen</label>
-                        </div>
-
+                <div class="col-12 col-md-6">
+                    <div class="custom-file">
+                        <input class="custom-file-input" type="file" name="image" id="capture" accept="image/*" required
+                            capture>
+                        <label class="custom-file-label" for="customFile" id="Lcapture">Elige una imagen</label>
                     </div>
+                </div>
 
-                    {{!--
+                {{!--
                 </form> --}}
 
                 <script>
@@ -365,8 +362,6 @@
 
                 </script>
 
-
-
                 <div class="col-2 ml-auto text-center p-3 my-auto ">
 
                     <a id="addNinv" href="javascript:void(0)" onclick="AgregarNinv()">
@@ -377,20 +372,19 @@
                     </a>
 
                 </div>
-
-
-
             </div>
 
         </div>
     </div>
 
 </div>
+
 <div class="col-1 ml-auto">
-<button class="btn btn-info" onclick="actualizarINVT()">
-<i class="fas fa-sync-alt"></i>
-</button>
+    <button class="btn btn-info" onclick="actualizarINVT()">
+        <i class="fas fa-sync-alt"></i>
+    </button>
 </div>
+
 <div class="mb-5">
 
     <table id="NuevoInventario" data-height="900" data-toggle="table" data-toolbar="#toolbar" data-detail-view="true"
