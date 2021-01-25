@@ -375,9 +375,6 @@ window.DetalleTEvents = {
       NDes();
     }
 
-
-
-
     // $('#InvLotFev').val(row.ILF).selectpicker('refresh');
     // $('#Cntilf').val(row.Cnt);
   },
@@ -797,8 +794,9 @@ function MP() {
 
 function GenerarFC() {
 
-  prov = document.getElementById('PoC').innerText;
-  NitoCC = $('#NitoCCT').val()
+  prov = document.getElementById('PoC')?document.getElementById('PoC').innerText:"Proveedores";
+  NitoCC = $('#NitoCCT').val()?$('#NitoCCT').val():($('#Prov').val()?$('#Prov').val().split('-')[0]:false);
+
   if (NitoCC) {
 
     url = `/PoC/${prov}/datos/nit/U/${NitoCC}`;
@@ -811,6 +809,8 @@ function GenerarFC() {
         Nombre = PoC.Nombre[0] + PoC.Nombre[1] + PoC.Nombre[2];
         //console.log();
         $('#NumeroT').val(Nombre + (PoC.NumFacturas + 1).toString());
+
+        $('#Doc2').val(Nombre + (PoC.NumFacturas + 1).toString());
 
         $('#tableDetalle').bootstrapTable('refresh');
         return
@@ -856,7 +856,7 @@ async function traerPro(Trans) {
         $('#Cnt').val(1);
         $('#Iva').val(Iva);
 
-        if (Trans == "Compras" ||Trans == "Pedidos") {
+        if (Trans == "Compras" || Trans == "Pedidos") {
 
           $('#PreUni').val(Vc);
           $('#PreTotal').val(Vc * parseInt($('#Cnt').val()));
@@ -921,7 +921,7 @@ async function traerPro(Trans) {
 
 
   }
-
+  MprecioV();
 }
 
 function limpiarProducto() {
@@ -1263,7 +1263,7 @@ function EditarDetalle() {
   Iva = $('#Iva').val() / 1;
 
   // console.log("valor total" + ValorT);
-  Data = $('#tableILF').bootstrapTable('getData');
+  Data = $('#tableILF').innerHTML?$('#tableILF').bootstrapTable('getData'):[];
 
   detalleT = JSON.parse(localStorage.getItem('editDetalle'));
 
