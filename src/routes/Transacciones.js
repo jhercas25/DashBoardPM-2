@@ -4,7 +4,7 @@ const pool = require('../database');
 const passport = require('passport');
 const { isLoggedin, isnotloggedin } = require('../lib/auth');
 const { query } = require('../database');
-const PDFcreator= require('../lib/PDF');
+const PDFcreator = require('../lib/PDF');
 
 ////////////////////////////////// LISTA DE TRANSACCIONES ////////////////////////
 
@@ -90,45 +90,63 @@ router.get('/Pagos/His', isLoggedin, async (req, res) => {
 ///////////////////////////////////// NUEVAS TRANSACCIONES ///////////////////////////////////////////////
 
 router.get('/Nuevo/:Tipo&:Responsable', isLoggedin, async (req, res) => {
-    const {Tipo,Responsable}=req.params
-   
-    
-    if(Tipo!='Compras'){
+    const { Tipo, Responsable } = req.params
 
-        
-        await pool.query(`Call NuevaTransaccion('${Tipo}','${Responsable}', @Salida3)`); 
+
+    if (Tipo != 'Compras') {
+
+
+        await pool.query(`Call NuevaTransaccion('${Tipo}','${Responsable}', @Salida3)`);
         NumD = await pool.query(`SELECT Documento FROM Registrotransacciones WHERE  Transaccion = '${Tipo}' and Responsable='${Responsable}' and estado= 'Edicion' `);
         NumD = NumD[0].Documento;
         //console.log(NumD);
-        if (Tipo=='Pedidos'){
+        if (Tipo == 'Pedidos') {
             prov = true;
-        }else{
+        } else {
             prov = false;
         }
-        
+
     }
-    else{
-         NumD=0;
-         prov = true;
+    else {
+        NumD = 0;
+        prov = true;
     }
-    
+
     const Hoy = Date(Date.now()).toString();
     const Trans = Tipo;
     const Asig = false;
-    const Editar=false;
-    res.render('Trans/transaccionesNuevos', { prov, Trans, NumD, Hoy, Editar,Asig });
+    const Editar = false;
+    res.render('Trans/transaccionesNuevos', { prov, Trans, NumD, Hoy, Editar, Asig });
 });
 
-router.get('/NuevoU/:Doc&:Provedor&:Tipo', isLoggedin, async (req, res) => {
-    const {Doc,Provedor,Tipo}=req.params
+router.get('/NuevoPago/:Responsable', isLoggedin, async (req, res) => {
+    const { Responsable } = req.params;
+    Tipo="Pagos"
+
+    await pool.query(`Call NuevaTransaccion('${Tipo}','${Responsable}', @Salida3)`);
+    NumD = await pool.query(`SELECT Documento FROM Registrotransacciones WHERE  Transaccion = '${Tipo}' and Responsable='${Responsable}' and estado= 'Edicion' `);
+    NumD = NumD[0].Documento;
+    //console.log(NumD);
    
     prov = true;
-    Asig = true;
-    DT={row:{PoC:Provedor}}
+
     const Hoy = Date(Date.now()).toString();
     const Trans = Tipo;
-    const Editar=false;
-    res.render('Trans/transaccionesNuevos', { prov, Trans, Doc, Hoy, Editar, DT,Asig});
+    const Asig = false;
+    const Editar = false;
+    res.render('Trans/Pagos', { prov, Trans, NumD, Hoy, Editar, Asig });
+});
+
+router.get('/NuevoU/:NumD&:Provedor&:Tipo', isLoggedin, async (req, res) => {
+    const { NumD, Provedor, Tipo } = req.params
+
+    prov = true;
+    Asig = true;
+    DT = { row: { PoC: Provedor } }
+    const Hoy = Date(Date.now()).toString();
+    const Trans = Tipo;
+    const Editar = false;
+    res.render('Trans/transaccionesNuevos', { prov, Trans, NumD, Hoy, Editar, DT, Asig });
 });
 
 router.post('/MP', isLoggedin, async (req, res) => {
@@ -150,7 +168,7 @@ router.post('/MP', isLoggedin, async (req, res) => {
 
 router.get('/Editar/:NumD&:Tipo', isLoggedin, async (req, res) => {
     Editar = true
-    const { NumD,Tipo } = req.params
+    const { NumD, Tipo } = req.params
     const Trans = Tipo;
     const prov = false;
 
@@ -168,38 +186,10 @@ router.get('/Editar/:NumD&:Tipo', isLoggedin, async (req, res) => {
         FechadeEmision: FechaConFormato.getDate() + '/' + FechaConFormato.getMonth() + '/' + FechaConFormato.getFullYear()
     }
     //console.log(DT);
-    Asig=false;
-    res.render('Trans/transaccionesNuevos', { Trans, Editar, NumD, DT,Editar,prov,Asig });
+    Asig = false;
+    res.render('Trans/transaccionesNuevos', { Trans, Editar, NumD, DT, Editar, prov, Asig });
 
 });
-
-
-// router.get('/Compras/Editar/:NumD', isLoggedin, async (req, res) => {
-//     Editar = true
-//     const { NumD } = req.params
-//     const Trans = "Compras";
-//     const prov = true;
-
-//     info = await pool.query(`SELECT Transacciones.* , poc.Nombre FROM Transacciones, PoC where  (Transacciones.PoC=PoC.NitoCC) and Transacciones.Documento = '${NumD}' ORDER BY Transacciones.FechaEjecucion DESC`);
-//     Detalle = await pool.query(`select ID from Detallettemp where Documento='${NumD}' `);
-//     //console.log(Detalle.length);
-//     if (Detalle.length == 0) {
-//         await pool.query(`INSERT INTO detallettemp (select * from Detallet where Documento='${NumD}') `);
-//         await pool.query(`INSERT INTO Detalleinvlotfevtemp (select * from Detalleinvlotfev where Documento='${NumD}') `);
-//     }
-
-//     FechaConFormato = new Date(info[0].FechaEmision);
-//     DT = {
-//         row: info[0],
-//         FechadeEmision: FechaConFormato.getDate() + '/' + FechaConFormato.getMonth() + '/' + FechaConFormato.getFullYear()
-//     }
-//     //console.log(DT);
-//     Asig=false
-//     res.render('Trans/transaccionesNuevos', { Trans, Editar, NumD, DT,Editar,prov,Asig });
-
-// });
-
-
 
 
 
@@ -251,7 +241,7 @@ router.get('/DetalleTtemp/eliminar/:id&:Doc', isLoggedin, async (req, res) => {
 
 router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
 
-    const { id,Editar  } = req.params;
+    const { id, Editar } = req.params;
     const { Transaccion } = req.body.bodyMsg;
     const { Pago } = req.body.bodyMsg;
 
@@ -263,17 +253,17 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
 
     if (Editar == "true") {
 
-        if (Transaccion.Tipo=="Ventas") {
-            inodec=false;
+        if (Transaccion.Tipo == "Ventas") {
+            inodec = false;
             await pool.query(`Select ActualizarInv2('${id}',${inodec})`);
             await pool.query(`CALL ActualizarStockILF('${id}',${inodec},@Salida2)`);
         }
-        if (Transaccion.Tipo=="Compras") {
-            inodec=true;
+        if (Transaccion.Tipo == "Compras") {
+            inodec = true;
             await pool.query(`Select ActualizarInv2('${id}',${inodec})`);
             await pool.query(`CALL ActualizarStockILF('${id}',${inodec},@Salida2)`);
         }
-        
+
 
 
         await pool.query(`DELETE FROM detallet WHERE Documento = '${id}' `);
@@ -285,19 +275,19 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
         await pool.query(`INSERT INTO transacciones SET ? `, [Transaccion]);
 
         //console.log(!inodec);
-  
-        
+
+
 
         await pool.query(`INSERT INTO pagos SET ?`, [Pago]);
         await pool.query(`INSERT INTO detalleinvlotfev(ILF,FechaRegistro, Cantidad, Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto) SELECT ILF,FechaRegistro,Cantidad,Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto FROM detalleinvlotfevtemp WHERE (Documento = '${id}' )`);
-        
+
         await pool.query(`DELETE FROM detalleinvlotfevtemp WHERE Documento = '${id}' `);
         await pool.query(`UPDATE RegistroTransacciones Set Estado = 'Finalizado' where Documento = '${id}'`)
-        
-       
+
+
 
     } else {
-        
+
         await pool.query(`INSERT INTO detallet(Documento,Item,Producto,Codigo,Cantidad,Valor,Descuento,Total,Iva,Tipo) SELECT Documento,Item,Producto,Codigo,Cantidad,Valor,Descuento,Total,Iva,Tipo FROM detallettemp WHERE (Documento = '${id}' )`);
         await pool.query(`DELETE FROM detallettemp WHERE Documento = '${id}' `);
         await pool.query(`INSERT INTO transacciones SET ? `, [Transaccion]);
@@ -305,15 +295,15 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
         await pool.query(`INSERT INTO detalleinvlotfev(ILF,FechaRegistro, Cantidad, Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto) SELECT ILF,FechaRegistro,Cantidad,Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto FROM detalleinvlotfevtemp WHERE (Documento = '${id}' )`);
         await pool.query(`DELETE FROM detalleinvlotfevtemp WHERE Documento = '${id}' `);
         //await pool.query(`UPDATE registrotransacciones SET Consecutivo=Consecutivo+1 WHERE Transaccion = '${Transaccion.Tipo}' `);
-        
-        if (Transaccion.Tipo=="Compras") {
+
+        if (Transaccion.Tipo == "Compras") {
             await pool.query(`INSERT INTO RegistroTransacciones Set Estado = 'Finalizado', Documento = '${id}', Transaccion = '${Transaccion.Tipo}', Consecutivo = 0, Responsable = '${Transaccion.Responsable}', MetodoEjecucion = '${Transaccion.Plazo}', Tipo = '0' `);
         }
 
         await pool.query(`UPDATE RegistroTransacciones Set Estado = 'Finalizado' where Documento = '${id}'`);
 
-        
-        
+
+
     }
 
     res.sendStatus(200);
@@ -322,20 +312,20 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
 });
 
 
-const CrearPDF= async (req,res,next)=>{ 
-    
+const CrearPDF = async (req, res, next) => {
+
     const { Doc, Tp } = req.params;
     //console.log(Doc+' tipo '+Tp);
     const Detalle = await pool.query(`SELECT detallet.* , producto.Nombre FROM detallet,producto where (detallet.Codigo=producto.Codigo) and (Documento = '${Doc}' and Tipo= '${Tp}')`);
-    const T= await pool.query(`SELECT transacciones.Documento,transacciones.Tipo,transacciones.FechaEmision,transacciones.Total,transacciones.poc,PoC.Nombre FROM transacciones,PoC where (transacciones.PoC=PoC.NitoCC) and (transacciones.Documento = '${Doc}' and transacciones.Tipo= '${Tp}')`);
-    console.log(T,Detalle);
-    r=await PDFcreator.Crear(0,{Detalle,T});
-    
+    const T = await pool.query(`SELECT transacciones.Documento,transacciones.Tipo,transacciones.FechaEmision,transacciones.Total,transacciones.poc,PoC.Nombre FROM transacciones,PoC where (transacciones.PoC=PoC.NitoCC) and (transacciones.Documento = '${Doc}' and transacciones.Tipo= '${Tp}')`);
+    console.log(T, Detalle);
+    r = await PDFcreator.Crear(0, { Detalle, T });
+
     return next();
 }
 
 router.get('/imprimir/:Doc&:Tp', isLoggedin, CrearPDF, async (req, res) => {
-    
+
     console.log('Redirigiendo');
     res.sendStatus(200);
 
@@ -343,7 +333,7 @@ router.get('/imprimir/:Doc&:Tp', isLoggedin, CrearPDF, async (req, res) => {
 
 router.get('/Transformar/:Doc1&:Doc2&:Tp', isLoggedin, async (req, res) => {
 
-    const{Doc1,Doc2,Tp}=req.params
+    const { Doc1, Doc2, Tp } = req.params
     //console.log('Redirigiendo',{Doc1,Doc2,Tp});
     res.sendStatus(200);
     await pool.query(`INSERT INTO detallettemp(Documento,Item,Producto,Codigo,Cantidad,Valor,Descuento,Total,Iva,Tipo) SELECT Documento,Item,Producto,Codigo,Cantidad,Valor,Descuento,Total,Iva,Tipo FROM detallet WHERE (Documento = '${Doc1}' )`);

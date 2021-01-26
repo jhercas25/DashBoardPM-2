@@ -59,10 +59,10 @@ window.DatosTransOPEvents = {
     
     
   },
-  'click .imprimir': function (e, value, row, index) {
+  'click .imprimirStikers': function (e, value, row, index) {
     console.log(row)
     console.log(row.row.Documento,row.row.Tipo);
-    imprimir(row.row.Documento,row.row.Tipo);
+    imprimirStikers(row.row.Documento,row.row.Tipo);
   },
 
 }
@@ -75,6 +75,18 @@ function imprimir(Doc,Tran){
     if (res == "OK") {
       console.log('listoss');
       printJS({printable:`/uploads/Facturas/${Tran}/Doc.pdf`, type:'pdf', showModal:true});
+    }
+  });
+
+}
+
+function imprimirStikers(Doc,Tran){
+
+  url = `/inv/NuevoStikers/${Doc}`;
+  $.get(url).then(function (res) {
+    // console.log(res);
+    if (res == "OK") {
+      console.log('listoss');
     }
   });
 

@@ -18,7 +18,6 @@ function CerrarModal() {
 
 }
 
-
 function ajaxRequest(params) {
 
   var Prov = $('#NitoCCT').val() ? ($('#TipoT')[0].innerText == "Compras" || $('#TipoT')[0].innerText == "Pedidos" ? $('#NitoCCT').val() : "p") : "p";
@@ -117,7 +116,7 @@ function detailFormatter(index, row) {
   var html = []
   st = 'style=" word-wrap: break-word;min-width: 60px;max-width: 160px;"';
   html.push('<table class="table" style="text-align: center;" > <thead> <th>Marca</th> <th>Detalle</th>  <th>P.Compra</th> <th>Iva</th> <th>Proveedor</th><th>Imagen </th> </thead> <tbody > <tr>')
-  //console.log(row)
+  console.log(row)
   var d = new Date();
   var n = d.getSeconds();
 

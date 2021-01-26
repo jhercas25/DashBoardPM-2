@@ -17,8 +17,8 @@
 <div class="form-group pl-3 pr-3">
     <label for="NitoCC">Nit o CC sin digito de verificacion </label>
     <div class="form-group row">
-        <input type="text" class="form-control col-10" data-inputmask="'alias': 'numeric'" name="NitoCC"  onchange="TraerPoC(this)" id="NitoCCT"
-           value={{DT.row.PoC}}   required>
+        <input type="text" class="form-control col-10" data-inputmask="'alias': 'numeric'" name="NitoCC" value="{{DT.row.PoC}}" onchange="TraerPoC(this)" id="NitoCCT"
+             required>
         <input type="text" class="form-control col-2" id="DVer" readonly>
     </div>
 </div>
@@ -110,9 +110,6 @@
                 break;
 
         }
-
-
-
 
         $('#PoCSel').empty();
 

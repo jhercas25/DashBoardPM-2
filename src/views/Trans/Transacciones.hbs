@@ -10,9 +10,16 @@
     <div class="col-md-4  ">
         <div class="card m-2 p-2">
             <div class="card-body">
+                {{#ifEquals Trans "Pagos"}}
+                <a href="./nuevoPago/{{user.fullname}}" class="btn btn-success">
+                    Nuevo
+                </a>
+                {{else}}
                 <a href="./nuevo/{{Trans}}&{{user.fullname}}" class="btn btn-success">
                     Nuevo
                 </a>
+                {{/ifEquals}}
+                
             </div>
         </div>
     </div>

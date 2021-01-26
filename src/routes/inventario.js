@@ -483,11 +483,11 @@ router.get('/VariantesPDel/:id', isLoggedin, async (req, res) => {
 
 router.get('/Variantes/:Cod', isLoggedin, async (req, res) => {
    const { Cod } = req.params
-   console.log(Cod);
+   //console.log(Cod);
    //console.log(Data);
    Variantes=[];
 
-   Variantes = await pool.query(`Select * from variaciones Where Codigo like '%${Cod}%' `);
+   Variantes = await pool.query(`Select * from variaciones Where Codigo_P = '${Cod}' `);
 
    res.send(Variantes);
 
@@ -670,17 +670,16 @@ router.get('/NuevoInvFormalizar/:id&:Cod', isLoggedin, async (req, res) => {
 
 });
 
-router.get('/NuevoStikers/:id&:Cod', isLoggedin, async (req, res) => {
-   const { id, Cod } = req.params
+router.get('/NuevoStikers/:Cod', isLoggedin, async (req, res) => {
+   const { Cod } = req.params
    //console.log(id);
    await pool.query(`DELETE FROM IMPCODIGO WHERE id>0 `); 
-   await pool.query(`INSERT INTO impCodigo (Codigo,Nombre,Variacion,Cantidad, Precio) SELECT detallet.Producto,producto.Nombre,variaciones.Variacion,detallet.Cantidad, round(producto.PVenta*(1+(producto.iva/100)),-1) FROM variaciones,producto,detallet  WHERE  (detallet.producto=variaciones.Codigo) and (detallet.Codigo = producto.Codigo) and (detallet.Documento = '${Cod}')`); 
+   await pool.query(`INSERT INTO impCodigo (Codigo,Nombre,Variacion,Cantidad, Precio) SELECT detallet.Producto,producto.Nombre,variaciones.Variacion,detallet.Cantidad, round(producto.PVenta*(1+(producto.iva/100)),-1) FROM variaciones,producto,detallet  WHERE  (detallet.producto=variaciones.Codigo) and (detallet.Codigo = producto.Codigo) and (detallet.Documento = '${Cod}' and detallet.Tipo="Compras" )`); 
    await pool.query(`INSERT INTO imp_trigger_2 set Codigo='1' `);
 
    //console.log(Data);
 
    res.sendStatus(200);
-
 });
 
 module.exports = router;
