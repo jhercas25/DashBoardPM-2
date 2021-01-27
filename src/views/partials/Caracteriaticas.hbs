@@ -51,7 +51,7 @@
     Variantes = []
     if (Cod != "") {
 
-      $.get(url + '/' + Cod).then(function (res) {
+      $.post(url, {Codigo: Cod}).then(function (res) {
 
         Variantes = res;
         console.log(Variantes);

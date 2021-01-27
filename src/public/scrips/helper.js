@@ -7,6 +7,7 @@ function quitarAcentos(cadena) {
 function CerrarModal() {
 
   $('#BarcodeReader').modal('hide');
+  
   $('#NuevoPoC').modal('hide');
   $('body').removeClass('modal-open');
   $('.modal-backdrop').remove();
@@ -32,7 +33,7 @@ function ajaxRequest(params) {
     //console.log("edv");
     if (text != '') {
 
-      $.get(url + '/' + text + '&' + Prov).then(function (res) { params.success(res) })
+      $.post(url ,{id:text,Prov:Prov} ).then(function (res) { params.success(res) })
       return;
     } else {
       $.get(url).then(function (res) { params.success(res) });
@@ -116,7 +117,7 @@ function detailFormatter(index, row) {
   var html = []
   st = 'style=" word-wrap: break-word;min-width: 60px;max-width: 160px;"';
   html.push('<table class="table" style="text-align: center;" > <thead> <th>Marca</th> <th>Detalle</th>  <th>P.Compra</th> <th>Iva</th> <th>Proveedor</th><th>Imagen </th> </thead> <tbody > <tr>')
-  console.log(row)
+ // console.log(row)
   var d = new Date();
   var n = d.getSeconds();
 
@@ -153,7 +154,7 @@ function detailFormatter(index, row) {
 
 
   var url = '/inv/Variantes';
-  $.get(url + '/' + row.Codigo).then(function (res) {
+  $.post(url, {Codigo:row.Codigo}).then(function (res) {
     //console.log(res);
     html2 = '';
     res.forEach(e => {
@@ -440,6 +441,14 @@ $(document).on('show.bs.modal', '#NuevoPoC', function () {
   }
 
 
+});
+$(document).on('show.bs.modal', '#BarcodeReader', function () {
+  //console.log('evento ejecutado');
+  //App.init();
+});
+$(document).on('hiden.bs.modal', '#BarcodeReader', function () {
+  //console.log('evento ejecutado');
+  //Quagga.stop();
 });
 
 $(document).on('hide.bs.modal', '#NuevoPoC', function () {

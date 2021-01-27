@@ -11,6 +11,7 @@ $(function() {
                 App.checkCapabilities();               
                 App.applySetting('zoom', 6.0);
                 Quagga.start();
+                
             });
         },
         checkCapabilities: function() {

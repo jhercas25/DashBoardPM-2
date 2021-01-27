@@ -51,9 +51,9 @@ router.get('/Tinv/:Prov', isLoggedin, async (req, res) => {
 
 });
 
-router.get('/Tinv/:id&:Prov', isLoggedin, async (req, res) => {
-   const { id,Prov } = req.params;
-   console.log(Prov);
+router.post('/Tinv', isLoggedin, async (req, res) => {
+   const { id,Prov } = req.body;
+   console.log(Prov,id);
 
    if(Prov=="p"){
       sql = `SELECT * FROM Producto Where Codigo like '%${id}%' `;
@@ -481,13 +481,13 @@ router.get('/VariantesPDel/:id', isLoggedin, async (req, res) => {
 
 });
 
-router.get('/Variantes/:Cod', isLoggedin, async (req, res) => {
-   const { Cod } = req.params
+router.post('/Variantes', isLoggedin, async (req, res) => {
+   const { Codigo } = req.body
    //console.log(Cod);
    //console.log(Data);
    Variantes=[];
 
-   Variantes = await pool.query(`Select * from variaciones Where Codigo_P = '${Cod}' `);
+   Variantes = await pool.query(`Select * from variaciones Where Codigo_P = '${Codigo}' `);
 
    res.send(Variantes);
 
