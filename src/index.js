@@ -81,6 +81,7 @@ app.use('/Inv',require('./routes/inventario.js'));
 app.use('/Tran',require('./routes/Transacciones.js'));
 app.use('/envios',require('./routes/envios.js'));
 app.use('/PoC',require('./routes/PoC.js'));
+app.use('/Rep',require('./routes/reportes.js'));
 
 //Publicos 
 app.use(express.static(path.join(__dirname,'public')));

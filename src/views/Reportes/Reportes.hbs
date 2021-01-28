@@ -1,0 +1,58 @@
+<script type='text/javascript'
+    src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
+
+<script type='text/javascript' src="/scrips/Reportes.js"></script>
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h3 class="mb-3 m-4">Reportes</h3>
+</div>
+
+<div class="row">
+    <div class="col-md-12 mx-auto ">
+        <div class="card m-2 p-2">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6 col-md-3 ">
+                        <label class="d-none d-sm-block" for="FechaDesde">Fecha de vencimiento </label>
+                        <label class="d-block d-sm-none" for="FechaDesde">F.Ven</label>
+                        <div class="input-group date"  data-provide="datepicker">
+                            <input type="text" class="form-control SelectorF" name="FechaDesde" id="FechaDesde" required>
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-th"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 ">
+                        <label class="d-none d-sm-block" for="FechaAsta">Fecha de vencimiento </label>
+                        <label class="d-block d-sm-none" for="FechaAsta">F.Ven</label>
+                        <div class="input-group date"  data-provide="datepicker">
+                            <input type="text" class="form-control SelectorF" name="FechaAsta" id="FechaAsta" required>
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-th"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+
+
+<table id="DetalleReporte" data-height="800" data-toggle="table" data-toolbar="#toolbar" data-detail-view="true"
+    data-detail-view-icon="true" data-detail-formatter="Reporte_Detalle" data-ajax="Reporte_Data"
+    data-pagination-parts="['pageList]" data-page-size="25" data-pagination="true" data-query-params="queryParams">
+    <thead>
+        <tr>
+            <th data-field="Codigo">Codidgo</th>
+            <th data-field="Documento">Existencias</th>
+            <th data-field="Nombre">Producto</th>
+            <th data-field="PVentaI">P.Venta</th>
+            <th data-field="operate" data-formatter="Reporte_Ops" data-events="Reporte_Events"></th>
+        </tr>
+    </thead>
+</table>
