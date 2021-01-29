@@ -12,27 +12,38 @@
         <div class="card m-2 p-2">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-6 col-md-3 ">
+                    <div class="col-4 col-md-3 ">
                         <label class="d-none d-sm-block" for="FechaDesde">Fecha de vencimiento </label>
                         <label class="d-block d-sm-none" for="FechaDesde">F.Ven</label>
-                        <div class="input-group date"  data-provide="datepicker">
-                            <input type="text" class="form-control SelectorF" name="FechaDesde" id="FechaDesde" required>
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control SelectorF" name="FechaDesde" id="FechaDesde"
+                                required>
                             <div class="input-group-addon">
                                 <span class="glyphicon glyphicon-th"></span>
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 col-md-3 ">
-                        <label class="d-none d-sm-block" for="FechaAsta">Fecha de vencimiento </label>
-                        <label class="d-block d-sm-none" for="FechaAsta">F.Ven</label>
-                        <div class="input-group date"  data-provide="datepicker">
-                            <input type="text" class="form-control SelectorF" name="FechaAsta" id="FechaAsta" required>
+                    <div class="col-4  ">
+                        <label class="d-none d-sm-block" for="FechaHasta">Fecha de vencimiento </label>
+                        <label class="d-block d-sm-none" for="FechaHasta">F.Ven</label>
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control SelectorF" name="FechaHasta" id="FechaHasta"
+                                required>
                             <div class="input-group-addon">
                                 <span class="glyphicon glyphicon-th"></span>
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-3">
+
+                        <div class="col-8">
+                            <label for="Proveedor">Proveedor</label>
+                            <select id="PoCSelR" class="selectpicker" data-live-search="true">
+                            </select>
                         </div>
                     </div>
                 </div>
+
 
             </div>
         </div>
@@ -48,11 +59,45 @@
     data-pagination-parts="['pageList]" data-page-size="25" data-pagination="true" data-query-params="queryParams">
     <thead>
         <tr>
-            <th data-field="Codigo">Codidgo</th>
-            <th data-field="Documento">Existencias</th>
-            <th data-field="Nombre">Producto</th>
-            <th data-field="PVentaI">P.Venta</th>
-            <th data-field="operate" data-formatter="Reporte_Ops" data-events="Reporte_Events"></th>
+            <th data-field="Documento">Documento</th>
+            <th data-field="Nombre">Cliente</th>
+            <th data-field="FechaEmision">Fecha Emision</th>
+            <th data-field="Total">Total Tran</th>
+            <th data-field="TotalSP">Total Prov</th>
+            <th data-field="FechaEmision">Fecha Emision</th>
+            {{!-- <th data-field="operate" data-formatter="Reporte_Ops" data-events="Reporte_Events"></th> --}}
         </tr>
     </thead>
 </table>
+
+<script>
+
+
+    $(document).ready(()=>{
+        LlenarProv();
+    });
+
+    function LlenarProv() {
+        url = '/inv/Prov'
+        var htmlsel = ['<option selected>---Seleccione el proveedor---</option>'];
+
+        htmlsel.push()
+
+        $.get(url).then(function (res) {
+
+            $('#PoCSelR').empty();
+            for (i = 0; i < res.length; i++) {
+
+                $('#PoCSelR').append(`<option  value ="${res[i].NitoCC}" data-subtext="${res[i].NitoCC}">${res[i].Nombre}</option`).selectpicker('refresh');
+                //console.log(i);
+            }
+
+            $('#PoCSelR').val('-').selectpicker('refresh');
+
+        });
+
+    }
+
+    
+    
+</script>

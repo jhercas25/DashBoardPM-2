@@ -22,19 +22,38 @@ const CrearPDF = async (req, res, next) => {
 }
 
 
-router.get('/His/:Tipo&:FD&:FA',isLoggedin, async (req,res)  =>{ 
-    const{Tipo,FD,FA}=req.params
-    console.log({Tipo,FD,FA});
-    const Detalle = await pool.query(`SELECT detallet.* , producto.Nombre FROM detallet,producto where (detallet.Codigo=producto.Codigo) and (detallet.FechaEjecucion between'${FD}'  and  '${FA}') and (detallet.Tipo='${Tipo}')`);
-    console.log(Detalle);
+router.get('/His/:Tipo&:FD&:FH',isLoggedin, async (req,res)  =>{ 
+    const{Tipo,FD,FH}=req.params
+    //console.log({Tipo,FD,FH});
+   
+    const Detalle = await pool.query(` SELECT Transacciones.*, sum( detallet.Valor) as TotalSP,PoC.Nombre FROM transacciones,detallet,producto,PoC where (transacciones.documento=detallet.documento) and (detallet.Codigo = Producto.Codigo) and (transacciones.PoC = PoC.NitoCC) and (transacciones.FechaEmision between '${FD}' and  '${FH}') and  detallet.Tipo='${Tipo}'  group by detallet.Documento`);
+    //console.log(Detalle);
     res.send(Detalle);
 });
 
-router.get('/:Tipo&:FD&:FA&:PoC',isLoggedin,CrearPDF, async (req,res)  =>{ 
+router.get('/HisPoC/:PoC&:Tipo&:FD&:FH',isLoggedin, async (req,res)  =>{ 
 
-    const{Tipo,FD,FA,PoC}=res.params
-    console.log({Tipo,FD,FA,PoC});
-    const Detalle = await pool.query(`SELECT detallet.* , producto.Nombre FROM detallet,producto where (detallet.Codigo=producto.Codigo) and (detallet.FechaEjecucion between'${FD}'  and  '${FA}') and (Producto.Fech = '${PoC}'  and detallet.Tipo='${Tipo}')`);
+    const{Tipo,FD,FH,PoC}=req.params
+
+    console.log({Tipo,FD,FH,PoC});
+    const Detalle = await pool.query(`SELECT Transacciones.*, sum( detallet.Valor) as TotalSP,PoC.Nombre FROM transacciones,detallet,producto,PoC where (transacciones.documento=detallet.documento) and (transacciones.PoC = PoC.NitoCC) and (detallet.Codigo = Producto.Codigo) and (transacciones.FechaEmision between'${FD}'  and  '${FH}') and  detallet.Tipo='${Tipo}' and  (producto.PoC='${PoC}')  group by detallet.Documento`);
+
+    res.send(Detalle);
+});
+
+router.get('/RepDet/:Doc&:PoC',isLoggedin, async (req,res)  =>{ 
+
+    const{PoC,Doc}=req.params
+
+    console.log({PoC,Doc});
+
+    if(PoC!='NOPOC'){
+        sql=`SELECT detallet.*, producto.Nombre,producto.Iva,producto.PCompra,producto.PoC FROM detallet,producto where (detallet.Codigo=producto.Codigo) and detallet.Documento='${Doc}' and Producto.PoC='${PoC}'`
+    }else{
+        sql=`SELECT detallet.*, producto.Nombre,producto.Iva,producto.PCompra,producto.PoC FROM detallet,producto where (detallet.Codigo=producto.Codigo) and detallet.Documento='${Doc}' `
+    }
+
+    const Detalle = await pool.query(sql);
 
     res.send(Detalle);
 });
