@@ -4,9 +4,9 @@ function Reporte_Data(params) {
 
     var url = `/Rep/His/`;
     FD = new Date()
-    FD.setDate(FD.getDate() -30);
+    FD.setDate(FD.getDate() - 30);
     FDs = FD.getFullYear() + '-' + (FD.getMonth() + 1) + '-1';
-    
+
     FH = new Date();
     FH.setDate(FH.getDate() + 0);
     FHs = FH.getFullYear() + '-' + (FH.getMonth() + 1) + '-' + FH.getDate();
@@ -14,19 +14,19 @@ function Reporte_Data(params) {
 
     Prov = $('#PoCSelR').val();
 
-    console.log({ FDs, FHs,Prov });
+    console.log({ FDs, FHs, Prov });
 
     $('#FechaDesde').change(function () {
         FD = $('#FechaDesde').val();
-        console.log({FD,FH});
+        console.log({ FD, FH });
         if (FD != '') {
             FDs = FD.split('/')[2] + '-' + FD.split('/')[1] + '-' + FD.split('/')[0]
         }
         if (Prov != null) {
-            url= `/Rep/HisPoC/` + `${Prov}&Ventas&${FDs}&${FHs}`
+            url = `/Rep/HisPoC/` + `${Prov}&Ventas&${FDs}&${FHs}`
         }
-        else{
-            url= `/Rep/His/` + `Ventas&${FDs}&${FHs}`
+        else {
+            url = `/Rep/His/` + `Ventas&${FDs}&${FHs}`
         }
 
         $.get(url).then(function (res) { params.success(res) })
@@ -37,15 +37,15 @@ function Reporte_Data(params) {
 
         //console.log('dfsd');
         FH = $('#FechaHasta').val();
-        console.log({FD,FH});
+        console.log({ FD, FH });
         if (FH != '') {
             FHs = FH.split('/')[2] + '-' + FH.split('/')[1] + '-' + FH.split('/')[0]
         }
         if (Prov != null) {
-            url= `/Rep/HisPoC/` + `${Prov}&Ventas&${FDs}&${FHs}`
+            url = `/Rep/HisPoC/` + `${Prov}&Ventas&${FDs}&${FHs}`
         }
-        else{
-            url= `/Rep/His/` + `Ventas&${FDs}&${FHs}`
+        else {
+            url = `/Rep/His/` + `Ventas&${FDs}&${FHs}`
         }
         $.get(url + `Ventas&${FDs}&${FHs}`).then(function (res) { params.success(res) })
         return;
@@ -55,23 +55,23 @@ function Reporte_Data(params) {
 
         //console.log('dfsd');
         Prov = $('#PoCSelR').val();
-        console.log({Prov});
+        console.log({ Prov });
         if (Prov != '') {
-            url= `/Rep/HisPoC/` + `${Prov}&Ventas&${FDs}&${FHs}`
+            url = `/Rep/HisPoC/` + `${Prov}&Ventas&${FDs}&${FHs}`
         }
-        else{
-            url= `/Rep/His/` + `Ventas&${FDs}&${FHs}`
+        else {
+            url = `/Rep/His/` + `Ventas&${FDs}&${FHs}`
         }
 
-        $.get(url ).then(function (res) { params.success(res) })
+        $.get(url).then(function (res) { params.success(res) })
         return;
     });
 
     if (Prov != null) {
-        url= `/Rep/HisPoC/` + `${Prov}&Ventas&${FDs}&${FHs}`
+        url = `/Rep/HisPoC/` + `${Prov}&Ventas&${FDs}&${FHs}`
     }
-    else{
-        url= `/Rep/His/` + `Ventas&${FDs}&${FHs}`
+    else {
+        url = `/Rep/His/` + `Ventas&${FDs}&${FHs}`
     }
 
     $.get(url).then(function (res) { params.success(res) });
@@ -94,19 +94,19 @@ function Reporte_Detalle(index, row) {
         <th>Total</th>
     </thead> 
     <tbody id= "Tbody${row.Documento}" > `)
-   // console.log(row)
-   Prov = $('#PoCSelR').val()!=null?$('#PoCSelR').val():'NOPOC';
-   
-   url=`/Rep/RepDet/${row.Documento}&${Prov}`;
+    // console.log(row)
+    Prov = $('#PoCSelR').val() != null ? $('#PoCSelR').val() : 'NOPOC';
 
-   $.get(url).then(function (res) {
-    console.log(res);
-    html2 = '';
-    res.forEach(e => {
+    url = `/Rep/RepDet/${row.Documento}&${Prov}`;
 
-      var d = new Date();
-      var n = d.getSeconds();
-      html2 = html2 + `
+    $.get(url).then(function (res) {
+        console.log(res);
+        html2 = '';
+        res.forEach(e => {
+
+            var d = new Date();
+            var n = d.getSeconds();
+            html2 = html2 + `
 
       <tr>
       <td ${st}> ${e.Codigo}</td>
@@ -119,20 +119,53 @@ function Reporte_Detalle(index, row) {
       </tr>
 
          `;
-      element = document.getElementById('Tbody' + e.Documento);
-      element.innerHTML = html2;
+            element = document.getElementById('Tbody' + e.Documento);
+            element.innerHTML = html2;
+
+        });
+
+
+    });
+
+    html.push(' </tbody> </table>');
+    return html.join('');
+
+
+}
+
+async function ImprimirRep() {
+
+    Data = $('#DetalleReporte').bootstrapTable('getData');
+    Data2 = []
+    PoC = $('#PoCSelR').val() != null ? $('#PoCSelR').val() : 'NOPOC';
+
+    await Data.forEach(async e => {
+
+        url = `/Rep/RepDet/${e.Documento}&${PoC}`;
+
+        await $.get(url).then(function (res) {
+            Data2.push({ Documento: e, Detalle: res })
+            console.log(Data2);
+
+            if (Data2.length == Data.length) {
+                console.log(Data2);
+                url=`/Rep/ImpReporte`;
+                $.post(url,{Data:Data2,T:[{Tipo:'Reportes'}]}).then(function (res) {
+                 console.log(respuesta,res);
+                });
+                Data2=[];
+            }
+
+        });
+
+
 
     });
 
 
-  });
-
-  html.push(' </tbody> </table>');
-  return html.join('');
-  
-  
-  }
 
 
-// Reporte_Ops
+}
+
+// Reporte_Ops;
 // Reporte_Events

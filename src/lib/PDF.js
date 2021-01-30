@@ -55,57 +55,71 @@ PDFcreator.Crear = async (imp, info) => {
       content = await compile('FacturaPos', { info });
       Tamaño = "80mm"
       largo = "auto"
-      margenes ={
+      margenes = {
         top: 0,
         bottom: 0,
         left: 0,
         right: 0,
         top: 0
       };
-      mostrarfooter=false
+      mostrarfooter = false
 
       break;
     case "Cotizaciones":
       content = await compile('Cotizacion', { info });
       Tamaño = "8.27in"
       largo = "11in",
-      margenes={
-        top: 80,
-        bottom: 80,
-        left: 30,
-        right: 30,
-        top: 80
-      };
-      mostrarfooter=true
+        margenes = {
+          top: 80,
+          bottom: 80,
+          left: 30,
+          right: 30,
+          top: 80
+        };
+      mostrarfooter = true
       break;
 
     case "Pedidos":
       content = await compile('Pedidos', { info });
       Tamaño = "8.27in"
       largo = "11in",
-      margenes={
-        top: 80,
-        bottom: 80,
-        left: 30,
-        right: 30,
-        top: 80
-      }
-      mostrarfooter=true
+        margenes = {
+          top: 80,
+          bottom: 80,
+          left: 30,
+          right: 30,
+          top: 80
+        }
+      mostrarfooter = true
+      break;
+
+    case "Reportes":
+      content = await compile('Reportes', { info });
+      Tamaño = "8.27in"
+      largo = "11in",
+        margenes = {
+          top: 80,
+          bottom: 80,
+          left: 30,
+          right: 30,
+          top: 80
+        }
+      mostrarfooter = true
       break;
 
     case "Pago":
       content = await compile('Pagos', { info });
       Tamaño = "80mm";
       largo = "auto",
-      margenes={
-        top: 80,
-        bottom: 80,
-        left: 30,
-        right: 30,
-        top: 80
-      },
-      mostrarfooter=false
-      
+        margenes = {
+          top: 80,
+          bottom: 80,
+          left: 30,
+          right: 30,
+          top: 80
+        },
+        mostrarfooter = false
+
       break;
 
     default:

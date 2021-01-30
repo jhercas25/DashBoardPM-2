@@ -3,6 +3,7 @@ const router= express.Router();
 const pool=require('../database');
 const passport=require('passport');
 const {isLoggedin,isnotloggedin}=require('../lib/auth');
+const PDFcreator = require('../lib/PDF');
 
 router.get('/',isLoggedin,(req,res) =>{
     res.render('Reportes/Reportes');
@@ -11,12 +12,10 @@ router.get('/',isLoggedin,(req,res) =>{
 
 const CrearPDF = async (req, res, next) => {
 
-    const { Doc, Tp } = req.params;
-    //console.log(Doc+' tipo '+Tp);
-    const Detalle = await pool.query(`SELECT detallet.* , producto.Nombre FROM detallet,producto where (detallet.Codigo=producto.Codigo) and (Producto.PoC = '${PoC}'  and detallet.Tipo='Ventas')`);
-    //const T = await pool.query(`SELECT transacciones.Documento,transacciones.Tipo,transacciones.FechaEmision,transacciones.Total,transacciones.poc,PoC.Nombre FROM transacciones,PoC where (transacciones.PoC=PoC.NitoCC) and (transacciones.Documento = '${Doc}' and transacciones.Tipo= '${Tp}')`);
-    //console.log(T, Detalle);
-    r = await PDFcreator.Crear(0, { Detalle, T });
+    const { Data,T } = req.body;
+    
+    console.log('Datos imp ',T);
+    r = await PDFcreator.Crear(0,{ Data, T });
 
     return next();
 }
@@ -59,8 +58,8 @@ router.get('/RepDet/:Doc&:PoC',isLoggedin, async (req,res)  =>{
 });
 
 router.post('/ImpReporte',isLoggedin,CrearPDF, async (req,res)  =>{
-    
-    res.render('envios/envios');
+        console.log('peticion',req.body);
+        res.sendStatus(200);
 });
 
 module.exports =router;

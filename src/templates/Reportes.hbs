@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title> {{info.T.[0].Tipo}} </title>
+    <style type="text/css">
+        .clearfix:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        a {
+            color: #000000;
+            text-decoration: underline;
+        }
+
+        body {
+            position: relative;
+            overflow-x: hidden;
+            width: 800px;
+            height: auto;
+            margin: 0 10px;
+            color: #000000;
+            background: #FFFFFF;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            font-family: Arial;
+        }
+
+        header {
+            padding: 10px 0;
+            margin-bottom: 30px;
+        }
+
+        #logo {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        #logo img {
+            width: 90px;
+        }
+
+        h1 {
+            border-top: 1px solid #5D6975;
+            border-bottom: 1px solid #5D6975;
+            color: #000000;
+            font-size: 2.4em;
+            line-height: 1.4em;
+            font-weight: normal;
+            text-align: center;
+            margin: 0 0 20px 0;
+            background: url(dimension.png);
+        }
+
+        #project {
+            float: left;
+        }
+
+        #project span {
+            color: #000000;
+            text-align: right;
+            width: 100px;
+            margin-right: 10px;
+            display: inline-block;
+            font-size: 1em;
+        }
+
+        #company {
+            float: right;
+            text-align: right;
+            margin: 0px 30px 30px 0px;
+        }
+
+        #project div,
+        #company div {
+            white-space: nowrap;
+        }
+
+        table {
+            width: 800px;
+            border-collapse: collapse;
+            border-spacing: 0;
+            margin: 20px;
+        }
+
+        table th,
+        table td {
+            text-align: center;
+        }
+
+        table th {
+            padding: 1px 1px;
+            color: #000000;
+            border-bottom: 1px solid #000000;
+            white-space: nowrap;
+            font-weight: normal;
+            font-size: 0.9em;
+        }
+
+        
+
+        table .desc {
+            text-align: left;
+            font-size: 0.9em;
+        }
+        table .desc2 {
+            text-align: right;
+            font-size: 0.9em;
+        }
+
+        table td {
+            padding: 2px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        table td.service{
+            background: #173e5e;
+        }
+        table td.desc {
+            vertical-align: top;
+        }
+
+        table td.unit,
+        table td.qty,
+        table td.total {
+            font-size: 1em;
+            background: #66aae2;
+        }
+
+        table td.grand {
+            border-top: 1px solid #000000;
+            ;
+        }
+
+        #notices .notice {
+            color: #000000;
+            font-size: 0.9em;
+        }
+
+        footer {
+            color: #000000;
+            width: 100%;
+            height: 30px;
+            position: relative;
+            bottom: 0;
+            border-top: 1px solid #C1CED9;
+            padding: 8px 0;
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+    <header class="clearfix">
+
+        <h1>PEDIDOS</h1>
+
+        <div id="project">
+            <div><span>D#</span></div>
+            <div><span>PROVEEDOR</span> </div>
+            <div><span>NIT/CC</span> </div>
+            <div><span>FECHA </span> </div>
+        </div>
+
+    </header>
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th class="desc">Documento</th>
+                    <th class="desc">Cliente </th>
+                    <th class="desc">Total</th>
+                    <th class="desc">Total</th>
+                    <th class="desc" colspan="2">FechaEmision</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each info.Data}}
+                <tr>
+                    <td class="service">{{Documento.Documento}}</td>
+                    <td class="service">{{Documento.Nombre}}</td>
+                    <td class="service">${{Documento.Total}}</td>
+                    <td class="service">${{Documento.TotalSP}}</td>
+                    <td class="service" colspan="2">{{Documento.FechaEmision}}</td>
+
+                <tr>
+                    <td class="desc2" colspan="2">   Codigo </th>
+                    <td class="desc2">   Detalle </th>
+                    <td class="desc2">   Precio</th>
+                    <td class="desc2">   Cantida</th>
+                    <td class="desc2">   T.Unitario</th>
+                </tr>
+
+                {{#each Detalle}}
+                <tr>
+                    <td class="desc2" colspan="2">{{Codigo}}</td>
+                    <td class="desc2">{{Nombre}}</td>
+                    <td class="desc2">{{Cantidad}}</td>
+                    <td class="desc2">${{Valor}}</td>
+                    <td class="desc2">${{Total}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+
+            </tr>
+            {{/each }}
+            </tbody>
+        </table>
+
+
+    </main>
+    <footer>
+        <table>
+            <tbody>
+
+                <tr>
+                    <td colspan="5">SUBTOTAL</td>
+                    <td colspan="2" class="total">{{TotalST}}</td>
+                </tr>
+
+                <tr>
+                    <td colspan="5">DESCUENTO </td>
+                    <td colspan="2" class="total">{{TotalDes}}</td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="grand total">TOTAL</td>
+                    <td colspan="2" class="grand total">${{info.T.[0].Total}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="notices">
+            <div>OBSERVACIONES :</div>
+            <div class="notice"> </div>
+        </div>
+        ¡ Gracias por su tiempo !
+    </footer>
+</body>
+
+</html>
