@@ -52,3 +52,15 @@ body{
         font-size: 5.5rem;
     }
 }
+
+@media (max-width: 479px) {
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+      display: block	;
+      
+    }
+}

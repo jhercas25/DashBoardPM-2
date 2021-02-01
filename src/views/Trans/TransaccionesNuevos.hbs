@@ -113,7 +113,7 @@
 
                 </div>
 
-                <form action="" method="POST">
+                <div>
 
                     <div id="alertas" class="alert alert-danger alert-dismissible fade show " role="alert">
                         <strong>Algo salio mal!</strong> revisa los datos
@@ -139,8 +139,9 @@
                             <input type="text" class="form-control" data-inputmask="'alias': 'numeric'"
                                 onkeyup="MTotal()" name="Cnt" id="Cnt" required>
                         </div>
-                        
-                        <div {{#ifEquals user.rol "Admin" }}class="col-6 col-md-2 " {{else}}  class="col-6 col-md-2 invisible " {{/ifEquals}} >
+
+                        <div {{#ifEquals user.rol "Admin" }}class="col-6 col-md-2 " {{else}}
+                            class="col-6 col-md-2 invisible " {{/ifEquals}}>
                             <label for="Cnt">
                                 <span class="d-none d-sm-block"> Utilidad</span>
                                 <span class="d-block d-sm-none">Utl</span></label>
@@ -187,127 +188,166 @@
 
                     </div>
 
-                    {{#ifEquals Trans 'Compras'}}
 
-                    <div class="form-group row">
+                </div>
 
-                        <div class="col-6 col-md-4">
-                            <label for="Iva">Invima</label>
-                            <input type="text" class="form-control" name="Inv" id="Inv" required>
-                        </div>
+                <div class="row">
+                    <div class="col-md-12 mx-auto">
+                        <div id="accordion">
+                            <div class="card">
+                                <div class="card-header" id="hDatosILF">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-block" data-toggle="collapse" data-target="#DatosILF"
+                                            aria-expanded="true" aria-controls="DatosILF">
+                                            <h5 class="card-title">Invima-Lotes-Fecha Vencimiento </h5>
+                                        </button>
+                                    </h5>
+                                </div>
 
-                        <div class="col-6  col-md-3">
-                            <label for="Des">Lote </label>
+                                <div id="DatosILF" class="collapse" aria-labelledby="hDatosILF"
+                                    data-parent="#accordion">
+                                    <div class="card-body">
+                                        {{!-- ILF --}}
 
-                            <input type="text" class="form-control" name="Lot" id="Lot" required>
-                        </div>
+                                        {{#ifEquals Trans 'Compras'}}
 
-                        <div class="col-6 col-md-3 ">
-                            <label class="d-none d-sm-block" for="FV">Fecha de vencimiento </label>
-                            <label class="d-block d-sm-none" for="FV">F.Ven</label>
-                            <div class="input-group date" id="FevILF" data-provide="datepicker">
-                                <input type="text" class="form-control" name="Fvenc" id="Fev" required>
-                                <div class="input-group-addon">
-                                    <span class="glyphicon glyphicon-th"></span>
+                                        <div class="form-group row">
+
+                                            <div class="col-6 col-md-4">
+                                                <label for="Iva">Invima</label>
+                                                <input type="text" class="form-control" name="Inv" id="Inv" required>
+                                            </div>
+
+                                            <div class="col-6  col-md-3">
+                                                <label for="Des">Lote </label>
+
+                                                <input type="text" class="form-control" name="Lot" id="Lot" required>
+                                            </div>
+
+                                            <div class="col-6 col-md-3 ">
+                                                <label class="d-none d-sm-block" for="FV">Fecha de vencimiento
+                                                </label>
+                                                <label class="d-block d-sm-none" for="FV">F.Ven</label>
+                                                <div class="input-group date" id="FevILF" data-provide="datepicker">
+                                                    <input type="text" class="form-control" name="Fvenc" id="Fev"
+                                                        required>
+                                                    <div class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-th"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-6 col-md-1 ">
+                                                <label for="Cntilf"><span class="d-none d-sm-block"> Cantidad</span>
+                                                    <span class="d-block d-sm-none">Cnt</span></label>
+                                                <input type="text" class="form-control"
+                                                    data-inputmask="'alias': 'numeric'" name="Cntilf" id="Cntilf"
+                                                    required>
+                                            </div>
+
+                                            <div class="col-1 p-3 my-auto">
+
+                                                <a id="addILF" href="javascript:void(0)"
+                                                    onclick="agregarILF('{{Trans}}')">
+                                                    <i class="fas fa-plus-circle fa-w-16 fa-3x"></i>
+                                                </a>
+                                                <a id="editILF" class="invisible" href="javascript:void(0)"
+                                                    onclick="editarILF('{{Trans}}')">
+                                                    <i class="fas fa-pencil-alt fa-w-16 fa-3x"></i>
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                        <table id="tableILF" data-height="300" data-toggle="table"
+                                            data-toolbar="#toolbar" data-ajax="InvLotFev"
+                                            data-pagination-parts="['pageList]" data-page-size="10"
+                                            data-pagination="true" data-query-params="queryParams">
+                                            <thead>
+                                                <tr>
+                                                    <th data-field="Invima">Invima</th>
+                                                    <th data-field="FechaVencimiento">Fecha de Vencimiento </th>
+                                                    <th data-field="Lote">Lote</th>
+                                                    <th data-field="Cnt">Cantidad</th>
+                                                    <th data-field="operate" data-formatter="opsILF"
+                                                        data-events="eveILF">
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+
+                                        {{/ifEquals}}
+
+
+
+
+                                        {{#ifEquals Trans 'Ventas'}}
+                                        <div class="form-group row">
+                                            <div class="col-8 ">
+                                                <label class="d-none d-sm-block" for="Des">Invima-Lote-Fecha de
+                                                    vencimiento</label>
+                                                <label class="d-block d-sm-none" for="DesM">Inv - Lot - FV </label>
+
+                                                <select id="InvLotFev" class="selectpicker col-12"
+                                                    title="Elija el Invima, Lote y Fecha de Vencimiento."
+                                                    data-live-search="true" required>
+                                                </select>
+
+                                            </div>
+                                            <div class="col-2">
+                                                <label for="Cnt">Cantidad</label>
+                                                <input type="text" value="0" class="form-control"
+                                                    data-inputmask="'alias': 'numeric'" name="Cntilf" id="Cntilf"
+                                                    required>
+                                            </div>
+                                            <div class="col-2 p-3 my-auto">
+                                                <a id="addILF" href="javascript:void(0)"
+                                                    onclick="agregarILF('{{Trans}}')">
+                                                    <i class="fas fa-plus-circle fa-w-16 fa-3x"></i>
+                                                </a>
+                                                <a id="editILF" class="invisible" href="javascript:void(0)"
+                                                    onclick="editarILF('{{Trans}}')">
+                                                    <i class="fas fa-pencil-alt fa-w-16 fa-3x"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <table id="tableILF" data-height="300" data-toggle="table"
+                                            data-toolbar="#toolbar" data-ajax="InvLotFev"
+                                            data-pagination-parts="['pageList]" data-page-size="10"
+                                            data-pagination="true" data-query-params="queryParams">
+                                            <thead>
+                                                <tr>
+                                                    <th data-field="Invima">Invima</th>
+                                                    <th data-field="FechaVencimiento">Fecha de Vencimiento </th>
+                                                    <th data-field="Lote">Lote</th>
+                                                    <th data-field="Cnt">Cantidad</th>
+                                                    <th data-field="operate" data-formatter="opsILF"
+                                                        data-events="eveILF">
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+
+                                        {{/ifEquals}}
+
+                                        {{!-- / ILF --}}
+
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-6 col-md-1 ">
-                            <label for="Cntilf"><span class="d-none d-sm-block"> Cantidad</span>
-                                <span class="d-block d-sm-none">Cnt</span></label>
-                            <input type="text" class="form-control" data-inputmask="'alias': 'numeric'" name="Cntilf"
-                                id="Cntilf" required>
-                        </div>
-
-                        <div class="col-1 p-3 my-auto">
-
-                            <a id="addILF" href="javascript:void(0)" onclick="agregarILF('{{Trans}}')">
-                                <i class="fas fa-plus-circle fa-w-16 fa-3x"></i>
-                            </a>
-                            <a id="editILF" class="invisible" href="javascript:void(0)"
-                                onclick="editarILF('{{Trans}}')">
-                                <i class="fas fa-pencil-alt fa-w-16 fa-3x"></i>
-                            </a>
-
-                        </div>
                     </div>
-                                        <table id="tableILF" data-height="300" data-toggle="table" data-toolbar="#toolbar"
-                        data-ajax="InvLotFev" data-pagination-parts="['pageList]" data-page-size="10"
-                        data-pagination="true" data-query-params="queryParams">
-                        <thead>
-                            <tr>
-                                <th data-field="Invima">Invima</th>
-                                <th data-field="FechaVencimiento">Fecha de Vencimiento </th>
-                                <th data-field="Lote">Lote</th>
-                                <th data-field="Cnt">Cantidad</th>
-                                <th data-field="operate" data-formatter="opsILF" data-events="eveILF">
-                                </th>
-                            </tr>
-                        </thead>
-                    </table>
+                </div>
+                <div class="col p-3 my-auto ">
 
-                    {{/ifEquals}}
+                    <a id="addDetalle" href="javascript:void(0)" onclick="AgregarDetalle()">
+                        <i class="fas fa-plus-circle fa-w-16 fa-3x " style="color:rgb(73, 197, 191)"></i>
+                    </a>
+                    <a id="editDetalle" class="invisible" href="javascript:void(0)" onclick="EditarDetalle()">
+                        <i class="fas fa-pencil-alt fa-w-16 fa-3x" style="color:rgb(73, 197, 191)"></i>
+                    </a>
 
-
-
-
-                    {{#ifEquals Trans 'Ventas'}}
-                    <div class="form-group row">
-                        <div class="col-8 ">
-                            <label class="d-none d-sm-block" for="Des">Invima-Lote-Fecha de vencimiento</label>
-                            <label class="d-block d-sm-none" for="DesM">Inv - Lot - FV </label>
-
-                            <select id="InvLotFev" class="selectpicker col-12"
-                                title="Elija el Invima, Lote y Fecha de Vencimiento." data-live-search="true" required>
-                            </select>
-
-                        </div>
-                        <div class="col-2">
-                            <label for="Cnt">Cantidad</label>
-                            <input type="text" value="0" class="form-control" data-inputmask="'alias': 'numeric'"
-                                name="Cntilf" id="Cntilf" required>
-                        </div>
-                        <div class="col-2 p-3 my-auto">
-                            <a id="addILF" href="javascript:void(0)" onclick="agregarILF('{{Trans}}')">
-                                <i class="fas fa-plus-circle fa-w-16 fa-3x"></i>
-                            </a>
-                            <a id="editILF" class="invisible" href="javascript:void(0)"
-                                onclick="editarILF('{{Trans}}')">
-                                <i class="fas fa-pencil-alt fa-w-16 fa-3x"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <table id="tableILF" data-height="300" data-toggle="table" data-toolbar="#toolbar"
-                        data-ajax="InvLotFev" data-pagination-parts="['pageList]" data-page-size="10"
-                        data-pagination="true" data-query-params="queryParams">
-                        <thead>
-                            <tr>
-                                <th data-field="Invima">Invima</th>
-                                <th data-field="FechaVencimiento">Fecha de Vencimiento </th>
-                                <th data-field="Lote">Lote</th>
-                                <th data-field="Cnt">Cantidad</th>
-                                <th data-field="operate" data-formatter="opsILF" data-events="eveILF">
-                                </th>
-                            </tr>
-                        </thead>
-                    </table>
-
-                    {{/ifEquals}}
-
-                    <div class="col p-3 my-auto ">
-
-                        <a id="addDetalle" href="javascript:void(0)" onclick="AgregarDetalle()">
-                            <i class="fas fa-plus-circle fa-w-16 fa-3x " style="color:rgb(73, 197, 191)"></i>
-                        </a>
-                        <a id="editDetalle" class="invisible" href="javascript:void(0)" onclick="EditarDetalle()">
-                            <i class="fas fa-pencil-alt fa-w-16 fa-3x" style="color:rgb(73, 197, 191)"></i>
-                        </a>
-
-                    </div>
-
-                </form>
-
+                </div>
             </div>
 
         </div>
@@ -318,12 +358,12 @@
 
 <table id="tableDetalle" data-height="500" data-toggle="table" data-toolbar="#toolbar" data-detail-view="true"
     data-detail-view-icon="true" data-detail-formatter="detailFormatter" data-ajax="DetalleT"
-    data-pagination-parts="['pageList]" data-page-size="25" data-pagination="true" data-query-params="queryParams">
+    data-pagination-parts="['pageList]"  data-mobile-responsive="true" data-page-size="25" data-pagination="true" data-query-params="queryParams">
     <thead>
         <tr>
             <th data-field="Producto">Codidgo</th>
             <th data-field="Nombre">Producto</th>
-            <th data-field="variacion">variacion</th>
+            <th data-field="Variacion">variacion</th>
             {{#ifEquals Trans "Compras"}}
             <th data-field="Valor">P.Compra</th>
             {{else}}
@@ -548,7 +588,7 @@
 
     $('#FevILF').datepicker({
         format: "dd/mm/yyyy"
-        
+
     });
 
 
@@ -563,7 +603,7 @@
 
     $(document).ready(() => {
         $('#NitoCCT').change();
-        
+
     });
 
 </script>
