@@ -54,7 +54,7 @@ body{
 }
 
 @media (max-width: 479px) {
-    table,
+    /* table,
     thead,
     tbody,
     th,
@@ -62,5 +62,7 @@ body{
     tr {
       display: block	;
       
-    }
+    } */
+
+
 }

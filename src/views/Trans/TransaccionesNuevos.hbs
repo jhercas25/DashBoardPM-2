@@ -97,7 +97,7 @@
                         </div>
                         <input value="{{Cod}}" type="text" class="form-control" name="Nombre" placeholder="Codigo"
                             aria-label="Username" aria-describedby="basic-addon1" style="text-transform: uppercase"
-                            id="CodigoT" onchange="traerPro('{{Trans}}')" required>
+                            id="CodigoT" onchange="traerPro('{{Trans}}')" autocomplete="nope" required>
                     </div>
 
                     <div class="mx-auto">
@@ -125,7 +125,7 @@
                     <div class="form-group row">
                         <div class="col-12">
                             <label for="NombreProT">Nombre</label>
-                            <input type="text" class="form-control" name="NombreProT" id="NombreProT" required readonly>
+                            <input type="text" class="form-control" name="NombreProT" id="NombreProT"  autocomplete="nope" required readonly>
                         </div>
                     </div>
 
@@ -282,7 +282,7 @@
 
                                         {{#ifEquals Trans 'Ventas'}}
                                         <div class="form-group row">
-                                            <div class="col-8 ">
+                                            <div class="col-md-8 col-12">
                                                 <label class="d-none d-sm-block" for="Des">Invima-Lote-Fecha de
                                                     vencimiento</label>
                                                 <label class="d-block d-sm-none" for="DesM">Inv - Lot - FV </label>
@@ -293,13 +293,13 @@
                                                 </select>
 
                                             </div>
-                                            <div class="col-2">
+                                            <div class="col-md-2 col-6 ">
                                                 <label for="Cnt">Cantidad</label>
                                                 <input type="text" value="0" class="form-control"
                                                     data-inputmask="'alias': 'numeric'" name="Cntilf" id="Cntilf"
                                                     required>
                                             </div>
-                                            <div class="col-2 p-3 my-auto">
+                                            <div class="col-md-2 col-6 p-3 my-auto">
                                                 <a id="addILF" href="javascript:void(0)"
                                                     onclick="agregarILF('{{Trans}}')">
                                                     <i class="fas fa-plus-circle fa-w-16 fa-3x"></i>
@@ -313,7 +313,7 @@
                                         <table id="tableILF" data-height="300" data-toggle="table"
                                             data-toolbar="#toolbar" data-ajax="InvLotFev"
                                             data-pagination-parts="['pageList]" data-page-size="10"
-                                            data-pagination="true" data-query-params="queryParams">
+                                            data-pagination="true" data-mobile-responsive="true" data-query-params="queryParams">
                                             <thead>
                                                 <tr>
                                                     <th data-field="Invima">Invima</th>
