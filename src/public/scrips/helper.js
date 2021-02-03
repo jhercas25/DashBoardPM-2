@@ -116,6 +116,7 @@ function traerDatos(params) {
 }
 
 function detailFormatter(index, row) {
+  console.log(row);
   var html = []
   st = '';
   html.push(`<table class="table" style="text-align: center;" > 
@@ -165,44 +166,55 @@ function detailFormatter(index, row) {
 
   html.push('</tbody> </table>');
 
-  // html.push(`<table class="table " style=" text-align: center;" > 
-  //   <thead > 
-  //     <th >Codigo</th> 
-  //     <th >Variante</th> 
-  //     <th >Existencias</th>  
-  //     <th >Imagen</th>   
-  //     <th > </th>  
-  //   </thead> 
-  // <tbody  id="Tbody${row.id}"> 
+  html.push(`<table class="table " style=" text-align: center;" > 
+    <thead > 
+    <tr class="d-none d-sm-block" >
+      <th >Codigo</th> 
+      <th >Variante</th> 
+      <th >Existencias</th>  
+      <th >Imagen</th>   
+      <th > </th>  
+    </tr>
+    <tr class="d-block d-sm-none"  >
+    <th  style="min-width:230px;">Detalle </th> 
+    <th  style="min-width:50px;">Desc</th> 
+    </tr>
+    </thead> 
+  <tbody  id="Tbody${row.Codigo}"> 
     
-  //    `);
+     `);
 
-  // var url = '/inv/Variantes';
-  // $.post(url, { Codigo: row.Codigo }).then(function (res) {
-  //   //console.log(res);
-  //   html2 = '';
-  //   res.forEach(e => {
+  var url = '/inv/Variantes';
+  $.post(url, { Codigo: row.Codigo }).then(function (res) {
+    console.log(res);
+    //console.log(res);
+    html2 = '';
+    res.forEach(e => {
 
-  //     var d = new Date();
-  //     var n = d.getSeconds();
-  //     html2 = html2 + `
+      var d = new Date();
+      var n = d.getSeconds();
+      html2 = html2 + `
 
-  //     <tr >
-  //     <td  ${st}> ${e.Codigo}</td>
-  //     <td  ${st}> ${e.Variacion}</td>
-  //     <td  ${st}> ${e.Cantidad}</td>
-  //     <td  ${st}> <img src="/uploads/Imagenes-Producto/${e.imagen}.jpg?${n}" class="img-thumbnail-sm"> </img> </td>
-  //     <td > <a onclick= "add('${e.Codigo}')"  href="javascript:void(0)" title="Add"><i class="fas fa-plus"></i></a> </td>
-  //     </tr>
+      <tr class="d-none d-sm-block">
+      <td  ${st}> ${e.Codigo}</td>
+      <td  ${st}> ${e.Variacion}</td>
+      <td  ${st}> ${e.Cantidad}</td>
+      <td  ${st}> <img src="/uploads/Imagenes-Producto/${e.imagen}.jpg?${n}" class="img-thumbnail-sm"> </img> </td>
+      <td > <a onclick= "add('${e.Codigo}')"  href="javascript:void(0)" title="Add"><i class="fas fa-plus"></i></a> </td>
+      </tr>
+      <tr class="d-block d-sm-none"  >
+      <td style="min-width:230px;" > ${e.Codigo} ${e.Variacion} ${e.Cantidad} <img src="/uploads/Imagenes-Producto/${e.imagen}.jpg?${n}" class="img-thumbnail-sm"> </img></td>
+      <td style="min-width:50px;"> <a onclick= "add('${e.Codigo}')"  href="javascript:void(0)" title="Add"><i class="fas fa-plus"></i></a> </td>
+      </tr>
 
-  //        `;
-  //     element = document.getElementById('Tbody' + row.id);
-  //     element.innerHTML = html2;
+         `;
+      element = document.getElementById('Tbody' + e.Codigo_P);
+      element.innerHTML = html2;
 
-  //   });
+    });
 
 
-//  });
+ });
 
   html.push(' </tbody> </table>');
   return html.join('');
