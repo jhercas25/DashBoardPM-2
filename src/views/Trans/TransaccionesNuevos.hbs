@@ -364,13 +364,14 @@
             <th data-field="Producto">Codidgo</th>
             <th data-field="Nombre">Producto</th>
             <th data-field="Variacion">variacion</th>
+            
             {{#ifEquals Trans "Compras"}}
             <th data-field="Valor">P.Compra</th>
             {{else}}
             <th data-field="Valor">P.Venta</th>
             {{/ifEquals}}
-
             <th data-field="Cantidad">Cantidad</th>
+            <th data-field="Iva">Iva</th>
             <th data-field="Total">Total</th>
             <th data-field="operate" data-formatter="DetalletTFomater" data-events="DetalleTEvents"></th>
         </tr>

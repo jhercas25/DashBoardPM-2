@@ -116,7 +116,7 @@ function traerDatos(params) {
 }
 
 function detailFormatter(index, row) {
-  console.log(row);
+  //console.log(row);
   var html = []
   st = '';
   html.push(`<table class="table" style="text-align: center;" > 
@@ -132,7 +132,7 @@ function detailFormatter(index, row) {
   </tr>
   <tr class="d-block d-sm-none" style="min-width:200px;" >
   <th  style="min-width:130px;">Detalle </th> 
-  <th  style="min-width:170px;">Desc</th> 
+  <th  style="min-width:170px;">Img</th> 
   </tr>
   </thead> 
 
@@ -153,7 +153,7 @@ function detailFormatter(index, row) {
   </tr >
 
   <tr class="d-block d-sm-none" >
-  <td  style="min-width:130px; max-width:130px"> ${row.Marca} ${row.PCompra} ${row.Iva} ${row.PoC} - ${row.Proveedor}</td>
+  <td  style="min-width:130px; max-width:130px"> <p><strong> Marca: </strong>${row.Marca}</p>  <p><strong>P.Compra:</strong>  $${row.PCompra}</p> <p><strong>Iva:</strong>${row.Iva}</p> <p><strong>Proveedor:</strong> ${row.PoC} - ${row.Proveedor}</p> </td>
   <td style="min-width:170px;"> <img src="/uploads/Imagenes-Producto/${row.ImagenP}?${n}" class="img-thumbnail-sm"> </img> </td>
   </tr >
   
@@ -169,15 +169,15 @@ function detailFormatter(index, row) {
   html.push(`<table class="table " style=" text-align: center;" > 
     <thead > 
     <tr class="d-none d-sm-block" >
-      <th >Codigo</th> 
-      <th >Variante</th> 
-      <th >Existencias</th>  
-      <th >Imagen</th>   
-      <th > </th>  
+      <th style="min-width:130px;">Codigo</th> 
+      <th style="min-width:130px;">Variante</th> 
+      <th style="min-width:130px;">Existencias</th>  
+      <th style="min-width:230px;">Imagen</th>   
+      <th style="min-width:50px;"> </th>  
     </tr>
     <tr class="d-block d-sm-none"  >
     <th  style="min-width:230px;">Detalle </th> 
-    <th  style="min-width:50px;">Desc</th> 
+    <th  style="min-width:50px;"></th> 
     </tr>
     </thead> 
   <tbody  id="Tbody${row.Codigo}"> 
@@ -186,7 +186,7 @@ function detailFormatter(index, row) {
 
   var url = '/inv/Variantes';
   $.post(url, { Codigo: row.Codigo }).then(function (res) {
-    console.log(res);
+    //console.log(res);
     //console.log(res);
     html2 = '';
     res.forEach(e => {
@@ -196,14 +196,14 @@ function detailFormatter(index, row) {
       html2 = html2 + `
 
       <tr class="d-none d-sm-block">
-      <td  ${st}> ${e.Codigo}</td>
-      <td  ${st}> ${e.Variacion}</td>
-      <td  ${st}> ${e.Cantidad}</td>
-      <td  ${st}> <img src="/uploads/Imagenes-Producto/${e.imagen}.jpg?${n}" class="img-thumbnail-sm"> </img> </td>
-      <td > <a onclick= "add('${e.Codigo}')"  href="javascript:void(0)" title="Add"><i class="fas fa-plus"></i></a> </td>
+      <td  style="min-width:130px;"> ${e.Codigo}</td>
+      <td  style="min-width:130px;"> ${e.Variacion}</td>
+      <td  style="min-width:130px;"> ${e.Cantidad}</td>
+      <td  style="min-width:230px;"> <img src="/uploads/Imagenes-Producto/${e.imagen}.jpg?${n}" class="img-thumbnail-sm"> </img> </td>
+      <td  style="min-width:50px;"> <a onclick= "add('${e.Codigo}')"  href="javascript:void(0)" title="Add"><i class="fas fa-plus"></i></a> </td>
       </tr>
       <tr class="d-block d-sm-none"  >
-      <td style="min-width:230px;" > ${e.Codigo} ${e.Variacion} ${e.Cantidad} <img src="/uploads/Imagenes-Producto/${e.imagen}.jpg?${n}" class="img-thumbnail-sm"> </img></td>
+      <td style="min-width:230px;" > <p> <strong>Codigo:</strong>${e.Codigo}</p> <p><strong>Variacion:</strong>${e.Variacion}</p> <p><strong>Existencias:</strong>${e.Cantidad} </p> <span><img src="/uploads/Imagenes-Producto/${e.imagen}.jpg?${n}" class="img-thumbnail-sm"> </img></span></td>
       <td style="min-width:50px;"> <a onclick= "add('${e.Codigo}')"  href="javascript:void(0)" title="Add"><i class="fas fa-plus"></i></a> </td>
       </tr>
 
@@ -404,9 +404,16 @@ window.DetalleTEvents = {
       $('#CodigoT').val(row.Producto);
       Tipo = document.getElementById('TipoT').innerText
       await traerPro(Tipo);
+      Vc=localStorage.getItem("Vc")/1;
+      Vv=row.Valor;
+
+      
+      Gn = (Vv /((1+(row.Iva/100))* Vc)) - 1;
+
       $('#Cnt').val(row.Cantidad);
       $('#Des').val(row.Descuento);
       $('#PreUni').val(row.Valor);
+      localStorage.setItem("G",Gn*100);
 
       NDes();
     }
@@ -889,7 +896,7 @@ async function traerPro(Trans) {
   if (text != '') {
 
     await $.post(url + '/' + Trans + '&' + Prov, { Cod }).then(function (res) {
-      // console.log(res);
+      console.log(res);
       Prod = res[0];
       if (Prod) {
 
@@ -908,6 +915,7 @@ async function traerPro(Trans) {
           G = 0;
           localStorage.setItem('G', G);
           localStorage.setItem('Vc', Vc);
+          localStorage.setItem('Prov', Prod.PoC);
           R = ActDes(Vc, (Iva / 100) + 1, (G / 100) + 1, 0, DesM / 100);
           //console.log(R);
           $('#Des').val(R.Des);
@@ -916,6 +924,7 @@ async function traerPro(Trans) {
         } else {
           G = ((Vv / Vc) - 1) * 100;
           localStorage.setItem('G', G);
+          localStorage.setItem('Prov', Prod.PoC);
           localStorage.setItem('Vc', Vc);
           $('#G').val(Math.round(G * 100) / 100);
 
@@ -995,7 +1004,7 @@ function NDes() {
 
   $('#G').val(Math.round((R.Util - 1) * 10000) / 100);
   $('#Des').val(Math.round((R.Des) * 10000) / 100);
-
+  
   Vv = R.PvDesI;
   Vv = Math.round(Vv / 10) * 10
 
@@ -1446,10 +1455,22 @@ function MprecioV() {
   DesM = $('#DesM').val() / 100;
   Vv = $('#PreUni').val().replace(/\./g, '') / 1;
   Vc = localStorage.getItem("Vc") / 1;
+  Prov= localStorage.getItem("Prov");
+  Iva = $('#Iva').val().replace(/\./g, '') / 100;
+  //console.log(Prov);
 
-  Gn = (Vv / Vc) - 1;
-  Des = G - Gn;
-  $('#Des').val(Des * 100);
+  Gn = (Vv /((1+Iva)* Vc)) - 1;
+
+  if(Prov==0){
+    localStorage.removeItem("G")
+    localStorage.setItem("G",Gn*100);
+    
+  }else{
+    Des = G - Gn;
+    $('#Des').val(Des * 100);
+  }
+
+  
   NDes();
 
 }
