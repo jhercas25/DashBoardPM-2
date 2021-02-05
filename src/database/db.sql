@@ -275,6 +275,21 @@ Create Table Variaciones (
  
  );
 
+Create Table Cartera (
+    
+ ID AUTO_INCREMENT PRIMARY KEY,
+ Documento VARCHAR (60) NOT NULL,  
+ PoC INT UNSIGNED NOT NULL,
+ Tipo VARCHAR(60) NOT NULL, 
+ FechaEjecucion TIMESTAMP default current_timestamp, 
+ FechaVencimiento TIMESTAMP , 
+ Total INT UNSIGNED NOT NULL,
+ Saldo INT UNSIGNED NOT NULL,
+ Responsable VARCHAR(40) NOT NULL,
+ 
+ );
+
+
 
 --------------------------- STORED PROCEDURE ---------------------------------------------------------------------------------
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ActualizarInv`(in Doc INT unsigned,in incodec bool, out Salida varchar(60) )

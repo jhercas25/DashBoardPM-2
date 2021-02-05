@@ -1,6 +1,6 @@
 <div class="form-group row pl-3 pr-3">
-    
-   <div class="col ">
+
+    <div class="col ">
         <label for="NumeroT">
 
             {{#switch Trans}}
@@ -40,8 +40,7 @@
 
     {{else}}
     <div class="col-8">
-        <input type="text" class="form-control col-10"  name="NumeroT" id="NumeroT"
-            value={{NumD}} required readonly>
+        <input type="text" class="form-control col-10" name="NumeroT" id="NumeroT" value={{NumD}} required readonly>
     </div>
 
     {{/ifEquals }}
@@ -54,30 +53,42 @@
     <div class="col-6">
         <label for="FEmicion"> Fecha emicion </label>
         <input type="text" data-inputmask="'alias': 'date'" class="form-control" name="FEmicion" id="FEmicion"
-            value={{iftrue DT.row.FechaEmision "Hoy" }}  readonly>
+            value={{iftrue DT.row.FechaEmision "Hoy" }} readonly>
     </div>
     <div class="col-6">
         <label for="FVencimiento">Fecha vencimiento </label>
-        <input type="text" data-inputmask="'alias': 'date'" class="form-control" name="FVencimiento" value={{iftrue DT.row.FechaVencimiento "Hoy" }}
-            id="FVencimiento" readonly>
+        <input type="text" data-inputmask="'alias': 'date'" class="form-control" name="FVencimiento" value={{iftrue
+            DT.row.FechaVencimiento "Hoy" }} id="FVencimiento" readonly>
     </div>
 </div>
 
+
 <div class="form-group row">
+    {{#ifEquals Trans "Pagos"}}
+
+    {{else}}
     <div class="col-6">
         <label for="MetodoPago">Metodo de pago</label>
-        <select id="MetodoPago" class="selectpicker form-control col-12" onchange="MP()"  required>
-            <option value="Contado" {{#ifEquals DT.row.Plazo "Contado" }} selected {{/ifEquals}}> Pago de Contado </option>
-            <option value="Credito30" {{#ifEquals DT.row.Plazo "Credito30" }} selected {{/ifEquals}}> Pago a 30 días </option>
-            <option value="Credito60" {{#ifEquals DT.row.Plazo "Credito60" }} selected {{/ifEquals}}> Pago a 60 días </option>
-            <option value="Credito90" {{#ifEquals DT.row.Plazo "Credito90" }} selected {{/ifEquals}}> Pago a 90 días </option>
+        <select id="MetodoPago" class="selectpicker form-control col-12" onchange="MP()" required>
+            <option value="Contado" {{#ifEquals DT.row.Plazo "Contado" }} selected {{/ifEquals}}> Pago de Contado
+            </option>
+            <option value="Credito30" {{#ifEquals DT.row.Plazo "Credito30" }} selected {{/ifEquals}}> Pago a 30 días
+            </option>
+            <option value="Credito60" {{#ifEquals DT.row.Plazo "Credito60" }} selected {{/ifEquals}}> Pago a 60 días
+            </option>
+            <option value="Credito90" {{#ifEquals DT.row.Plazo "Credito90" }} selected {{/ifEquals}}> Pago a 90 días
+            </option>
         </select>
     </div>
+    {{/ifEquals}}
     <div class="col-6">
         <label for="Responsable">Responsable</label>
         <input type="text" class="form-control" value={{user.fullname}} name="Responsable" id="Responsable" readonly>
     </div>
 </div>
+
+
+
 
 <div class="form-group">
     <label for="Observaciones">Observaciones</label>

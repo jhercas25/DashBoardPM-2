@@ -1531,77 +1531,109 @@ async function FormalizarTran(Editar) {
     Total: $('#TotalP').val().replace(/\./g, '').replace(/\,/g, '.') / 1
 
   }
-
   // console.log(Transaccion);
   // console.log(Pago);
+  if(Transaccion.Plazo.indexOf('Credito')>0){
 
-  if (MedPag != "OpcEfectivo") {
-
-    if (Pago.Cambio >= 0 && Pago.Referencia != "" && Pago.TipoPagoEle != "") {
-      bodyMsg = { Transaccion, Pago }
-
-      url = '/Tran/Formalizar';
-      await $.post(url + '/' + DocT + '&' + Editar, { bodyMsg }).then(function (res) {
-        if (res = 'Ok') {
-
-          //console.log('listoss');
-          if (Transaccion.Tipo == "Ventas" || Transaccion.Tipo == "Compras") {
-            Ainv = ActualizarInv(Transaccion.Tipo, DocT, Editar);
-            //console.log(Ainv);
+    bodyMsg = { Transaccion, Pago }
+    url = '/Tran/Formalizar';
+    // console.log(url);
+    await $.post(url + '/' + DocT + '&' + Editar, { bodyMsg }).then(function (res) {
+      //console.log(res);
+      if (res == 'OK') {
+        //console.log('listoss');
+        if (Transaccion.Tipo == "Ventas" || Transaccion.Tipo == "Compras") {
+          Ainv = ActualizarInv(Transaccion.Tipo, DocT, Editar);
+          ActReg(Transaccion.PoC);
+          //   console.log(Ainv); 
+        }
+        if (Transaccion.Tipo != "Compras") {
+          if (imp) {
+            imprimir(DocT, Transaccion.Tipo);
           }
-          if (Transaccion.Tipo != "Compras") {
-
-            if (imp) {
-              imprimir(DocT, Transaccion.Tipo);
-            }
-            else {
-              window.location.href = '/Tran/' + Transaccion.Tipo;
-            };
-
-          } else {
+          else {
             window.location.href = '/Tran/' + Transaccion.Tipo;
           };
-
-        }
-
-      });
-
-    }
-
-  } else {
-
-    if (Pago.Cambio >= 0) {
-      bodyMsg = { Transaccion, Pago }
-      url = '/Tran/Formalizar';
-      // console.log(url);
-      await $.post(url + '/' + DocT + '&' + Editar, { bodyMsg }).then(function (res) {
-        //console.log(res);
-        if (res == 'OK') {
-          //console.log('listoss');
-          if (Transaccion.Tipo == "Ventas" || Transaccion.Tipo == "Compras") {
-            Ainv = ActualizarInv(Transaccion.Tipo, DocT, Editar);
-            ActReg(Transaccion.PoC);
-            //   console.log(Ainv); 
-          }
-          if (Transaccion.Tipo != "Compras") {
-            if (imp) {
-              imprimir(DocT, Transaccion.Tipo);
-            }
-            else {
-              window.location.href = '/Tran/' + Transaccion.Tipo;
-            };
-          } else {
-            window.location.href = '/Tran/' + Transaccion.Tipo;
-          };
+        } else {
+          window.location.href = '/Tran/' + Transaccion.Tipo;
+        };
 
 
-        }
-      });
-
-
-    }
+      }
+    });
 
   }
+  else{
+    if (MedPag != "OpcEfectivo") {
+
+      if (Pago.Cambio >= 0 && Pago.Referencia != "" && Pago.TipoPagoEle != "") {
+        bodyMsg = { Transaccion, Pago }
+  
+        url = '/Tran/Formalizar';
+        await $.post(url + '/' + DocT + '&' + Editar, { bodyMsg }).then(function (res) {
+          if (res = 'Ok') {
+  
+            //console.log('listoss');
+            if (Transaccion.Tipo == "Ventas" || Transaccion.Tipo == "Compras") {
+              Ainv = ActualizarInv(Transaccion.Tipo, DocT, Editar);
+              //console.log(Ainv);
+            }
+            if (Transaccion.Tipo != "Compras") {
+  
+              if (imp) {
+                imprimir(DocT, Transaccion.Tipo);
+              }
+              else {
+                window.location.href = '/Tran/' + Transaccion.Tipo;
+              };
+  
+            } else {
+              window.location.href = '/Tran/' + Transaccion.Tipo;
+            };
+  
+          }
+  
+        });
+  
+      }
+  
+    } else {
+  
+      if (Pago.Cambio >= 0) {
+        bodyMsg = { Transaccion, Pago }
+        url = '/Tran/Formalizar';
+        // console.log(url);
+        await $.post(url + '/' + DocT + '&' + Editar, { bodyMsg }).then(function (res) {
+          //console.log(res);
+          if (res == 'OK') {
+            //console.log('listoss');
+            if (Transaccion.Tipo == "Ventas" || Transaccion.Tipo == "Compras") {
+              Ainv = ActualizarInv(Transaccion.Tipo, DocT, Editar);
+              ActReg(Transaccion.PoC);
+              //   console.log(Ainv); 
+            }
+            if (Transaccion.Tipo != "Compras") {
+              if (imp) {
+                imprimir(DocT, Transaccion.Tipo);
+              }
+              else {
+                window.location.href = '/Tran/' + Transaccion.Tipo;
+              };
+            } else {
+              window.location.href = '/Tran/' + Transaccion.Tipo;
+            };
+  
+  
+          }
+        });
+  
+  
+      }
+  
+    }
+  }
+
+
 
 }
 
@@ -1661,6 +1693,8 @@ function GuardarTran(imp) {
       $('#Rte').val(Retenciones);
       $('#imp').prop('checked', imp);
       $('#Formalizar').modal('show');
+      $('#MontoEfe').val(0);
+      $('#MontoEfe').keyup();
 
     }
 
@@ -1833,5 +1867,22 @@ function CrearNuevoProducto() {
 
 }
 
+function TraerFacPendientes(prov) {
+  url = '/Trans/TraerPendientes'
+  var htmlsel = ['<option selected>---Seleccione el proveedor---</option>'];
+  
+  htmlsel.push()
 
+  $.get(url).then(function (res) {
+
+    $('#Fpendientes').empty();
+
+    array.forEach(e => {
+      $('#Fpendientes').append(`<option  value ="${e.Documento}" data-subtext="${e.PoC}">${res[i].Nombre}</option`).selectpicker('refresh');
+    });
+    //$('#Fpendientes').val(prov).selectpicker('refresh');
+
+  });
+
+}
 

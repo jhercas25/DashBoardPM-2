@@ -1,12 +1,11 @@
 <div class="row">
-    <h3 id="PoC" class="mb-3 m-4">{{#if prov }}Proveedores{{else}}Clientes{{/if}}</h3>
-
+    <h3 id="PoC" class="mb-3 m-4">{{#ifEquals Trans "Pagos" }} Proveedores o Clientes  {{else}}{{#if prov }}Proveedores{{else}}Clientes{{/if}} {{/ifEquals}} </h3>
     <h5 class="mb-3 m-4 " id="Tipo">Minorista</h5>
-
 </div>
+
 <div class="form-group row pl-3 pr-3">
     <div class="col-4">
-        <label for="Proveedor">Proveedor</label>
+        <label for="Proveedor">Seleccione {{#ifEquals Trans "Pagos" }} Proveedor o Cliente {{else}} {{#if prov }}Proveedor{{else}}Cliente{{/if}} {{/ifEquals}}</label>
     </div>
     <div class="col-8">
         <select id="PoCSel"  onchange="SelectPoC()" class="selectpicker" data-live-search="true" required>

@@ -164,8 +164,6 @@ router.post('/MP', isLoggedin, async (req, res) => {
 
 ///////////////////////////////////// EDITAR TRANSACCIONES ///////////////////////////////////////////////
 
-
-
 router.get('/Editar/:NumD&:Tipo', isLoggedin, async (req, res) => {
     Editar = true
     const { NumD, Tipo } = req.params
@@ -190,8 +188,6 @@ router.get('/Editar/:NumD&:Tipo', isLoggedin, async (req, res) => {
     res.render('Trans/transaccionesNuevos', { Trans, Editar, NumD, DT, Editar, prov, Asig });
 
 });
-
-
 
 ///////////////////////////////////// DETALLE TRANSACCIONES ///////////////////////////////////////////////
 
@@ -238,7 +234,6 @@ router.get('/DetalleTtemp/eliminar/:id&:Doc', isLoggedin, async (req, res) => {
     res.sendStatus(200);
 });
 
-
 router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
 
     const { id, Editar } = req.params;
@@ -264,11 +259,10 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
             await pool.query(`CALL ActualizarStockILF('${id}',${inodec},@Salida2)`);
         }
 
-
-
         await pool.query(`DELETE FROM detallet WHERE Documento = '${id}' `);
         await pool.query(`DELETE FROM detalleinvlotfev WHERE Documento = '${id}' `);
         await pool.query(`DELETE FROM transacciones WHERE Documento = '${id}' `);
+        await pool.query(`DELETE FROM pagos WHERE Documento = '${id}' `);
 
         await pool.query(`INSERT INTO detallet(Documento,Item,Producto,Codigo,Cantidad,Valor,Descuento,Total,Iva,Tipo) SELECT Documento,Item,Producto,Codigo,Cantidad,Valor,Descuento,Total,Iva,Tipo FROM detallettemp WHERE (Documento = '${id}' )`);
         await pool.query(`DELETE FROM detallettemp WHERE Documento = '${id}' `);
@@ -276,15 +270,26 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
 
         //console.log(!inodec);
 
-
-
         await pool.query(`INSERT INTO pagos SET ?`, [Pago]);
         await pool.query(`INSERT INTO detalleinvlotfev(ILF,FechaRegistro, Cantidad, Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto) SELECT ILF,FechaRegistro,Cantidad,Documento,item,Tipo,Invima,Lote,FechaVencimiento,Producto FROM detalleinvlotfevtemp WHERE (Documento = '${id}' )`);
 
         await pool.query(`DELETE FROM detalleinvlotfevtemp WHERE Documento = '${id}' `);
         await pool.query(`UPDATE RegistroTransacciones Set Estado = 'Finalizado' where Documento = '${id}'`)
 
+        if(Transaccion.Plazo.indexOf('Credito')>0){
 
+            Cartera={
+                Documento :id,  
+                PoC :Transaccion.PoC, 
+                Tipo : Transaccion.Tipo, 
+                FechaVencimiento: Transaccion.FechaVencimientoa, 
+                Total: Transaccion.Total, 
+                Saldo :0, 
+                Responsable :Transaccion.Responsable, 
+            }
+
+            await pool.query(`UPDATE Cartera SET ? WHERE Documento=${id}`, [Cartera]);
+        }
 
     } else {
 
@@ -302,6 +307,20 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
 
         await pool.query(`UPDATE RegistroTransacciones Set Estado = 'Finalizado' where Documento = '${id}'`);
 
+        if(Transaccion.Plazo.indexOf('Credito')>0){
+
+            Cartera={
+                Documento :id,  
+                PoC :Transaccion.PoC, 
+                Tipo : Transaccion.Tipo, 
+                FechaVencimiento: Transaccion.FechaVencimientoa, 
+                Total: Transaccion.Total, 
+                Saldo :0, 
+                Responsable :Transaccion.Responsable, 
+            }
+
+            await pool.query(`INSERT INTO Cartera SET ? `, [Cartera]);
+        }
 
 
     }
@@ -311,14 +330,13 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
 
 });
 
-
 const CrearPDF = async (req, res, next) => {
 
     const { Doc, Tp } = req.params;
     //console.log(Doc+' tipo '+Tp);
     const Detalle = await pool.query(`SELECT detallet.* , producto.Nombre FROM detallet,producto where (detallet.Codigo=producto.Codigo) and (Documento = '${Doc}' and Tipo= '${Tp}')`);
     const T = await pool.query(`SELECT transacciones.Documento,transacciones.Tipo,transacciones.FechaEmision,transacciones.Total,transacciones.poc,PoC.Nombre FROM transacciones,PoC where (transacciones.PoC=PoC.NitoCC) and (transacciones.Documento = '${Doc}' and transacciones.Tipo= '${Tp}')`);
-    console.log(T, Detalle);
+    console.log({T, Detalle});
     r = await PDFcreator.Crear(0, { Detalle, T });
 
     return next();
@@ -341,6 +359,18 @@ router.get('/Transformar/:Doc1&:Doc2&:Tp', isLoggedin, async (req, res) => {
 
     await pool.query(`Update detallettemp SET  Documento='${Doc2}',Tipo='Compras' Where Documento='${Doc1}'`);
     await pool.query(`Update detalleinvlotfevtemp SET  Documento='${Doc2}',Tipo='Compras' Where Documento='${Doc1}'`);
+
+
+
+});
+
+router.get('/TraerPendientes/:PoC', isLoggedin, async (req, res) => {
+
+    const { PoC } = req.params
+    //console.log('Redirigiendo',{Doc1,Doc2,Tp});
+    
+     await pool.query(`SELECT * FROM detallet WHERE (PoC = '${PoC}' )`);
+    res.sendStatus(200);
 
 
 

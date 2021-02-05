@@ -1,4 +1,3 @@
-
 <script type='text/javascript'
     src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 
@@ -16,7 +15,7 @@
                         <h5 class="mb-0">
                             <button class="btn btn-block" data-toggle="collapse" data-target="#DatosPoC"
                                 aria-expanded="true" aria-controls="DatosPoC">
-                                <h5 class="card-title"> Información del Proveedor </h5>
+                                <h5 class="card-title"> Información del Proveedor o Cliente</h5>
                             </button>
                         </h5>
                     </div>
@@ -39,7 +38,7 @@
                         <h5 class="mb-0">
                             <button class="btn btn-block" data-toggle="collapse" data-target="#DatosT"
                                 aria-expanded="true" aria-controls="DatosT">
-                                <h5 class="card-title"> Información de Pago  </h5>
+                                <h5 class="card-title"> Información de Pago </h5>
                             </button>
                         </h5>
                     </div>
@@ -54,6 +53,28 @@
         </div>
     </div>
 </div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-10 col-12">
+                <label class="d-none d-sm-block" for="Des"> Facturas Pendientes </label>
+                <label class="d-block d-sm-none" for="DesM">F. Pendientes </label>
+                <select id="Fpendientes" class="selectpicker col-12" title="Elija factura pendiente."
+                    data-live-search="true" required>
+                </select>
+            </div>
+            
+            <div class="col-md-2 col-12 my-auto">
+                <a class="btn"> <i class="fas fa-plus-circle fa-w-16 fa-3x " style="color:rgb(73, 197, 191)"></i> </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 
 <table id="Pendientes" data-height="500" data-toggle="table" data-toolbar="#toolbar" data-detail-view="true"
     data-detail-view-icon="true" data-detail-formatter="detailFormatter" data-ajax="DetalleT"
@@ -93,6 +114,183 @@
     </div>
 </div>
 
+<div class="row">
+
+    <div class="col-md-4"></div>
+    <div class="col-md-8 mx-auto p-2 ">
+        <div class="card">
+
+            <div class="card-body">
+
+                <form action="" method="POST">
+                    <div class="form-group row">
+
+                        <div class="col-6">
+                            <label for="Subtotal">Sub Total</label>
+
+                            <input type="text" class="form-control form-control-plaintext text-right" name="Subtotal"
+                                id="Subtotal" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
+
+
+                        </div>
+                        <div class="col-6">
+                            <label for="BIva">Base Iva</label>
+                            <input type="text" class="form-control form-control-plaintext text-right" name="BIva"
+                                id="BIva" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+
+                        <div class="col-6">
+                            <label for="DTotal">Descuento Total </label>
+                            <input type="text" class="form-control form-control-plaintext text-right" name="DTotal"
+                                id="DTotal" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
+                        </div>
+                        <div class="col-6">
+
+                            <label for="RteFte">Rte.Fuente </label>
+                            <input type="text" class="form-control form-control-plaintext text-right" name="RteFte"
+                                id="RteFte" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-6">
+                            <label for="IvaT">Iva </label>
+                            <input type="text" class="form-control form-control-plaintext text-right" name="IvaT"
+                                id="IvaT" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
+                        </div>
+                        <div class="col-6">
+                            <label for="RteIva">Rte Iva </label>
+                            <input type="text" class="form-control form-control-plaintext text-right" name="RteIva"
+                                id="RteIva" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-6">
+                            <label for="RteIca">Rte Ica </label>
+                            <input type="text" class="form-control form-control-plaintext text-right" name="RteIca"
+                                id="RteIca" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
+                        </div>
+                        <div class="col-6">
+                            <label for="Autorenta">AutoRenta </label>
+                            <input type="text" class="form-control form-control-plaintext text-right" name="Autorenta"
+                                id="Autorenta" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-6">
+                            <label for="TotalT">Total </label>
+                            <input type="text" class="form-control form-control-lg form-control-plaintext text-right"
+                                value="0.00" data-inputmask="'alias': 'numeric'" name="TotalT" id="TotalT" readonly
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group row">
+                        <div class="col-6 p-3 my-auto">
+                            <a href="javascript:void(0)" onclick="GuardarPago(false)" class="text-dark btn">
+                                <i class="far fa-save fa-w-16 fa-3x"></i>
+                                <H5> GUARDAR </H5>
+                            </a>
+                        </div>
+
+                        <div class="col-6 p-3 my-auto">
+                            <a href="javascript:void(0)" onclick="GuardarPago(true)" class="text-dark btn">
+                                <i class="far fa-save fa-w-16 fa-3x"></i>
+                                <i class="fas fa-print fa-w-16 fa-3x"></i>
+                                <H5>GUARDAR / IMPRIMIR </H5>
+                            </a>
+                        </div>
 
 
 
+                    </div>
+
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade " id="Formalizar" tabindex="-1" role="dialog" aria-labelledby="FormalizarLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="FormalizarLabel">Formalizar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                {{>Formalizar}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="FormalizarPago({{Editar}})">
+                    <i class="fas fa-file-signature fa-w-16 fa-2x ml-2 "></i>Formalizar</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
+                            class="fas fa-times fa-w-16 fa-2x ml-2"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $('#alertas').alert();
+    $('#PreUni').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#PreTotal').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+
+    $('#TotalT').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#RteIca').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#RteIva').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#IvaT').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#BIva').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#Subtotal').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#Autorenta').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#DTotal').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#RteFte').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+
+    $('#SubT').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#Ivap').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#TotalP').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+
+    $('#MontoTar').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#MontoEfe').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#Rte').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#DesTotalT').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+
+    $('#FevILF').datepicker({
+        format: "dd/mm/yyyy"
+
+    });
+
+
+</script>
+{{#if Editar}}
+<script>
+
+    $(document).ready(() => {
+        $('#NitoCCT').change();
+
+    });
+
+</script>
+
+{{/if}}

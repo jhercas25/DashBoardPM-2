@@ -125,7 +125,8 @@
                     <div class="form-group row">
                         <div class="col-12">
                             <label for="NombreProT">Nombre</label>
-                            <input type="text" class="form-control" name="NombreProT" id="NombreProT"  autocomplete="nope" required readonly>
+                            <input type="text" class="form-control" name="NombreProT" id="NombreProT"
+                                autocomplete="nope" required readonly>
                         </div>
                     </div>
 
@@ -261,7 +262,8 @@
                                         <table id="tableILF" data-height="300" data-toggle="table"
                                             data-toolbar="#toolbar" data-ajax="InvLotFev"
                                             data-pagination-parts="['pageList]" data-page-size="10"
-                                            data-pagination="true"  data-mobile-responsive="true" data-query-params="queryParams">
+                                            data-pagination="true" data-mobile-responsive="true"
+                                            data-query-params="queryParams">
                                             <thead>
                                                 <tr>
                                                     <th data-field="Invima">Invima</th>
@@ -276,8 +278,6 @@
                                         </table>
 
                                         {{/ifEquals}}
-
-
 
 
                                         {{#ifEquals Trans 'Ventas'}}
@@ -313,7 +313,8 @@
                                         <table id="tableILF" data-height="300" data-toggle="table"
                                             data-toolbar="#toolbar" data-ajax="InvLotFev"
                                             data-pagination-parts="['pageList]" data-page-size="10"
-                                            data-pagination="true" data-mobile-responsive="true" data-mobile-responsive="true" data-query-params="queryParams">
+                                            data-pagination="true" data-mobile-responsive="true"
+                                            data-mobile-responsive="true" data-query-params="queryParams">
                                             <thead>
                                                 <tr>
                                                     <th data-field="Invima">Invima</th>
@@ -358,13 +359,14 @@
 
 <table id="tableDetalle" data-height="500" data-toggle="table" data-toolbar="#toolbar" data-detail-view="true"
     data-detail-view-icon="true" data-detail-formatter="detailFormatter" data-ajax="DetalleT"
-    data-pagination-parts="['pageList]"  data-mobile-responsive="true" data-page-size="25" data-pagination="true" data-query-params="queryParams">
+    data-pagination-parts="['pageList]" data-mobile-responsive="true" data-page-size="25" data-pagination="true"
+    data-query-params="queryParams">
     <thead>
         <tr>
             <th data-field="Producto">Codidgo</th>
             <th data-field="Nombre">Producto</th>
             <th data-field="Variacion">variacion</th>
-            
+
             {{#ifEquals Trans "Compras"}}
             <th data-field="Valor">P.Compra</th>
             {{else}}
