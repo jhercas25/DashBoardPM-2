@@ -315,7 +315,6 @@ window.operateEvents = {
   },
 }
 
-
 function add(Cod) {
   $('#CodigoT').val(Cod);
   Tipo = document.getElementById('TipoT').innerText
@@ -364,8 +363,6 @@ window.eveILF = {
         $('#Inv').val(row.Invima),
         $('#Cntilf').val(row.Cnt);
     }
-
-
 
   },
   'click .eliminarILF': function (e, value, row, index) {
@@ -645,7 +642,7 @@ function TraerPoC(NitoCC) {
   DV(NitoCC.value);
   prov = document.getElementById('PoC') ? document.getElementById('PoC').innerText : "Proveedores";
 
-  url = `/PoC/${prov}/datos/nit/U/${NitoCC.value}`;
+  url = `/PoC/${prov.replace(/\ /g, '')}/datos/nit/U/${NitoCC.value}`;
   //console.log(url);
   $.get(url).then(function (res) {
 
@@ -1514,7 +1511,8 @@ async function FormalizarTran(Editar) {
     ReteIva: $('#RteIva').val().replace(/\./g, '').replace(/\,/g, '.') / 1,
     ReteIca: $('#RteIca').val().replace(/\./g, '').replace(/\,/g, '.') / 1,
     ReteFuente: $('#RteFte').val().replace(/\./g, '').replace(/\,/g, '.') / 1,
-    Total: $('#TotalP').val().replace(/\./g, '').replace(/\,/g, '.') / 1
+    Total: $('#TotalP').val().replace(/\./g, '').replace(/\,/g, '.') / 1,
+    Responsable:$('#Responsable').val()
   }
 
   Pago = {
@@ -1868,13 +1866,16 @@ function CrearNuevoProducto() {
 }
 
 function TraerFacPendientes(prov) {
-  url = '/Trans/TraerPendientes'
+
+  
+  url = `/Tran/TraerPendientes/${prov}`
   var htmlsel = ['<option selected>---Seleccione el proveedor---</option>'];
   
   htmlsel.push()
 
   $.get(url).then(function (res) {
 
+    console.log(res);
     $('#Fpendientes').empty();
 
     array.forEach(e => {
@@ -1885,4 +1886,5 @@ function TraerFacPendientes(prov) {
   });
 
 }
+
 

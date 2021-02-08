@@ -34,6 +34,11 @@ router.get('/Proveedores/datos',isLoggedin,async (req,res)  =>{
      //console.log(Provedores);
      return res.send(Provedores);
  });
+ router.get('/ProveedoresoClientes/datos',isLoggedin,async (req,res)  =>{
+    const Provedores=await pool.query ('Select * from poc') ;
+    //console.log(Provedores);
+    return res.send(Provedores);
+});
 
  //Todos los datos individuales nit 
  router.get('/Clientes/datos/nit/:id',isLoggedin,async (req,res)  =>{  
@@ -61,6 +66,13 @@ router.get('/Proveedores/datos/nit/:id',isLoggedin,async (req,res)  =>{
 router.get('/Proveedores/datos/nit/U/:id',isLoggedin,async (req,res)  =>{
     const {id} = req.params;
      const Provedores=await pool.query (`Select * from poc where NitoCC = ${id} and PoC=1 `) ;
+     //console.log(Provedores);
+     return res.send(Provedores);
+ });
+
+ router.get('/ProveedoresoClientes/datos/nit/U/:id',isLoggedin,async (req,res)  =>{
+    const {id} = req.params;
+     const Provedores=await pool.query (`Select * from poc where NitoCC = ${id} `) ;
      //console.log(Provedores);
      return res.send(Provedores);
  });

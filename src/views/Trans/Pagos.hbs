@@ -73,9 +73,6 @@
 </div>
 
 
-
-
-
 <table id="Pendientes" data-height="500" data-toggle="table" data-toolbar="#toolbar" data-detail-view="true"
     data-detail-view-icon="true" data-detail-formatter="detailFormatter" data-ajax="DetalleT"
     data-pagination-parts="['pageList]" data-page-size="25" data-pagination="true" data-query-params="queryParams">
@@ -280,6 +277,13 @@
         format: "dd/mm/yyyy"
 
     });
+
+    document.getElementById("PoCSel").addEventListener("change", function(){ 
+        
+        prov=$('#PoCSel').val()
+        TraerFacPendientes(prov)
+        
+        });
 
 
 </script>

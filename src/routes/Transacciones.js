@@ -276,7 +276,7 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
         await pool.query(`DELETE FROM detalleinvlotfevtemp WHERE Documento = '${id}' `);
         await pool.query(`UPDATE RegistroTransacciones Set Estado = 'Finalizado' where Documento = '${id}'`)
 
-        if(Transaccion.Plazo.indexOf('Credito')>0){
+        if(Transaccion.Plazo.indexOf('Credito')>=0){
 
             Cartera={
                 Documento :id,  
@@ -288,7 +288,7 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
                 Responsable :Transaccion.Responsable, 
             }
 
-            await pool.query(`UPDATE Cartera SET ? WHERE Documento=${id}`, [Cartera]);
+            await pool.query(`UPDATE Cartera SET ? WHERE Documento='${id}'`, [Cartera]);
         }
 
     } else {
@@ -307,7 +307,8 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
 
         await pool.query(`UPDATE RegistroTransacciones Set Estado = 'Finalizado' where Documento = '${id}'`);
 
-        if(Transaccion.Plazo.indexOf('Credito')>0){
+        console.log({Tiene:Transaccion.Plazo.indexOf('Credito'), Plazo:Transaccion.Plazo});
+        if(Transaccion.Plazo.indexOf('Credito')>=0){
 
             Cartera={
                 Documento :id,  
@@ -318,6 +319,7 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
                 Saldo :0, 
                 Responsable :Transaccion.Responsable, 
             }
+            console.log(Cartera);
 
             await pool.query(`INSERT INTO Cartera SET ? `, [Cartera]);
         }
@@ -367,9 +369,10 @@ router.get('/Transformar/:Doc1&:Doc2&:Tp', isLoggedin, async (req, res) => {
 router.get('/TraerPendientes/:PoC', isLoggedin, async (req, res) => {
 
     const { PoC } = req.params
+    console.log(PoC);
     //console.log('Redirigiendo',{Doc1,Doc2,Tp});
     
-     await pool.query(`SELECT * FROM detallet WHERE (PoC = '${PoC}' )`);
+    await pool.query(`SELECT * FROM cartera WHERE (PoC = '${PoC}' )`);
     res.sendStatus(200);
 
 

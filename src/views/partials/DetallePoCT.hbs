@@ -89,7 +89,7 @@
 <script>
     $(document).ready(function () {
 
-        Tipo = document.getElementById('TipoT').innerText;
+        Tipo = document.getElementById('TipoT').innerText.replace(/\ /g, '');
 
         switch (Tipo) {
             case 'Ventas':
@@ -102,7 +102,7 @@
                 url = '/PoC/Clientes/datos';
                 break;
             case 'Pagos':
-                url = '/PoC/Proveedores/datos';
+                url = '/PoC/ProveedoresoClientes/datos';
                 break;
             case 'Pedidos':
                 url = '/PoC/Proveedores/datos';
