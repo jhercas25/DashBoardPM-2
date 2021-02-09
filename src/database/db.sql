@@ -289,6 +289,24 @@ Create Table Cartera (
  
  );
 
+ Create Table DetallePago (
+    
+ ID INT AUTO_INCREMENT PRIMARY KEY,
+ Pago VARCHAR (60) NOT NULL, 
+ Documento VARCHAR (60) NOT NULL,  
+ Total INT UNSIGNED NOT NULL
+ 
+ );
+
+Create Table DetallePagoTemp (
+    
+ ID INT AUTO_INCREMENT PRIMARY KEY,
+ Pago VARCHAR (60) NOT NULL, 
+ Documento VARCHAR (60) NOT NULL,  
+ Total INT UNSIGNED NOT NULL
+ 
+ );
+
 
 
 --------------------------- STORED PROCEDURE ---------------------------------------------------------------------------------

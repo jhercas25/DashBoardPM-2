@@ -57,17 +57,26 @@
 <div class="card">
     <div class="card-body">
         <div class="row">
-            <div class="col-md-10 col-12">
+            <div class="col-md-8 col-12">
                 <label class="d-none d-sm-block" for="Des"> Facturas Pendientes </label>
                 <label class="d-block d-sm-none" for="DesM">F. Pendientes </label>
                 <select id="Fpendientes" class="selectpicker col-12" title="Elija factura pendiente."
                     data-live-search="true" required>
                 </select>
             </div>
-            
-            <div class="col-md-2 col-12 my-auto">
-                <a class="btn"> <i class="fas fa-plus-circle fa-w-16 fa-3x " style="color:rgb(73, 197, 191)"></i> </a>
+            <div class="col-6 col-md-2">
+                <label for="Cnt">
+                    <span class="d-none d-sm-block"> Valor Pagado</span>
+                    <span class="d-block d-sm-none">Valor</span>
+                </label>
+                <input type="text" class="form-control" data-inputmask="'alias': 'numeric'"  name="Cnt" id="Cnt" required>
             </div>
+
+            <div class="col-md-2 col-6 my-auto">
+                <a class="btn" onclick="AgregarPago(Fpendientes.value)"> <i class="fas fa-plus-circle fa-w-16 fa-3x "
+                        style="color:rgb(73, 197, 191)"></i> </a>
+            </div>
+
         </div>
     </div>
 </div>
@@ -82,8 +91,8 @@
             <th data-field="FechaEmision">Fecha de Emision</th>
             <th data-field="FechaVencimiento">Fecha de Vencimineto</th>
             <th data-field="Proveedor">Proveedor</th>
-            <th data-field="Total">Total</th>
             <th data-field="Impuestos">Impuestos</th>
+            <th data-field="Total">Total</th>
             <th data-field="operate" data-formatter="DetalletTFomater" data-events="DetalleTEvents"></th>
         </tr>
     </thead>
@@ -251,6 +260,8 @@
 
 <script>
     $('#alertas').alert();
+    $(':input').inputmask();
+    $('#Cnt').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
     $('#PreUni').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
     $('#PreTotal').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
 
@@ -278,12 +289,12 @@
 
     });
 
-    document.getElementById("PoCSel").addEventListener("change", function(){ 
-        
-        prov=$('#PoCSel').val()
+    document.getElementById("PoCSel").addEventListener("change", function () {
+
+        prov = $('#PoCSel').val()
         TraerFacPendientes(prov)
-        
-        });
+
+    });
 
 
 </script>

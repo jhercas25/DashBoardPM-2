@@ -1525,13 +1525,13 @@ async function FormalizarTran(Editar) {
     Referencia: $('#RefP').val(),
     MontoEfectivo: $('#MontoEfe').val() ? ($('#MontoEfe').val().replace(/\./g, '').replace(/\,/g, '.') / 1) : 0,
     MontoTarjeta: $('#MontoTar').val() ? ($('#MontoTar').val().replace(/\./g, '').replace(/\,/g, '.') / 1) : 0,
-    Cambio: $('#Cambio').val() ? $('#Cambio').val().replace(/\./g, '').replace(/\,/g, '.') / 1 : 0,
+    Cambio: $('#Cambio').val()>=0 ? $('#Cambio').val().replace(/\./g, '').replace(/\,/g, '.') / 1 : 0,
     Total: $('#TotalP').val().replace(/\./g, '').replace(/\,/g, '.') / 1
 
   }
   // console.log(Transaccion);
-  // console.log(Pago);
-  if(Transaccion.Plazo.indexOf('Credito')>0){
+  console.log(Pago);
+  if(Transaccion.Plazo.indexOf('Credito')>=0){
 
     bodyMsg = { Transaccion, Pago }
     url = '/Tran/Formalizar';
@@ -1878,10 +1878,22 @@ function TraerFacPendientes(prov) {
     console.log(res);
     $('#Fpendientes').empty();
 
-    array.forEach(e => {
-      $('#Fpendientes').append(`<option  value ="${e.Documento}" data-subtext="${e.PoC}">${res[i].Nombre}</option`).selectpicker('refresh');
+    res.forEach(e => {
+      $('#Fpendientes').append(`<option  value ="${e.Documento}" data-subtext="${e.PoC}"> Documento : ${e.Documento}  Total :$${e.Total}  Saldo: ${e.Saldo}  </option`).selectpicker('refresh');
     });
     //$('#Fpendientes').val(prov).selectpicker('refresh');
+
+  });
+
+}
+
+function AgregarPago(Doc){
+  console.log(Doc);
+  url=''
+
+  $.get(url).then(function (res) {
+
+    console.log(res);
 
   });
 

@@ -225,12 +225,8 @@ router.get('/DetalleTtemp/eliminar/:id&:Doc', isLoggedin, async (req, res) => {
     const { id, Doc } = req.params;
 
     // console.log(id);
-
-
     await pool.query(`Delete from detallettemp WHERE  ID = '${id}'`);
     await pool.query(`CALL OrdenarItem('${Doc}' ,@SALIDA); `);
-
-
     res.sendStatus(200);
 });
 
@@ -239,7 +235,6 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
     const { id, Editar } = req.params;
     const { Transaccion } = req.body.bodyMsg;
     const { Pago } = req.body.bodyMsg;
-
 
     //console.log(id);
     //console.log(req.body.bodyMsg);
@@ -284,11 +279,10 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
                 Tipo : Transaccion.Tipo, 
                 FechaVencimiento: Transaccion.FechaVencimientoa, 
                 Total: Transaccion.Total, 
-                Saldo :0, 
                 Responsable :Transaccion.Responsable, 
             }
-
-            await pool.query(`UPDATE Cartera SET ? WHERE Documento='${id}'`, [Cartera]);
+            Total=Pago.MontoEfectivo-Pago.MontoTarjeta
+            await pool.query(`UPDATE Cartera SET ?, Saldo=Saldo-${Total} WHERE Documento='${id}'`, [Cartera]);
         }
 
     } else {
@@ -307,19 +301,20 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
 
         await pool.query(`UPDATE RegistroTransacciones Set Estado = 'Finalizado' where Documento = '${id}'`);
 
-        console.log({Tiene:Transaccion.Plazo.indexOf('Credito'), Plazo:Transaccion.Plazo});
+        //console.log({Tiene:Transaccion.Plazo.indexOf('Credito'), Plazo:Transaccion.Plazo});
         if(Transaccion.Plazo.indexOf('Credito')>=0){
 
+            Total=Pago.MontoEfectivo-Pago.MontoTarjeta
             Cartera={
                 Documento :id,  
                 PoC :Transaccion.PoC, 
                 Tipo : Transaccion.Tipo, 
                 FechaVencimiento: Transaccion.FechaVencimientoa, 
                 Total: Transaccion.Total, 
-                Saldo :0, 
+                Saldo: Transaccion.Total-Total, 
                 Responsable :Transaccion.Responsable, 
             }
-            console.log(Cartera);
+            //console.log(Cartera);
 
             await pool.query(`INSERT INTO Cartera SET ? `, [Cartera]);
         }
@@ -372,8 +367,23 @@ router.get('/TraerPendientes/:PoC', isLoggedin, async (req, res) => {
     console.log(PoC);
     //console.log('Redirigiendo',{Doc1,Doc2,Tp});
     
-    await pool.query(`SELECT * FROM cartera WHERE (PoC = '${PoC}' )`);
-    res.sendStatus(200);
+    Pendientes = await pool.query(`SELECT * FROM cartera WHERE (PoC = '${PoC}' )`);
+    console.log(Pendientes);
+    res.send(Pendientes);
+
+
+
+});
+
+router.get('/TraerPendientes/:Doc', isLoggedin, async (req, res) => {
+
+    const { Doc } = req.params
+    console.log(Doc);
+    //console.log('Redirigiendo',{Doc1,Doc2,Tp});
+    
+    Pendientes = await pool.query(`SELECT * FROM cartera WHERE (PoC = '${PoC}' )`);
+    console.log(Pendientes);
+    res.send(Pendientes);
 
 
 
