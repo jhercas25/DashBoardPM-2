@@ -371,23 +371,60 @@ router.get('/TraerPendientes/:PoC', isLoggedin, async (req, res) => {
     console.log(Pendientes);
     res.send(Pendientes);
 
+});
 
+router.post('/DetallePago/:Doc', isLoggedin, async (req, res) => {
+
+    const { Doc } = req.params
+    const {Pago,Total} =req.body
+    console.log(Doc);
+    Detalle={Pago,Total, Documento:Doc}
+    
+    //console.log('Redirigiendo',{Doc1,Doc2,Tp});
+
+    await pool.query(`INSERT INTO DetallePagoTemp Set ?`,[Detalle]);
+    //console.log(Pendientes);
+
+    res.sendStatus(200);
 
 });
 
-router.get('/TraerPendientes/:Doc', isLoggedin, async (req, res) => {
+router.post('/DetallePago/Editar/:Doc&:Id', isLoggedin, async (req, res) => {
+
+    const { Doc,Id } = req.params
+    const {Pago,Total} =req.body
+    console.log(Id);
+    Detalle={Pago,Total, Documento:Doc}
+    
+    //console.log('Redirigiendo',{Doc1,Doc2,Tp});
+
+    await pool.query(`Update DetallePagoTemp Set ? where ID=${Id} `,[Detalle]);
+    //console.log(Pendientes);
+
+    res.sendStatus(200);
+
+});
+
+router.get('/DetallePago/:Doc', isLoggedin, async (req, res) => {
 
     const { Doc } = req.params
     console.log(Doc);
     //console.log('Redirigiendo',{Doc1,Doc2,Tp});
-    
-    Pendientes = await pool.query(`SELECT * FROM cartera WHERE (PoC = '${PoC}' )`);
-    console.log(Pendientes);
-    res.send(Pendientes);
-
-
+    Pago=await pool.query(`Select DetallePagoTemp.*, DATE_FORMAT(Transacciones.FechaEmision, "%d/%m/%Y") as FechaEmision, DATE_FORMAT(Transacciones.FechaVencimiento, "%d/%m/%Y") AS FechaVencimiento,PoC.Nombre as Proveedor,Transacciones.Total as TotalT  from DetallePagoTemp,transacciones,PoC where DetallePagoTemp.Documento=transacciones.Documento and transacciones.Poc=Poc.NitoCC and DetallePagoTemp.Pago= '${Doc}'`);
+    res.send(Pago);
 
 });
+
+router.get('/DetallePago/eliminar/:id', isLoggedin, async (req, res) => {
+
+    const { id } = req.params
+    console.log(id);
+    //console.log('Redirigiendo',{Doc1,Doc2,Tp});
+    await pool.query(`Delete from DetallePagoTemp where ID= '${id}'`);
+    res.sendStatus(200);
+
+});
+
 
 
 module.exports = router;

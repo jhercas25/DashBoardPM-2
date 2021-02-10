@@ -57,13 +57,15 @@
 <div class="card">
     <div class="card-body">
         <div class="row">
-            <div class="col-md-8 col-12">
+
+            <div class="col-md-7 col-12">
                 <label class="d-none d-sm-block" for="Des"> Facturas Pendientes </label>
                 <label class="d-block d-sm-none" for="DesM">F. Pendientes </label>
                 <select id="Fpendientes" class="selectpicker col-12" title="Elija factura pendiente."
                     data-live-search="true" required>
                 </select>
             </div>
+
             <div class="col-6 col-md-2">
                 <label for="Cnt">
                     <span class="d-none d-sm-block"> Valor Pagado</span>
@@ -72,9 +74,13 @@
                 <input type="text" class="form-control" data-inputmask="'alias': 'numeric'"  name="Cnt" id="Cnt" required>
             </div>
 
-            <div class="col-md-2 col-6 my-auto">
-                <a class="btn" onclick="AgregarPago(Fpendientes.value)"> <i class="fas fa-plus-circle fa-w-16 fa-3x "
-                        style="color:rgb(73, 197, 191)"></i> </a>
+            <div class="col-md-3 col-6 my-auto">
+                
+                <a class="btn" id="AgregarPen" onclick="AgregarPago($('#Fpendientes').val(),Cnt.value,NumeroT.value)"> 
+                    <i class="fas fa-plus-circle fa-w-16 fa-3x " style="color:rgb(73, 197, 191)"></i> </a>
+                <a class="btn invisible" id="EditarPen" onclick="EditarPago($('#Fpendientes').val(),Cnt.value,NumeroT.value)"> 
+                    <i class="fas fa-pencil-alt fa-w-16 fa-3x" style="color:rgb(73, 197, 191)"></i> </a>
+
             </div>
 
         </div>
@@ -83,7 +89,7 @@
 
 
 <table id="Pendientes" data-height="500" data-toggle="table" data-toolbar="#toolbar" data-detail-view="true"
-    data-detail-view-icon="true" data-detail-formatter="detailFormatter" data-ajax="DetalleT"
+    data-detail-view-icon="true" data-detail-formatter="detailPagos" data-ajax="DetallePago"
     data-pagination-parts="['pageList]" data-page-size="25" data-pagination="true" data-query-params="queryParams">
     <thead>
         <tr>
@@ -91,9 +97,8 @@
             <th data-field="FechaEmision">Fecha de Emision</th>
             <th data-field="FechaVencimiento">Fecha de Vencimineto</th>
             <th data-field="Proveedor">Proveedor</th>
-            <th data-field="Impuestos">Impuestos</th>
             <th data-field="Total">Total</th>
-            <th data-field="operate" data-formatter="DetalletTFomater" data-events="DetalleTEvents"></th>
+            <th data-field="operate" data-formatter="PagoFomater" data-events="PagoEvents"></th>
         </tr>
     </thead>
 </table>
@@ -256,7 +261,6 @@
         </div>
     </div>
 </div>
-
 
 <script>
     $('#alertas').alert();

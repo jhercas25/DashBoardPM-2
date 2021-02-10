@@ -137,7 +137,7 @@ function detailFormatter(index, row) {
   </thead> 
 
   <tbody > `);
-              
+
   // console.log(row)
   var d = new Date();
   var n = d.getSeconds();
@@ -214,7 +214,7 @@ function detailFormatter(index, row) {
     });
 
 
- });
+  });
 
   html.push(' </tbody> </table>');
   return html.join('');
@@ -401,16 +401,16 @@ window.DetalleTEvents = {
       $('#CodigoT').val(row.Producto);
       Tipo = document.getElementById('TipoT').innerText
       await traerPro(Tipo);
-      Vc=localStorage.getItem("Vc")/1;
-      Vv=row.Valor;
+      Vc = localStorage.getItem("Vc") / 1;
+      Vv = row.Valor;
 
-      
-      Gn = (Vv /((1+(row.Iva/100))* Vc)) - 1;
+
+      Gn = (Vv / ((1 + (row.Iva / 100)) * Vc)) - 1;
 
       $('#Cnt').val(row.Cantidad);
       $('#Des').val(row.Descuento);
       $('#PreUni').val(row.Valor);
-      localStorage.setItem("G",Gn*100);
+      localStorage.setItem("G", Gn * 100);
 
       NDes();
     }
@@ -1001,7 +1001,7 @@ function NDes() {
 
   $('#G').val(Math.round((R.Util - 1) * 10000) / 100);
   $('#Des').val(Math.round((R.Des) * 10000) / 100);
-  
+
   Vv = R.PvDesI;
   Vv = Math.round(Vv / 10) * 10
 
@@ -1452,22 +1452,22 @@ function MprecioV() {
   DesM = $('#DesM').val() / 100;
   Vv = $('#PreUni').val().replace(/\./g, '') / 1;
   Vc = localStorage.getItem("Vc") / 1;
-  Prov= localStorage.getItem("Prov");
+  Prov = localStorage.getItem("Prov");
   Iva = $('#Iva').val().replace(/\./g, '') / 100;
   //console.log(Prov);
 
-  Gn = (Vv /((1+Iva)* Vc)) - 1;
+  Gn = (Vv / ((1 + Iva) * Vc)) - 1;
 
-  if(Prov==0){
+  if (Prov == 0) {
     localStorage.removeItem("G")
-    localStorage.setItem("G",Gn*100);
-    
-  }else{
+    localStorage.setItem("G", Gn * 100);
+
+  } else {
     Des = G - Gn;
     $('#Des').val(Des * 100);
   }
 
-  
+
   NDes();
 
 }
@@ -1512,7 +1512,7 @@ async function FormalizarTran(Editar) {
     ReteIca: $('#RteIca').val().replace(/\./g, '').replace(/\,/g, '.') / 1,
     ReteFuente: $('#RteFte').val().replace(/\./g, '').replace(/\,/g, '.') / 1,
     Total: $('#TotalP').val().replace(/\./g, '').replace(/\,/g, '.') / 1,
-    Responsable:$('#Responsable').val()
+    Responsable: $('#Responsable').val()
   }
 
   Pago = {
@@ -1525,13 +1525,13 @@ async function FormalizarTran(Editar) {
     Referencia: $('#RefP').val(),
     MontoEfectivo: $('#MontoEfe').val() ? ($('#MontoEfe').val().replace(/\./g, '').replace(/\,/g, '.') / 1) : 0,
     MontoTarjeta: $('#MontoTar').val() ? ($('#MontoTar').val().replace(/\./g, '').replace(/\,/g, '.') / 1) : 0,
-    Cambio: $('#Cambio').val()>=0 ? $('#Cambio').val().replace(/\./g, '').replace(/\,/g, '.') / 1 : 0,
+    Cambio: $('#Cambio').val() >= 0 ? $('#Cambio').val().replace(/\./g, '').replace(/\,/g, '.') / 1 : 0,
     Total: $('#TotalP').val().replace(/\./g, '').replace(/\,/g, '.') / 1
 
   }
   // console.log(Transaccion);
   console.log(Pago);
-  if(Transaccion.Plazo.indexOf('Credito')>=0){
+  if (Transaccion.Plazo.indexOf('Credito') >= 0) {
 
     bodyMsg = { Transaccion, Pago }
     url = '/Tran/Formalizar';
@@ -1561,42 +1561,42 @@ async function FormalizarTran(Editar) {
     });
 
   }
-  else{
+  else {
     if (MedPag != "OpcEfectivo") {
 
       if (Pago.Cambio >= 0 && Pago.Referencia != "" && Pago.TipoPagoEle != "") {
         bodyMsg = { Transaccion, Pago }
-  
+
         url = '/Tran/Formalizar';
         await $.post(url + '/' + DocT + '&' + Editar, { bodyMsg }).then(function (res) {
           if (res = 'Ok') {
-  
+
             //console.log('listoss');
             if (Transaccion.Tipo == "Ventas" || Transaccion.Tipo == "Compras") {
               Ainv = ActualizarInv(Transaccion.Tipo, DocT, Editar);
               //console.log(Ainv);
             }
             if (Transaccion.Tipo != "Compras") {
-  
+
               if (imp) {
                 imprimir(DocT, Transaccion.Tipo);
               }
               else {
                 window.location.href = '/Tran/' + Transaccion.Tipo;
               };
-  
+
             } else {
               window.location.href = '/Tran/' + Transaccion.Tipo;
             };
-  
+
           }
-  
+
         });
-  
+
       }
-  
+
     } else {
-  
+
       if (Pago.Cambio >= 0) {
         bodyMsg = { Transaccion, Pago }
         url = '/Tran/Formalizar';
@@ -1620,14 +1620,14 @@ async function FormalizarTran(Editar) {
             } else {
               window.location.href = '/Tran/' + Transaccion.Tipo;
             };
-  
-  
+
+
           }
         });
-  
-  
+
+
       }
-  
+
     }
   }
 
@@ -1867,12 +1867,9 @@ function CrearNuevoProducto() {
 
 function TraerFacPendientes(prov) {
 
-  
   url = `/Tran/TraerPendientes/${prov}`
   var htmlsel = ['<option selected>---Seleccione el proveedor---</option>'];
-  
   htmlsel.push()
-
   $.get(url).then(function (res) {
 
     console.log(res);
@@ -1887,16 +1884,154 @@ function TraerFacPendientes(prov) {
 
 }
 
-function AgregarPago(Doc){
-  console.log(Doc);
-  url=''
+function AgregarPago(Doc, Total, Pago) {
+  console.log({ Doc, Total, Pago });
 
-  $.get(url).then(function (res) {
-
-    console.log(res);
-
-  });
+  if (Doc != "" && (Total / 1) >= 0 && Pago != "") {
+    url = '/Tran/DetallePago';
+    $.post(url + `/${Doc}`, { Total:Total.replace(/\./g, '').replace(/\,/g, '.') / 1, Pago }).then(function (res) {
+      console.log(res);
+      
+      $('#Pendientes').bootstrapTable('refresh');
+    });
+  }
 
 }
 
+function EditarPago(Doc, Total, Pago) {
+  
+
+  Id=localStorage.getItem('editPago');
+  console.log({ Doc, Total, Pago,Id });
+  if (Doc != "" && (Total / 1) >= 0 && Pago != "") {
+    url = '/Tran/DetallePago/Editar';
+    $.post(url + `/${Doc}&${Id}`, { Total:Total.replace(/\./g, '').replace(/\,/g, '.') / 1, Pago }).then(function (res) {
+      console.log(res);
+      $('#Pendientes').bootstrapTable('refresh');
+      $('#Cnt').val('');
+      $('#Fpendientes').val("").selectpicker('refresh');
+    });
+  }
+
+}
+
+function DetallePago(params){
+  
+  var url = '/Tran/DetallePago';
+  parametros = $('#NumeroT').val();
+
+  if (parametros != '') {
+    $.get(url + '/' + parametros ).then(function (res) {
+      console.log(res);
+      params.success(res);
+      //Totalizar();
+    });
+  }
+
+}
+
+window.PagoEvents = {
+
+  'click .editar': function (e, value, row, index) {
+    console.log(row);
+    localStorage.setItem('editPago', JSON.stringify(row.ID));
+    btnadd = document.getElementById("AgregarPen");
+    btnedit = document.getElementById("EditarPen");
+    
+    btnadd.classList.add("invisible");
+    btnedit.classList.remove("invisible");
+   
+    $('#Fpendientes').val(row.Documento).selectpicker('refresh');
+    
+    $('#Cnt').val(row.Total);
+    
+
+  },
+  'click .eliminar': function (e, value, row, index) {
+    url = '/Tran/DetallePago/eliminar';
+    ID = row.ID;
+
+    console.log(ID);
+
+    $.get(url + '/' + ID).then(function (res) {
+      //console.log(res);
+      if (res = "OK") {
+        $('#Pendientes').bootstrapTable('refresh');
+      }
+
+    });
+
+  }
+}
+
+function PagoFomater(value, row, index) {
+  return [
+    '<a class="editar" href="javascript:void(0)" title="Like">',
+    '<i class="fas fa-pencil-alt"></i>',
+    '</a>  ',
+    '<a class="eliminar" href="javascript:void(0)" title="Eliminar">',
+    '<i class="fas fa-trash-alt"></i>',
+    '</a>  ',
+  ].join('')
+}
+
+function TotalizarPagos() {
+
+
+  Data = $('#Pendientes').bootstrapTable('getData');
+
+  TotalT = 0;
+  TotalTBase = 0;
+  TotalTIva = 0;
+  ReteFte = 0;
+  ReteIca = 0;
+  ReteIva = 0;
+  TotalDes = 0;
+
+  Data.forEach(e => {
+
+    //console.log('info ' + JSON.stringify(e));
+    TotalT += e.Total;
+    TotalTIva += (e.Total * (e.Iva / 100)) / (1 + (e.Iva / 100));
+
+    if (e.Iva == "0") { TotalTBase += 0 }
+    else { TotalTBase += e.Total / (1 + (e.Iva / 100)); }
+
+  });
+
+  Data.forEach(e => {
+    TotalDes += e.Descuento * (e.Total / TotalT);
+    //console.log('descuento total '+TotalDes+' ponderado '+(e.Total/TotalT));
+  });
+
+  TotalTBase = Math.round(TotalTBase * 100) / 100;
+  SubTotal = Math.round((TotalT - TotalTIva) * 100) / 100;
+
+  if (SubTotal >= Base) {
+
+    if (RT != "Simple") {
+
+      ReteFte = Math.round((SubTotal * Tfte) * 100) / 100;
+      ReteIca = Math.round((SubTotal * TIca) * 100) / 100;
+
+    } else {
+      ReteIva = Math.round(Subtotal * TRetIva / 100) * 100;
+    }
+
+  }
+
+  TotalPago = Math.round((TotalT - ReteFte - ReteIca) * 100) / 100;
+
+  $('#TotalT').val(TotalPago);
+  $('#RteIca').val(ReteIca);
+  $('#RteIva').val(ReteIva);
+  $('#IvaT').val(Math.round(TotalTIva / 100) * 100);
+  $('#RteFte').val(ReteFte);
+  $('#BIva').val(TotalTBase);
+  $('#Subtotal').val(SubTotal);
+  $('#DTotal').val(Math.round(TotalDes * 100) / 100);
+
+  //console.log('Total ' + TotalT + ' Iva ' + TotalTIva + ' Total Base' + TotalTBase);
+
+}
 
