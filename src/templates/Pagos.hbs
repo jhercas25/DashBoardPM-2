@@ -186,34 +186,44 @@
 
                 <tr>    
                     <td class="unit" rowspan="2" >{{Item}}</td>
-                    <td colspan="6" class="desc">{{Nombre}}</td>
+                    <td colspan="4" class="desc"> FACTURA : {{Nombre}} Total ${{Total}}</td>
                 </tr>
                 <tr>
-                    <td class="unit">Precio</td>
-                    <td class="unit">{{Valor}}</td>
-                    <td class="unit">CNT</td>
+                    
+                    <td class="unit">Saldo</td>
                     <td class="unit">{{Cantidad}}</td>
-                    <td class="unit">T.Uni</td>
-                    <td class="unit">${{Total}}</td>
+                    <td class="unit">Pago</td>
+                    <td class="unit">{{Valor}}</td>
+                    
                 </tr>
                 
                 {{/each}}
 
 
                 <tr>
-                    <td colspan="5">SUBTOTAL</td>
+                    <td colspan="3">SUBTOTAL</td>
                     <td colspan="2"class="total">{{TotalST}}</td>
                 </tr>
                 <tr>
-                    <td colspan="5">DESCUENTO </td>
+                    <td colspan="3">DESCUENTO </td>
                     <td colspan="2"class="total">{{TotalDes}}</td>
                 </tr>
                 <tr>
-                    <td colspan="5" class="grand total">TOTAL</td>
+                    <td colspan="3" class="grand total">TOTAL</td>
                     <td colspan="2" class="grand total">${{info.T.[0].Total}}</td>
                 </tr>
             </tbody>
         </table>
+
+        <div id="notices">
+            <div>Nombre :</div>
+            <div class="notice">__________________________________________ </div>
+            <div>CC :</div>
+            <div class="notice">__________________________________________ </div>
+            <div>Firma :</div>
+            <div class="notice">__________________________________________ </div>
+        </div>
+
         <div id="notices">
             <div>OBSERVACIONES :</div>
             <div class="notice">No se hacen devoluciones en una fecha diferente a la de emision de este documento

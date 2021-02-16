@@ -61,9 +61,17 @@
             <div class="col-md-7 col-12">
                 <label class="d-none d-sm-block" for="Des"> Facturas Pendientes </label>
                 <label class="d-block d-sm-none" for="DesM">F. Pendientes </label>
-                <select id="Fpendientes" class="selectpicker col-12" title="Elija factura pendiente."
+                <select id="Fpendientes" onchange="TraerSaldo($('#Fpendientes').val())" class="selectpicker col-12" title="Elija factura pendiente."
                     data-live-search="true" required>
                 </select>
+            </div>
+
+            <div class="col-6 col-md-2">
+                <label for="Cnt">
+                    <span class="d-none d-sm-block"> Saldo</span>
+                    <span class="d-block d-sm-none">Saldo</span>
+                </label>
+                <input type="text" class="form-control" data-inputmask="'alias': 'numeric'"  name="Saldo" id="Saldo" readonly>
             </div>
 
             <div class="col-6 col-md-2">
@@ -71,7 +79,7 @@
                     <span class="d-none d-sm-block"> Valor Pagado</span>
                     <span class="d-block d-sm-none">Valor</span>
                 </label>
-                <input type="text" class="form-control" data-inputmask="'alias': 'numeric'"  name="Cnt" id="Cnt" required>
+                <input type="text" class="form-control" data-inputmask="'alias': 'numeric'"  onkeyup="VerificarSaldo(this.value,Saldo.value)"  name="Cnt" id="Cnt" required>
             </div>
 
             <div class="col-md-3 col-6 my-auto">
@@ -134,66 +142,7 @@
             <div class="card-body">
 
                 <form action="" method="POST">
-                    <div class="form-group row">
-
-                        <div class="col-6">
-                            <label for="Subtotal">Sub Total</label>
-
-                            <input type="text" class="form-control form-control-plaintext text-right" name="Subtotal"
-                                id="Subtotal" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
-
-
-                        </div>
-                        <div class="col-6">
-                            <label for="BIva">Base Iva</label>
-                            <input type="text" class="form-control form-control-plaintext text-right" name="BIva"
-                                id="BIva" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-
-                        <div class="col-6">
-                            <label for="DTotal">Descuento Total </label>
-                            <input type="text" class="form-control form-control-plaintext text-right" name="DTotal"
-                                id="DTotal" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
-                        </div>
-                        <div class="col-6">
-
-                            <label for="RteFte">Rte.Fuente </label>
-                            <input type="text" class="form-control form-control-plaintext text-right" name="RteFte"
-                                id="RteFte" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-
-                        <div class="col-6">
-                            <label for="IvaT">Iva </label>
-                            <input type="text" class="form-control form-control-plaintext text-right" name="IvaT"
-                                id="IvaT" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
-                        </div>
-                        <div class="col-6">
-                            <label for="RteIva">Rte Iva </label>
-                            <input type="text" class="form-control form-control-plaintext text-right" name="RteIva"
-                                id="RteIva" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-
-                        <div class="col-6">
-                            <label for="RteIca">Rte Ica </label>
-                            <input type="text" class="form-control form-control-plaintext text-right" name="RteIca"
-                                id="RteIca" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
-                        </div>
-                        <div class="col-6">
-                            <label for="Autorenta">AutoRenta </label>
-                            <input type="text" class="form-control form-control-plaintext text-right" name="Autorenta"
-                                id="Autorenta" data-inputmask="'alias': 'numeric'" value="0.00 " readonly required>
-                        </div>
-
-                    </div>
-
+                    
                     <div class="form-group row">
 
                         <div class="col-6">
@@ -253,7 +202,7 @@
                 {{>Formalizar}}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="FormalizarPago({{Editar}})">
+                <button type="button" class="btn btn-secondary" onclick="FormalizarTran({{Editar}})">
                     <i class="fas fa-file-signature fa-w-16 fa-2x ml-2 "></i>Formalizar</a>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
                             class="fas fa-times fa-w-16 fa-2x ml-2"></i> Cerrar</button>
@@ -266,6 +215,7 @@
     $('#alertas').alert();
     $(':input').inputmask();
     $('#Cnt').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#Saldo').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
     $('#PreUni').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
     $('#PreTotal').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
 
@@ -296,7 +246,7 @@
     document.getElementById("PoCSel").addEventListener("change", function () {
 
         prov = $('#PoCSel').val()
-        TraerFacPendientes(prov)
+        TraerFacPendientes(prov,false)
 
     });
 
@@ -307,7 +257,7 @@
 
     $(document).ready(() => {
         $('#NitoCCT').change();
-
+        TraerFacPendientes($('#NitoCCT').val(),true)
     });
 
 </script>
