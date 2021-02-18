@@ -307,6 +307,14 @@ Create Table DetallePagoTemp (
  
  );
 
+ Create Table Aperturas (
+    
+ ID INT AUTO_INCREMENT PRIMARY KEY,
+ SaldoCaja int NOT NULL, 
+ FechaEjecucion TIMESTAMP default current_timestamp
+ 
+ );
+
 
 
 --------------------------- STORED PROCEDURE ---------------------------------------------------------------------------------

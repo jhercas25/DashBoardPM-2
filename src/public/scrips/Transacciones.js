@@ -120,6 +120,7 @@ async function LimpiarDetalletemp(Doc,Tipo) {
   });
 
 }
+
 function ComprobarDetalletemp(Doc,Tipo) {
 
  

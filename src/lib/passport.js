@@ -57,9 +57,6 @@ passport.use('Local.signup', new LocalStrategy({
 }));
 
 
-
-
-
 passport.serializeUser((user, done) => {
     done(null, user.id);
     //console.log(user);

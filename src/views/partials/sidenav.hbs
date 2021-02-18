@@ -27,6 +27,8 @@
   </div>
 
   <!-- Nav Item - Pages Collapse Menu -->
+  
+  {{#ifEquals user.rol "Admin"}}
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
       aria-controls="collapseTwo">
@@ -36,12 +38,12 @@
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Operaciones operativas:</h6>
-        <a class="collapse-item" href="#">Apertura</a>
-        <a class="collapse-item" href="#">Cierre</a>
+        <a class="collapse-item" href="/Caja/">Caja</a>
         <a class="collapse-item" href="/Rep/">Reportes</a>
       </div>
     </div>
   </li>
+  {{/ifEquals}}
 
   <!-- Nav Item - Utilities Collapse Menu -->
   <li class="nav-item">
@@ -54,12 +56,15 @@
 
     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
+
         <h6 class="collapse-header">Transacciones:</h6>
         <a class="collapse-item" href="/Tran/Ventas">Ventas</a>
+        {{#ifEquals user.rol "Admin"}} 
         <a class="collapse-item" href="/Tran/Compras">Compras</a>
-        <a class="collapse-item" href="/Tran/Cotizaciones">Cotizaciones</a>
         <a class="collapse-item" href="/Tran/Pedidos">Pedidos</a>
         <a class="collapse-item" href="/Tran/Pagos">Pagos</a>
+        {{/ifEquals}}
+        <a class="collapse-item" href="/Tran/Cotizaciones">Cotizaciones</a>
       </div>
     </div>
 

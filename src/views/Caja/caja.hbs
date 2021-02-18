@@ -1,0 +1,81 @@
+<script type='text/javascript'
+    src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js">    </script>
+<script src="/scrips/Caja.js"></script>
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h3 class="mb-3 m-4" id="TipoT"> Caja </h3>
+</div>
+
+<div class="row mx-auto">
+    <div class="col-md-4  ">
+        <div class="card m-2 p-2">
+            <div class="card-body">
+                <label for="ValorApertura">Valor de apertura </label>
+                <input type="text" data-inputmask="'alias': 'text'" class="form-control" name="ValorApertura">
+                <a class="btn btn-success m-2" href="#"> Apertura </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8 ">
+        <div class="card m-2 p-2">
+            <div class="card-body">
+                <div class="row">
+                    <div class="row col-12 col-md-5 m-2">
+                        <label for="ValorTarjeta">Saldo Tarjeta</label>
+                        <input type="text" data-inputmask="'alias': 'text'" class="form-control" name="ValorTarjeta" readonly>
+                    </div>
+                    <div class="row col-12 col-md-5 m-2">
+                        <label for="ValorEfectivo">Saldo Efectivo</label>
+                        <input type="text" data-inputmask="'alias': 'text'" class="form-control" name="ValorEfectivo" readonly>
+
+
+                    </div>
+                    <div class=" row col-12 col-md-5 m-2">
+                        <label for="ValorPagos"> Pagos</label>
+                        <input type="text" data-inputmask="'alias': 'text'" class="form-control" name="ValorPagos" readonly>
+
+                    </div>
+                    <div class=" row col-12 col-md-5 m-2">
+                        <label for="ValorGastos"> Gastos</label>
+                        <input type="text" data-inputmask="'alias': 'text'" class="form-control" name="ValorGastos" readonly>
+                    </div>
+                    
+                    <div class="row col-12 col-md-5 m-2">
+                        <label for="ValorCierre"> Valor de Cierre </label>
+                        <input type="text" data-inputmask="'alias': 'text'" class="form-control" name="ValorCierre" >
+                    </div>
+
+                </div>
+                <div class="col-2 mr-auto">
+                    <a class="btn btn-success m-2 " href="#"> Cierre </a>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+<table id="CajaMovimiento" data-height="900" data-toggle="table" data-toolbar="#toolbar" data-detail-view="true"
+    data-detail-view-icon="true" data-detail-formatter="DatosTransFormatter" data-ajax="DatosTrans"
+    data-pagination-parts="['pageList]" data-mobile-responsive="true" data-page-size="25" data-pagination="true"
+    data-query-params="queryParams">
+    <thead>
+        <tr>
+
+            <th data-field="FechaApertura">Fecha Apertura</th>
+            <th data-field="Apertura">Valor Apertura</th>
+            <th data-field="FechaCierre">Fecha Cierre</th>
+            <th data-field="Cierre">Valor Cierre</th>
+            <th data-field="Margen">Margen Diario</th>
+            <th data-field="Pagos">Pagos</th>
+
+            <th data-field="operate" data-formatter="DatosTransOP" data-events="DatosTransOPEvents"></th>
+
+        </tr>
+    </thead>
+</table>
