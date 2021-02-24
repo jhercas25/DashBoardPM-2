@@ -315,6 +315,20 @@ Create Table DetallePagoTemp (
  
  );
 
+ Create Table Gastos (
+    
+ ID INT AUTO_INCREMENT PRIMARY KEY,
+ MontoEfectivo  int NOT NULL, 
+ MontoElectronico  int NOT NULL, 
+ Descripcion  varchar (100) not null,
+ Responsable  varchar (60) not null,
+ FechaEjecucion TIMESTAMP default current_timestamp
+ 
+ );
+
+
+
+
 
 
 --------------------------- STORED PROCEDURE ---------------------------------------------------------------------------------

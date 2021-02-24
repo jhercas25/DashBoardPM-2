@@ -1,56 +1,156 @@
 <script type='text/javascript'
     src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js">    </script>
 <script src="/scrips/Caja.js"></script>
+<script src="/scrips/Gastos.js"></script>
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
     <h3 class="mb-3 m-4" id="TipoT"> Caja </h3>
 </div>
 
-<div class="row mx-auto">
-    <div class="col-md-4  ">
+<div class="row mx-auto mb-2">
+    <div class="col-md-6 ">
+        <div id="alertas">
+
+        </div>
         <div class="card m-2 p-2">
             <div class="card-body">
-                <label for="ValorApertura">Valor de apertura </label>
-                <input type="text" data-inputmask="'alias': 'text'" class="form-control" name="ValorApertura">
-                <a class="btn btn-success m-2" href="#"> Apertura </a>
-            </div>
-        </div>
-    </div>
 
-    <div class="col-md-8 ">
+
+                <div class="row">
+                    <div class="card-title col-md-2 col-6  "> Apertura</div>
+                    <div class=" row col-12 col-md-4 m-2">
+                        <label for="ApeEle"> Electronico </label>
+                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="ApeEle"
+                            name="ApeEle">
+                    </div>
+
+                    <div class=" row col-12 col-md-4 m-2">
+                        <label for="ApeEfe"> Efectivo</label>
+                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="ApeEfe"
+                            name="ApeEfe">
+
+                        
+                    </div>
+
+                </div>
+                <div class="col-md-6 col-12  m-auto ">
+                    <a class="btn btn-success m-2 d-block " href="javascript:void(0)"
+                        onclick="Apertura(ApeEle.value,ApeEfe.value)"> Apertura </a>
+                </div>
+            </div>
+
+        </div>
+
         <div class="card m-2 p-2">
             <div class="card-body">
                 <div class="row">
-                    <div class="row col-12 col-md-5 m-2">
-                        <label for="ValorTarjeta">Saldo Tarjeta</label>
-                        <input type="text" data-inputmask="'alias': 'text'" class="form-control" name="ValorTarjeta" readonly>
+                    <div class="card-title col-md-2 col-6  "> Nuevo Gasto </div>
+                    <div class=" row col-12 col-md-4 m-2">
+                        <label for="NGasEle"> Electronico </label>
+                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="NGasEle"
+                            name="NGasEle">
                     </div>
-                    <div class="row col-12 col-md-5 m-2">
-                        <label for="ValorEfectivo">Saldo Efectivo</label>
-                        <input type="text" data-inputmask="'alias': 'text'" class="form-control" name="ValorEfectivo" readonly>
+
+                    <div class=" row col-12 col-md-4 m-2">
+                        <label for="NGasEfe"> Efectivo</label>
+                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="NGasEfe"
+                            name="NGasEfe">
+                    </div>
+
+                    <div class=" row col-12 m-2">
+                        <label for="GasDes"> Descripcion </label>
+                        <input type="text" class="form-control" id="GasDes" name="GasDes">
+                    </div>
+
+                </div>
+                <div class="col-md-6 col-12 m-auto ">
+                    <a class="btn btn-success m-2 d-block " href="#"> Nuevo Gasto </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 
-                    </div>
-                    <div class=" row col-12 col-md-5 m-2">
-                        <label for="ValorPagos"> Pagos</label>
-                        <input type="text" data-inputmask="'alias': 'text'" class="form-control" name="ValorPagos" readonly>
+    <div class="col-md-6 ">
+        <div class="card m-2 p-2">
+            <div class="card-body">
+                <div class="row">
 
+                    <div class=" card-title col-md-2 col-6 p-2"> Entradas </div>
+
+                    <div class=" col-12 col-md-4 m-2">
+                        <label for="EntEle">Electonico</label>
+                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="EntEle"
+                            name="EntEle" readonly>
                     </div>
-                    <div class=" row col-12 col-md-5 m-2">
-                        <label for="ValorGastos"> Gastos</label>
-                        <input type="text" data-inputmask="'alias': 'text'" class="form-control" name="ValorGastos" readonly>
+
+                    <div class="col-12 col-md-4 m-2">
+                        <label for="EntEfe">Efectivo</label>
+                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="EntEfe"
+                            name="EntEfe" readonly>
                     </div>
-                    
-                    <div class="row col-12 col-md-5 m-2">
+
+                </div>
+                <div class="row">
+                    <div class="card-title col-md-2 col-6 "> Salidas </div>
+
+                    <div class=" row col-12 col-md-4 m-2">
+                        <label for="SalEle"> Electronico </label>
+                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="SalEle"
+                            name="SelEle" readonly>
+                    </div>
+
+                    <div class=" row col-12 col-md-4 m-2">
+                        <label for="SalEfe"> Efectivo</label>
+                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="SalEfe"
+                            name="SalEfe" readonly>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="card-title col-md-2 col-6 "> Gastos </div>
+                    <div class=" row col-12 col-md-4 m-2">
+                        <label for="GasEle"> Electronico </label>
+                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="GasEle"
+                            name="GasEle" readonly>
+                    </div>
+
+                    <div class=" row col-12 col-md-4 m-2">
+                        <label for="GasEfe"> Efectivo</label>
+                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="GasEfe"
+                            name="GasEfe" readonly>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="card-title col-md-2 col-6 "> Total </div>
+                    <div class=" row col-12 col-md-4 m-2">
+                        <label for="TotEle"> Electronico </label>
+                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="TotEle"
+                            name="TotEle" readonly>
+                    </div>
+
+                    <div class=" row col-12 col-md-4 m-2">
+                        <label for="TotEfe"> Efectivo</label>
+                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="TotEfe"
+                            name="TotEfe" readonly>
+                    </div>
+
+                </div>
+
+                <div class=" col-md-8 col-12  text-center m-auto">
+
+                    <div class="row col-12 m-2">
                         <label for="ValorCierre"> Valor de Cierre </label>
-                        <input type="text" data-inputmask="'alias': 'text'" class="form-control" name="ValorCierre" >
+                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" name="ValorCierre">
+                    </div>
+
+                    <div class="col-md-6 col-12 m-auto">
+                        <a class="btn btn-success  d-block m-2 " href="#"> Cierre </a>
                     </div>
 
                 </div>
-                <div class="col-2 mr-auto">
-                    <a class="btn btn-success m-2 " href="#"> Cierre </a>
-                </div>
-
 
             </div>
         </div>
@@ -60,22 +160,82 @@
 
 </div>
 
-<table id="CajaMovimiento" data-height="900" data-toggle="table" data-toolbar="#toolbar" data-detail-view="true"
-    data-detail-view-icon="true" data-detail-formatter="DatosTransFormatter" data-ajax="DatosTrans"
-    data-pagination-parts="['pageList]" data-mobile-responsive="true" data-page-size="25" data-pagination="true"
-    data-query-params="queryParams">
-    <thead>
-        <tr>
+<div class="row">
+    <div class="col-12 col-md-4 p2">
+        <div class="card ">
+            <div class="card-header">
+                <div class="card-title">
+                    <h4>Gastos</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="Gastos" data-height="900" data-toggle="table" data-toolbar="#toolbar" data-detail-view="true"
+                    data-detail-view-icon="true" data-detail-formatter="DatosDetalleGastos" data-ajax="DatosGastos"
+                    data-pagination-parts="['pageList]" data-mobile-responsive="true" data-page-size="25"
+                    data-pagination="true" data-query-params="queryParams">
+                    <thead>
+                        <tr>
 
-            <th data-field="FechaApertura">Fecha Apertura</th>
-            <th data-field="Apertura">Valor Apertura</th>
-            <th data-field="FechaCierre">Fecha Cierre</th>
-            <th data-field="Cierre">Valor Cierre</th>
-            <th data-field="Margen">Margen Diario</th>
-            <th data-field="Pagos">Pagos</th>
+                            <th data-field="FechaEjecucion">Fecha</th>
+                            <th data-field="Descripcion">Descripcion</th>
+                            <th data-field="MontoEfectivo">Valor Efectivo</th>
+                            <th data-field="MontoElectronico">Valor Electronico</th>
+                            <th data-field="operate" data-formatter="GastosOP" data-events="EventsGastos"> </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
 
-            <th data-field="operate" data-formatter="DatosTransOP" data-events="DatosTransOPEvents"></th>
 
-        </tr>
-    </thead>
-</table>
+    <div class="col-12 col-md-8 p2">
+        <div class="card ">
+            <div class="card-header">
+                <div class="card-title">
+                    <h4>Movimiento Diario</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="CajaMovimiento" data-height="900" data-toggle="table" data-toolbar="#toolbar"
+                    data-detail-view="true" data-detail-view-icon="true" data-detail-formatter="DatosDetalleCaja"
+                    data-ajax="DatosCaja" data-pagination-parts="['pageList]" data-mobile-responsive="true"
+                    data-page-size="25" data-pagination="true" data-query-params="queryParams">
+                    <thead>
+                        <tr>
+
+                            <th data-field="FechaApertura">Fecha Apertura</th>
+                            <th data-field="MontoEfectivo">Apertura Efectivo</th>
+                            <th data-field="MontoTarjeta">Apertura Electronico</th>
+                            <th data-field="FechaApertura">Fecha Cierre</th>
+                            <th data-field="SaldoEfectivo">Cierre Efectivo</th>
+                            <th data-field="SaldoTarjeta">Cierre Electronico</th>
+
+                            <th data-field="operate" data-formatter="DatosCajaOP" data-events="EventsCaja">
+                            </th>
+
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    $(':input').inputmask();
+    $('#ApeEfe').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#ApeEle').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#GasEfe').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#GasEle').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#EntEfe').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#EntEle').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#SalEfe').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#SalEle').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#NGasEfe').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#NGasEle').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#TotEfe').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+    $('#TotEle').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
+
+
+</script>

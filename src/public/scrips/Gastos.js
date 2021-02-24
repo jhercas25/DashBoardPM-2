@@ -1,18 +1,18 @@
+function DatosGastos(params) {
 
-function DatosCaja(params) {
-
-  var url = '/Caja/Historico';
+  var url = '/Caja/Gastos/Historico';
 
   //console.log(url);
   $.get(url).then(function (res) {
-    const CajaMovimientos = res;
-    params.success(CajaMovimientos);
+    const Gastos = res;
+    console.log(Gastos);
+    params.success(Gastos);
   });
+
 }
 
 //DatosDetalleCaja
-
-function DatosCajaOP(value, row, index) {
+function GastosOP(value, row, index) {
 
   ///Tran/Editar/${Documento}&${Tipo}
   return [
@@ -20,23 +20,25 @@ function DatosCajaOP(value, row, index) {
     '<i class="fas fa-pencil-alt"></i>',
     '</a>  ',
 
-
   ].join('')
 }
 
-window.EventsCaja = {
+window.EventsGastos = {
 
   'click .edit': function (e, value, row, index) {
+
+
 
 
   },
   'click .remove': function (e, value, row, index) {
 
-  }
+  },
+
 
 }
 
-function DatosDetalleCaja(index, row) {
+function DatosDetalleGastos(index, row) {
   //console.log(row);
   var html = []
   st = '';
@@ -44,11 +46,11 @@ function DatosDetalleCaja(index, row) {
   
     <thead > 
     <tr class="d-none d-sm-block"  >
-    <th style="min-width:100px;">Marca</th>  
+    <th style="min-width:100px;" >Marca</th>  
     <th style="min-width:125px;">Detalle</th> 
     <th style="min-width:120px;">P.Compra</th> 
     <th style="min-width:65px;">Iva</th>  
-    <th style="min-width:135px;">Proveedor</th> 
+    <th style="min-width:135px;" >Proveedor</th> 
     <th style="width:185px;" >Imagen </th> 
     </tr>
     <tr class="d-block d-sm-none" style="min-width:200px;" >
@@ -88,53 +90,12 @@ function DatosDetalleCaja(index, row) {
 
 }
 
-
-function Apertura(Efectivo, Electronico) {
-
-  if (Efectivo == '' || Electronico == '') return 0
-
-  var url = '/Caja/Historico/Ultimo';
-
-  //console.log(url);
-  $.get(url).then(function (res) {
-    const CierreAnterior = res;
-    console.log(CierreAnterior);
-
-    if (CierreAnterior.length==0 ) {
-      var url = '/Caja/Apertura';
-
-      const NApertura={
-        MontoEfectivo:Efectivo,
-        MontoElectronico:Electronico
-      }
-
-      $.post(url,NApertura).then(function (res) {
-          console.log(res);
-      });
-    }
-    else {
-      if (Efectivo != CierreAnterior.MontoEfectivo) return 0
-
-      if (Electronico != CierreAnterior.MontoElectronico) {
-        alerta = `<div class="alert alert-warning alert-dismissible fade show" role="alert">
-      <strong>Saldo en Bancos diferente al esperado!</strong> Diferencia de ${CierreAnterior.MontoElectronico - Electronico}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>`;
-        alertashook = document.getElementById('alertas')
-        alertashook.innerHTML = alerta;
-      }
-
-
-      console.log({ Efectivo, Electronico });
-    }
-
-
-
-  });
-
+function CrearApertura(){
 
 
 
 }
+function EditarApertura(){
+
+}
+

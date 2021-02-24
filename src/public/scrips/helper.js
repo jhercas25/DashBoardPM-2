@@ -119,7 +119,7 @@ function detailFormatter(index, row) {
   //console.log(row);
   var html = []
   st = '';
-  html.push(`<table class="table" style="text-align: center;" > 
+  html.push(` <div class="col-md-12"> <table class="table" style="text-align: center;" > 
 
   <thead > 
   <tr class="d-none d-sm-block"  >
@@ -164,7 +164,7 @@ function detailFormatter(index, row) {
   var d = new Date();
   var n = d.getSeconds();
 
-  html.push('</tbody> </table>');
+  html.push('</tbody> </div> </table>');
 
   html.push(`<table class="table " style=" text-align: center;" > 
     <thead > 
