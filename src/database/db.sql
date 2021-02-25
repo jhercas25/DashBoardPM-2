@@ -326,8 +326,38 @@ Create Table DetallePagoTemp (
  
  );
 
+ Create Table OperacionDiaria (
+    
+ ID INT AUTO_INCREMENT PRIMARY KEY,
+ IdApertura int NOT NULL, 
+ idCierre  int NOT NULL, 
+  
+ );
 
+ ------- TRIGGER 
+ DELIMITER $$
+CREATE TRIGGER AgregarApertura
+AFTER UPDATE ON Aperturas
+FOR EACH ROW
+BEGIN
 
+INSERT INTO OperacionDiaria set idApertura=NEW.ID;
+
+END$$
+DELIMITER ;
+
+-------
+drop trigger AgregarCierre;
+DELIMITER $$
+CREATE TRIGGER AgregarCierre
+AFTER INSERT ON Cierre
+FOR EACH ROW
+BEGIN
+DECLARE OpId int ;
+SELECT ID into OpId FROM OperacionDiaria order by ID DESC limit 1;
+UPDATE OperacionDiaria set idCierre=NEW.ID where id=OpId ;
+END$$
+DELIMITER ;
 
 
 

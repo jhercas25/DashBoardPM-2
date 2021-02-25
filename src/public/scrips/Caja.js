@@ -88,53 +88,91 @@ function DatosDetalleCaja(index, row) {
 
 }
 
-
-function Apertura(Efectivo, Electronico) {
+function Cierre(Efectivo,Electronico) {
 
   if (Efectivo == '' || Electronico == '') return 0
-
-  var url = '/Caja/Historico/Ultimo';
-
+  var url = '/Caja/Movimiento/Ultimo';
   //console.log(url);
   $.get(url).then(function (res) {
-    const CierreAnterior = res;
-    console.log(CierreAnterior);
+    const UltimoMovimiento = res;
+    console.log(UltimoMovimiento);
 
-    if (CierreAnterior.length==0 ) {
-      var url = '/Caja/Apertura';
-
-      const NApertura={
-        MontoEfectivo:Efectivo,
-        MontoElectronico:Electronico
-      }
-
-      $.post(url,NApertura).then(function (res) {
-          console.log(res);
-      });
+    if (UltimoMovimiento[0].idCierre != '0' && UltimoMovimiento[0].idApertura != '0') {
+      CrearAlerta('Apertura pendiente')
     }
     else {
-      if (Efectivo != CierreAnterior.MontoEfectivo) return 0
-
-      if (Electronico != CierreAnterior.MontoElectronico) {
-        alerta = `<div class="alert alert-warning alert-dismissible fade show" role="alert">
-      <strong>Saldo en Bancos diferente al esperado!</strong> Diferencia de ${CierreAnterior.MontoElectronico - Electronico}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>`;
-        alertashook = document.getElementById('alertas')
-        alertashook.innerHTML = alerta;
-      }
-
+   
+   
 
       console.log({ Efectivo, Electronico });
     }
 
+  });
 
+}
+
+
+function Apertura(Efectivo, Electronico) {
+
+  if (Efectivo == '' || Electronico == '') return 0
+  var url = '/Caja/Movimiento/Ultimo';
+  //console.log(url);
+  $.get(url).then(function (res) {
+    const UltimoMovimiento = res;
+    console.log(UltimoMovimiento);
+
+    if (UltimoMovimiento[0].idCierre == '0') {
+      CrearAlerta('Cierre pendiente')
+    }
+    else {
+      var url = '/Caja/Cierre/Ultimo';
+      $.get(url).then(function (res) {
+        const Cierre = res[0];
+        console.log(Cierre);
+        if (Efectivo != Cierre.MontoEfectivo) {
+          CrearAlerta('Monto en Efectivo incorrecto');
+        } else {
+          if (Electronico != Cierre.MontoElectronico) {
+
+            html = `Existe una diferencia de ${Electronico-Cierre.MontoElectronico}`
+            alertashook = document.getElementById('DifMontoElectronico')
+            alertashook.innerHTML = html;
+            $('#AlertaDialog').modal('show')
+
+          } else {
+            EfetuarApertura(Efectivo, Electronico);
+          }
+        }
+      });
+
+      console.log({ Efectivo, Electronico });
+    }
 
   });
 
+}
 
 
+
+function EfectuarApertura(Efectivo, Electronico) {
+  var url = '/Caja/Apertura';
+  const NApertura = {
+    MontoEfectivo: Efectivo,
+    MontoElectronico: Electronico
+  }
+
+  $.post(url, NApertura).then(function (res) {
+    console.log(res);
+  }); 
+}
+
+function CrearAlerta(Mensaje) {
+
+  alerta = `<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>${Mensaje}</strong><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span>
+       </button>
+    </div>`;
+  alertashook = document.getElementById('alertas')
+  alertashook.innerHTML = alerta;
 
 }

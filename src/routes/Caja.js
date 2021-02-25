@@ -9,8 +9,11 @@ router.get('/',isLoggedin,async(req,res) =>{
     const Entradas = await pool.query ('SELECT Sum(MontoEfectivo) as EntradasEfectivo, Sum(MontoTarjeta) as EntradasElectronico from Pagos where FechaEjecucion= now() and Tipo="Ventas" ');
     const Salidas = await pool.query ('SELECT Sum(MontoEfectivo) as EntradasEfectivo, Sum(MontoTarjeta) as EntradasElectronico from Pagos where FechaEjecucion= now() and Tipo="Compras" ');
     const Gastos = await pool.query ('SELECT Sum(MontoEfectivo) as EntradasEfectivo, Sum(MontoElectronico) as EntradasElectronico from Gastos where FechaEjecucion= now() ');
+    Entradas[0].EntradasEfectivo='50000';
+    Datos={Apertura:Apertura,Entradas:Entradas[0],Salidas:Salidas[0],Gastos:Gastos[0]};
+    console.log(Datos);
 
-    res.render('Caja/caja',{Apertura,Entradas,Salidas,Gastos});
+    res.render('Caja/caja',{Datos});
 });
 
 router.get('/InfoDiario',isLoggedin,async (req,res) =>{
@@ -33,9 +36,13 @@ router.get('/Gastos/Historico',isLoggedin,async (req,res) =>{
     res.send(Gastos);
 });
 
-router.get('/Historico/Ultimo',isLoggedin,async (req,res) =>{
-    const CajaMovimientos = await pool.query ('SELECT *  from Cierre order by FechaEjecucion Desc limit 1');
+router.get('/Movimiento/Ultimo',isLoggedin,async (req,res) =>{
+    const CajaMovimientos = await pool.query ('SELECT *  from Operaciondiaria order by id Desc limit 1');
     res.send(CajaMovimientos);
+});
+router.get('/Cierre/Ultimo',isLoggedin,async (req,res) =>{
+    const Cierre= await pool.query ('SELECT *  from Cierre order by id Desc limit 1');
+    res.send(Cierre);
 });
 
 router.post('/Apertura',isLoggedin,async (req,res) =>{

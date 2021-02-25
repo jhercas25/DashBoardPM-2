@@ -29,7 +29,7 @@
                         <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="ApeEfe"
                             name="ApeEfe">
 
-                        
+
                     </div>
 
                 </div>
@@ -76,18 +76,20 @@
         <div class="card m-2 p-2">
             <div class="card-body">
                 <div class="row">
-
                     <div class=" card-title col-md-2 col-6 p-2"> Entradas </div>
-
+                        
                     <div class=" col-12 col-md-4 m-2">
+                        
+                            
+                        
+
                         <label for="EntEle">Electonico</label>
-                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="EntEle"
-                            name="EntEle" readonly>
+                        <input type="text" class="form-control" value="{{Datos.Entradas.EntradasEfectivo}}"  id="EntElef"  name="EntEle" readonly>
                     </div>
 
                     <div class="col-12 col-md-4 m-2">
                         <label for="EntEfe">Efectivo</label>
-                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="EntEfe"
+                        <input type="text" data-inputmask="'alias': 'numeric'" value="{{Datos.Entradas.EntradasElectronico}}"class="form-control" id="EntEfe"
                             name="EntEfe" readonly>
                     </div>
 
@@ -97,13 +99,13 @@
 
                     <div class=" row col-12 col-md-4 m-2">
                         <label for="SalEle"> Electronico </label>
-                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="SalEle"
+                        <input type="text" data-inputmask="'alias': 'numeric'" value="{{Datos.Salidas.SalidasEfectivo}}"class="form-control" id="SalEle"
                             name="SelEle" readonly>
                     </div>
 
                     <div class=" row col-12 col-md-4 m-2">
                         <label for="SalEfe"> Efectivo</label>
-                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="SalEfe"
+                        <input type="text" data-inputmask="'alias': 'numeric'" value="{{Datos.Salidas.SalidasElectronico}}" class="form-control" id="SalEfe"
                             name="SalEfe" readonly>
                     </div>
                 </div>
@@ -112,13 +114,13 @@
                     <div class="card-title col-md-2 col-6 "> Gastos </div>
                     <div class=" row col-12 col-md-4 m-2">
                         <label for="GasEle"> Electronico </label>
-                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="GasEle"
+                        <input type="text" data-inputmask="'alias': 'numeric'" value="{{Datos.Gastos.GastosEfectivo}}" class="form-control" id="GasEle"
                             name="GasEle" readonly>
                     </div>
 
                     <div class=" row col-12 col-md-4 m-2">
                         <label for="GasEfe"> Efectivo</label>
-                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="GasEfe"
+                        <input type="text" data-inputmask="'alias': 'numeric'" value="{{Datos.Salidas.SalidasElectronico}}" class="form-control" id="GasEfe"
                             name="GasEfe" readonly>
                     </div>
 
@@ -127,34 +129,46 @@
                     <div class="card-title col-md-2 col-6 "> Total </div>
                     <div class=" row col-12 col-md-4 m-2">
                         <label for="TotEle"> Electronico </label>
-                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="TotEle"
+                        <input type="text" data-inputmask="'alias': 'numeric'" value="Total.MontoEfectivo"class="form-control" id="TotEle"
                             name="TotEle" readonly>
                     </div>
 
                     <div class=" row col-12 col-md-4 m-2">
                         <label for="TotEfe"> Efectivo</label>
-                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="TotEfe"
+                        <input type="text" data-inputmask="'alias': 'numeric'" value="Total.MontoElectronico"class="form-control" id="TotEfe"
                             name="TotEfe" readonly>
                     </div>
 
                 </div>
 
-                <div class=" col-md-8 col-12  text-center m-auto">
 
-                    <div class="row col-12 m-2">
-                        <label for="ValorCierre"> Valor de Cierre </label>
-                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" name="ValorCierre">
+                <div class="row">
+                    <div class="card-title col-md-2 col-6 "> Valor Cierre </div>
+                    <div class=" row col-12 col-md-4 m-2">
+
+                        <label for="VCierreEle"> Electronico </label>
+                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="VCierreEle"
+                            name="VCierreEle" >
                     </div>
 
-                    <div class="col-md-6 col-12 m-auto">
-                        <a class="btn btn-success  d-block m-2 " href="#"> Cierre </a>
+                    <div class=" row col-12 col-md-4 m-2">
+                        <label for="VCierreEfe"> Efectivo</label>
+                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="VCierreEfe"
+                            name="VCierreEfe" >
                     </div>
+                </div>
 
+
+                <div class=" col-md-8 col-12  text-center m-auto"></div>
+                <div class="col-md-6 col-12 m-auto">
+                    <a class="btn btn-success  d-block m-2 " href="javascript:void(0)" onclick="Cierre(VCierreEle.value,VCierreEfe.value)"> Cierre </a>
                 </div>
 
             </div>
+
         </div>
     </div>
+</div>
 
 
 
@@ -222,6 +236,34 @@
     </div>
 
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="AlertaDialog" tabindex="-1" role="dialog" aria-labelledby="AlertaDialogLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="AlertaDialogLabel">Diferencia Monto Electronico</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="DifMontoElectronico">
+
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary"
+                    onclick="EfetuarApertura(ApeEle.value,ApeEfe.value)">Continuar Apertura</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
     $(':input').inputmask();
     $('#ApeEfe').inputmask({ "groupSeparator": ".", "radixPoint": ",", "autoGroup": "true" });
