@@ -16,6 +16,8 @@ function CerrarModal() {
   if (prov == null) {
     LlenarProv(true);
   }
+ 
+  location.reload();
 
 }
 
@@ -906,13 +908,18 @@ async function traerPro(Trans) {
 
         if (Trans == "Compras" || Trans == "Pedidos") {
 
-          $('#PreUni').val(Vc);
+          $('#PreUni').val(Vc*(1+Iva/100));
           $('#PreTotal').val(Vc * parseInt($('#Cnt').val()));
           DesM = 100;
           G = 0;
           localStorage.setItem('G', G);
           localStorage.setItem('Vc', Vc);
           localStorage.setItem('Prov', Prod.PoC);
+
+          pVI = Vc * ((Iva * 0.01) + 1)
+          $('#PreUni').val(Math.round(pVI / 10) * 10);
+          $('#PreTotal').val((Math.round(pVI / 10) * 10) * parseInt($('#Cnt').val()));
+
           R = ActDes(Vc, (Iva / 100) + 1, (G / 100) + 1, 0, DesM / 100);
           //console.log(R);
           $('#Des').val(R.Des);
@@ -971,7 +978,12 @@ async function traerPro(Trans) {
 
 
   }
-  MprecioV();
+  // if (Trans == "Ventas" || Trans == "Pedidos"){
+    
+  // }else{
+  //   MprecioV();
+  // }
+  
 }
 
 function limpiarProducto() {
@@ -1447,7 +1459,7 @@ function Totalizar() {
 }
 
 function MprecioV() {
-
+  debugger
   G = localStorage.getItem("G") / 100;
   DesM = $('#DesM').val() / 100;
   Vv = $('#PreUni').val().replace(/\./g, '') / 1;
@@ -1487,7 +1499,10 @@ async function FormalizarTran(Editar) {
   FechaVencimientoa = FV[2] + '-' + FV[1] + "-" + FV[0];
   MedPag = "";
 
-  Tipo = document.getElementById('TipoT').innerText;
+  Tipo = document.getElementById('TipoT').innerText
+
+  TipoProv = document.getElementById('TipoT').innerText;
+
   document.getElementsByName('OpcMP').forEach((ele) => {
 
     if (ele.checked) {
@@ -1529,7 +1544,9 @@ async function FormalizarTran(Editar) {
     Total: $('#TotalP').val().replace(/\./g, '').replace(/\,/g, '.') / 1
 
   }
+
   // console.log(Transaccion);
+
   console.log(Pago);
   if (Transaccion.Plazo.indexOf('Credito') >= 0) {
 
@@ -1564,7 +1581,7 @@ async function FormalizarTran(Editar) {
   else {
     if (MedPag != "OpcEfectivo") {
 
-      if (Pago.Cambio >= 0 && Pago.Referencia != "" && Pago.TipoPagoEle != "") {
+      if ((Pago.MontoEfectivo+Pago.MontoTarjeta) >= Pago.Total && Pago.Referencia != "" && Pago.TipoPagoEle != "") {
         bodyMsg = { Transaccion, Pago }
 
         url = '/Tran/Formalizar';
@@ -1597,7 +1614,7 @@ async function FormalizarTran(Editar) {
 
     } else {
 
-      if (Pago.Cambio >= 0) {
+      if ((Pago.MontoEfectivo+Pago.MontoTarjeta) >= Pago.Total) {
         bodyMsg = { Transaccion, Pago }
         url = '/Tran/Formalizar';
         // console.log(url);

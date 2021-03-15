@@ -286,7 +286,7 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
     const { id, Editar } = req.params;
     const { Transaccion } = req.body.bodyMsg;
     const { Pago } = req.body.bodyMsg;
-
+    console.log(Pago);
     //console.log(id);
     //console.log(req.body.bodyMsg);
     //console.log('Edita->');
@@ -335,11 +335,17 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
                     Total: Transaccion.Total,
                     Responsable: Transaccion.Responsable,
                 }
-                Total = Pago.MontoEfectivo - Pago.MontoTarjeta
+                console.log(Cartera);
+                Total = (Transaccion.Total/1 >= (Pago.MontoEfectivo/1 + Pago.MontoTarjeta/1))?(Pago.MontoEfectivo/1 + Pago.MontoTarjeta/1):0;
+                console.log(Total);
                 await pool.query(`UPDATE Cartera SET ?, Saldo=Saldo-${Total} WHERE Documento='${id}'`, [Cartera]);
             }
         }
         else {
+
+            VoC=await pool.query(`Select PoC from PoC where NitoCC=${Pago.PoC}`);
+            //console.log({VoC});
+            Pago.Tipo=VoC[0].PoC=='0'?'PagosVentas':'PagosCompras';
 
             inodec = true;
             await pool.query(`Select ActualizarSaldo('${id}',${inodec})`);
@@ -378,23 +384,27 @@ router.post('/Formalizar/:id&:Editar', isLoggedin, async (req, res) => {
             //console.log({Tiene:Transaccion.Plazo.indexOf('Credito'), Plazo:Transaccion.Plazo});
             if (Transaccion.Plazo.indexOf('Credito') >= 0) {
 
-                Total = Pago.MontoEfectivo - Pago.MontoTarjeta
+                Total = Pago.MontoEfectivo/1 + Pago.MontoTarjeta/1
                 Cartera = {
                     Documento: id,
                     PoC: Transaccion.PoC,
                     Tipo: Transaccion.Tipo,
                     FechaVencimiento: Transaccion.FechaVencimientoa,
                     Total: Transaccion.Total,
-                    Saldo: Transaccion.Total - Total,
+                    Saldo: (Transaccion.Total/1 - Total/1)>=0?(Transaccion.Total/1 - Total/1):0,
                     Responsable: Transaccion.Responsable,
                 }
-                //console.log(Cartera);
+                console.log(Total);
+                console.log(Cartera);
 
                 await pool.query(`INSERT INTO Cartera SET ? `, [Cartera]);
             }
 
         }
         else {
+            VoC=await pool.query(`Select PoC from PoC where NitoCC=${Pago.PoC}`);
+            
+            Pago.Tipo=VoC[0].PoC=='0'?'PagosVentas':'PagosCompras';
 
             await pool.query(`INSERT INTO detallePago(Pago,Documento,Total,Item) SELECT Pago,Documento,Total,Item FROM detallePagotemp WHERE (Pago = '${id}' )`);
             await pool.query(`DELETE FROM detallePagotemp WHERE Pago = '${id}' `);

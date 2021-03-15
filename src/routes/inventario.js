@@ -583,8 +583,8 @@ router.post('/EditProF/:Cod', isLoggedin, async (req, res) => {
    console.log('Nuevo Producto');
 
    const { Data } = req.body;
-   // console.log(Data);
-   await pool.query(`UPDATE producto set ? WHERE Codigo = ${Cod}`, [Data]);
+    console.log(Data);
+   await pool.query(`UPDATE producto set ? WHERE Codigo = '${Cod}'`, [Data]);
    //await pool.query(`UPDATE RegistroInventario set estado='Finalizado' where Codigo= ${Data.Codigo} `);
 
    res.sendStatus(200);

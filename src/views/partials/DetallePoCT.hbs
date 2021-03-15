@@ -1,23 +1,30 @@
 <div class="row">
-    <h3 id="PoC" class="mb-3 m-4">{{#ifEquals Trans "Pagos" }}Proveedores o Clientes{{else}}{{#if prov }}Proveedores{{else}}Clientes{{/if}} {{/ifEquals}} </h3>
+    <h3 id="PoC" class="mb-3 m-4">{{#ifEquals Trans "Pagos" }}Proveedores o Clientes{{else}}{{#if prov
+        }}Proveedores{{else}}Clientes{{/if}} {{/ifEquals}} </h3>
     <h5 class="mb-3 m-4 " id="Tipo">Minorista</h5>
 </div>
 
 <div class="form-group row pl-3 pr-3">
-    <div class="col-4">
-        <label for="Proveedor">Seleccione {{#ifEquals Trans "Pagos" }} Proveedor o Cliente {{else}} {{#if prov }}Proveedor{{else}}Cliente{{/if}} {{/ifEquals}}</label>
+    <div class="col-2">
+        <label for="Proveedor">Seleccione {{#ifEquals Trans "Pagos" }} Proveedor o Cliente {{else}} {{#if prov
+            }}Proveedor{{else}}Cliente{{/if}} {{/ifEquals}}</label>
     </div>
     <div class="col-8">
-        <select id="PoCSel"  onchange="SelectPoC()" class="selectpicker" data-live-search="true" required>
+        <select id="PoCSel" onchange="SelectPoC()" class="selectpicker" data-live-search="true" required>
         </select>
+    </div>
+    <div class="col-2">
+        <a type="button" href="javascript:void(0)" class="my-auto" data-toggle="modal" data-target="#NuevoPoC">
+            <i class="fas fa-plus-circle fa-w-16 fa-3x"></i>
+        </a>
     </div>
 </div>
 
 <div class="form-group pl-3 pr-3">
     <label for="NitoCC">Nit o CC sin digito de verificacion </label>
     <div class="form-group row">
-        <input type="text" class="form-control col-10" data-inputmask="'alias': 'numeric'" name="NitoCC" value="{{DT.row.PoC}}" onchange="TraerPoC(this)" id="NitoCCT"
-             required>
+        <input type="text" class="form-control col-10" data-inputmask="'alias': 'numeric'" name="NitoCC"
+            value="{{DT.row.PoC}}" onchange="TraerPoC(this)" id="NitoCCT" required>
         <input type="text" class="form-control col-2" id="DVer" readonly>
     </div>
 </div>
@@ -89,6 +96,11 @@
 <script>
     $(document).ready(function () {
 
+        LlenarPoCSelect()
+
+    });
+
+    function LlenarPoCSelect() {
         Tipo = document.getElementById('TipoT').innerText.replace(/\ /g, '');
 
         switch (Tipo) {
@@ -116,21 +128,37 @@
 
         $.get(url).then(function (res) {
 
-           // console.log(res);
-           // debugger
+            // console.log(res);
+            // debugger
 
             for (i = 0; i < res.length; i++) {
 
                 $('#PoCSel').append(`<option  value ="${res[i].NitoCC}" data-subtext="${res[i].NitoCC}">${res[i].Nombre}</option`).selectpicker('refresh');
                 //console.log(i);
             }
-
+            
             $('#PoCSel').val(0).selectpicker('refresh');
 
         });
 
         $('#NitoCCT').change()
-    });
-
+    }
 
 </script>
+
+<div class="modal fade" id="NuevoPoC" tabindex="-1" role="dialog" aria-labelledby="PoCEdit" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="PoCEdit">Crear</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{>PoCNuevo}}
+            </div>
+
+        </div>
+    </div>
+</div>

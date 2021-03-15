@@ -8,7 +8,7 @@
 
         <div class="card-body">
             <iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
-            <form id="FPoC" action= {{#if prov }} "../PoC/Proveedores/CoE" {{else}} "../PoC/Clientes/CoE" {{/if}} target="hiddenFrame" method="POST" class="col needs-validation" novalidate>
+            <form id="FPoC" action= {{#if prov }} "../../PoC/Proveedores/CoE" {{else}} "../../PoC/Clientes/CoE" {{/if}} target="hiddenFrame" method="POST" class="col needs-validation" novalidate>
                 <div class="form-group row pl-3 pr-3">
                     <label for="NitoCC">Nit o CC sin digito de verificacion </label>
                     <input type="text" class="form-control col-10" data-inputmask="'alias': 'numeric'" name="NitoCC"  id="NitoCCEd"  onchange="TraerPoC(this)" required>
@@ -58,6 +58,7 @@
                 </div>
 
                 <input type="hidden" class="form-control"  value="0" name="Editar" id="editar">
+                <input type="hidden" class="form-control"  value="{{user.fullname}}" name="Responsable" id="responsable">
                 
                 <button type="button" class="btn btn-secondary" onclick="CerrarModal()">Close</button>
                 <button type="submit" class="btn btn-primary" onclick="CerrarModal()">Guardar</button>

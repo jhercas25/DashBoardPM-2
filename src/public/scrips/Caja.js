@@ -2,12 +2,14 @@
 function DatosCaja(params) {
 
   var url = '/Caja/Historico';
-
   //console.log(url);
   $.get(url).then(function (res) {
     const CajaMovimientos = res;
+    console.log(CajaMovimientos);
     params.success(CajaMovimientos);
+
   });
+
 }
 
 //DatosDetalleCaja
@@ -88,21 +90,29 @@ function DatosDetalleCaja(index, row) {
 
 }
 
-function Cierre(Efectivo,Electronico) {
-
+function Cierre(Efectivo , Electronico) {
+  console.log({ Efectivo, Electronico });
   if (Efectivo == '' || Electronico == '') return 0
   var url = '/Caja/Movimiento/Ultimo';
   //console.log(url);
   $.get(url).then(function (res) {
+
     const UltimoMovimiento = res;
     console.log(UltimoMovimiento);
 
     if (UltimoMovimiento[0].idCierre != '0' && UltimoMovimiento[0].idApertura != '0') {
-      CrearAlerta('Apertura pendiente')
+      CrearAlerta('Apertura pendiente');
     }
     else {
-   
-   
+      TNEfe = $('#TotEfe').val().replace(/\./g, '').replace(/\,/g, '.')/1;
+      TNEle = $('#TotEle').val().replace(/\./g, '').replace(/\,/g, '.')/1;
+      console.log({ TNEfe, TNEle });
+      
+      if (TNEfe - Efectivo/1 != 0 || TNEle - Electronico/1 != 0) {
+        CrearAlerta('Faltan transacciones por registrar');
+      } else {
+        EfectuarCierre(Efectivo, Electronico)
+      }
 
       console.log({ Efectivo, Electronico });
     }
@@ -129,18 +139,19 @@ function Apertura(Efectivo, Electronico) {
       $.get(url).then(function (res) {
         const Cierre = res[0];
         console.log(Cierre);
-        if (Efectivo != Cierre.MontoEfectivo) {
+        debugger
+        if ((Efectivo.replace(/\./g,'')/1) != Cierre.SaldoEfectivo) {
           CrearAlerta('Monto en Efectivo incorrecto');
         } else {
-          if (Electronico != Cierre.MontoElectronico) {
+          if (Electronico.replace(/\./g,'')/1 != Cierre.SaldoElectronico) {
 
-            html = `Existe una diferencia de ${Electronico-Cierre.MontoElectronico}`
+            html = `Existe una diferencia de ${Electronico.replace(/\./g,'')/1 - Cierre.SaldoElectronico}`
             alertashook = document.getElementById('DifMontoElectronico')
             alertashook.innerHTML = html;
             $('#AlertaDialog').modal('show')
 
           } else {
-            EfetuarApertura(Efectivo, Electronico);
+            EfectuarApertura(Efectivo.replace(/\./g,'')/1, Electronico.replace(/\./g,'')/1);
           }
         }
       });
@@ -152,7 +163,26 @@ function Apertura(Efectivo, Electronico) {
 
 }
 
+function EfectuarCierre(Efectivo, Electronico) {
+  var url = '/Caja/Cierre';
+  const Ventas = $('#EntEle').val().replace(/\./g, '').replace(/\,/g, '.')/1 + $('#EntEfe').val().replace(/\./g, '').replace(/\,/g, '.')/1
+  const Gastos = $('#GasEle').val().replace(/\./g, '').replace(/\,/g, '.')/1 + $('#GasEfe').val().replace(/\./g, '').replace(/\,/g, '.')/1
+  const Pagos = $('#SalEle').val().replace(/\./g, '').replace(/\,/g, '.')/1 + $('#SalEfe').val().replace(/\./g, '').replace(/\,/g, '.')/1
 
+  const NCierre = {
+    SaldoEfectivo: Efectivo.replace(/\./g, '').replace(/\,/g, '.')/1,
+    SaldoElectronico: Electronico.replace(/\./g, '').replace(/\,/g, '.')/1,
+    Ventas,
+    Gastos,
+    Pagos,
+  }
+    console.log(Cierre);
+
+  $.post(url, NCierre).then(function (res) {
+    console.log(res);
+    ActualizarValores();
+  });
+}
 
 function EfectuarApertura(Efectivo, Electronico) {
   var url = '/Caja/Apertura';
@@ -163,7 +193,8 @@ function EfectuarApertura(Efectivo, Electronico) {
 
   $.post(url, NApertura).then(function (res) {
     console.log(res);
-  }); 
+    ActualizarValores();
+  });
 }
 
 function CrearAlerta(Mensaje) {
@@ -176,3 +207,4 @@ function CrearAlerta(Mensaje) {
   alertashook.innerHTML = alerta;
 
 }
+

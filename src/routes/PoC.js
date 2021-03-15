@@ -28,7 +28,6 @@ router.get('/Clientes/datos',isLoggedin,async (req,res)  =>{
     return res.send(Clientes);
 });
 
- 
 router.get('/Proveedores/datos',isLoggedin,async (req,res)  =>{
      const Provedores=await pool.query ('Select * from poc Where PoC = 1 ') ;
      //console.log(Provedores);
@@ -95,15 +94,15 @@ router.get('/Proveedores/datos/nomb/:id',isLoggedin,async (req,res)  =>{
  //Editar o Crear 
 
  router.post('/Clientes/CoE',isLoggedin,async (req,res)  =>{
-    const {NitoCC,Nombre,Direccion,Telefono,Telefono2,Ciudad,Departamento,Email,Observaciones,AE,Tica} = req.body;
+    const {NitoCC,Nombre,Direccion,Telefono,Telefono2,Ciudad,Departamento,Email,Observaciones,AE,Tica,Responsable} = req.body;
     
-    const PoC={NitoCC,Nombre,Direccion,Tel1:Telefono,Tel2 : Telefono2,Ciudad,Departamento,Email,Observaciones,PoC:"0",AE,Tica}
+    const PoC={NitoCC,Nombre,Direccion,Tel1:Telefono,Tel2 : Telefono2,Ciudad,Departamento,Email,Observaciones,PoC:"0",AE,Tica,Responsable}
     if(req.body.Editar =="0"){
-        //console.log("Creando");
+        console.log("Creando");
         await pool.query ('INSERT INTO poc SET ?',[PoC]) ;
     }else{
         const PoC={Nombre,Direccion,Tel1:Telefono,Tel2 : Telefono2,Ciudad,Departamento,Email,Observaciones,PoC:"0"}
-        // console.log("Editando");
+         console.log("Editando");
         //console.log(PoC);
         await pool.query ('UPDATE poc SET ? where NitoCC = ?',[PoC,req.body.NitoCC]) ;
     }
@@ -115,9 +114,9 @@ router.get('/Proveedores/datos/nomb/:id',isLoggedin,async (req,res)  =>{
 
  router.post('/Proveedores/CoE',isLoggedin,async (req,res)  =>{
      
-    const {NitoCC,Nombre,Direccion,Telefono,Telefono2,Ciudad,Departamento,Email,Observaciones,AE,Tica} = req.body;
+    const {NitoCC,Nombre,Direccion,Telefono,Telefono2,Ciudad,Departamento,Email,Observaciones,AE,Tica,Responsable} = req.body;
     
-    const PoC={NitoCC,Nombre,Direccion,Tel1:Telefono,Tel2 : Telefono2,Ciudad,Departamento,Email,Observaciones,PoC:"1",AE,Tica}
+    const PoC={NitoCC,Nombre,Direccion,Tel1:Telefono,Tel2 : Telefono2,Ciudad,Departamento,Email,Observaciones,PoC:"1",AE,Tica,Responsable}
      //const Provedores=await pool.query (`Select * from provedores where Nombre like '%${id}%'`) ;
      if(req.body.Editar =="0"){
        // console.log("Creando");

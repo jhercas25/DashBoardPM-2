@@ -20,13 +20,14 @@
                     <div class="card-title col-md-2 col-6  "> Apertura</div>
                     <div class=" row col-12 col-md-4 m-2">
                         <label for="ApeEle"> Electronico </label>
-                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="ApeEle"
+                        }
+                        <input type="text" data-inputmask="'alias': 'numeric'"  value="{{Datos.Apertura.Electronico}}" class="form-control" id="ApeEle"
                             name="ApeEle">
                     </div>
 
                     <div class=" row col-12 col-md-4 m-2">
                         <label for="ApeEfe"> Efectivo</label>
-                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="ApeEfe"
+                        <input type="text" data-inputmask="'alias': 'numeric'" value="{{Datos.Apertura.Efectivo}}" class="form-control" id="ApeEfe"
                             name="ApeEfe">
 
 
@@ -34,9 +35,10 @@
 
                 </div>
                 <div class="col-md-6 col-12  m-auto ">
-                    <a class="btn btn-success m-2 d-block " href="javascript:void(0)"
-                        onclick="Apertura(ApeEle.value,ApeEfe.value)"> Apertura </a>
+                    <a class="btn btn-success m-2 d-block " href="javascript:void(0)" onclick="Apertura(ApeEfe.value,ApeEle.value)"> Apertura </a>
+                    <a class="btn btn-success m-2 d-none " href="javascript:void(0)" onclick="Apertura(ApeEfe.value,ApeEle.value)"> Editar Apertura </a>
                 </div>
+
             </div>
 
         </div>
@@ -47,13 +49,13 @@
                     <div class="card-title col-md-2 col-6  "> Nuevo Gasto </div>
                     <div class=" row col-12 col-md-4 m-2">
                         <label for="NGasEle"> Electronico </label>
-                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="NGasEle"
+                        <input type="text" data-inputmask="'alias': 'numeric'"   class="form-control" id="NGasEle"
                             name="NGasEle">
                     </div>
 
                     <div class=" row col-12 col-md-4 m-2">
                         <label for="NGasEfe"> Efectivo</label>
-                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" id="NGasEfe"
+                        <input type="text" data-inputmask="'alias': 'numeric'"   class="form-control" id="NGasEfe"
                             name="NGasEfe">
                     </div>
 
@@ -64,7 +66,8 @@
 
                 </div>
                 <div class="col-md-6 col-12 m-auto ">
-                    <a class="btn btn-success m-2 d-block " href="#"> Nuevo Gasto </a>
+                    <a class="btn btn-success m-2 d-block" id="BtnGasto" href="javascript:void(0)" onclick="Gastos(NGasEfe.value,NGasEle.value,GasDes.value,'{{user.username}}')" > Nuevo Gasto </a>
+                    <a class="btn btn-success m-2 d-none" id="BtnEditGasto" href="javascript:void(0)" onclick="EditarGastos(NGasEfe.value,NGasEle.value,GasDes.value,'{{user.username}}',localStorage.Gastoid)" > Editar Gasto </a>
                 </div>
             </div>
 
@@ -79,17 +82,14 @@
                     <div class=" card-title col-md-2 col-6 p-2"> Entradas </div>
                         
                     <div class=" col-12 col-md-4 m-2">
-                        
-                            
-                        
 
                         <label for="EntEle">Electonico</label>
-                        <input type="text" class="form-control" value="{{Datos.Entradas.EntradasEfectivo}}"  id="EntElef"  name="EntEle" readonly>
+                        <input type="text" data-inputmask="'alias': 'numeric'" class="form-control" value="{{Datos.Entradas.Electronico}}"  id="EntEle"  name="EntEle" readonly>
                     </div>
 
                     <div class="col-12 col-md-4 m-2">
                         <label for="EntEfe">Efectivo</label>
-                        <input type="text" data-inputmask="'alias': 'numeric'" value="{{Datos.Entradas.EntradasElectronico}}"class="form-control" id="EntEfe"
+                        <input type="text" data-inputmask="'alias': 'numeric'" value="{{Datos.Entradas.Efectivo}}"class="form-control" id="EntEfe"
                             name="EntEfe" readonly>
                     </div>
 
@@ -99,13 +99,13 @@
 
                     <div class=" row col-12 col-md-4 m-2">
                         <label for="SalEle"> Electronico </label>
-                        <input type="text" data-inputmask="'alias': 'numeric'" value="{{Datos.Salidas.SalidasEfectivo}}"class="form-control" id="SalEle"
+                        <input type="text" data-inputmask="'alias': 'numeric'" value="{{Datos.Salidas.Electronico}}"class="form-control" id="SalEle"
                             name="SelEle" readonly>
                     </div>
 
                     <div class=" row col-12 col-md-4 m-2">
                         <label for="SalEfe"> Efectivo</label>
-                        <input type="text" data-inputmask="'alias': 'numeric'" value="{{Datos.Salidas.SalidasElectronico}}" class="form-control" id="SalEfe"
+                        <input type="text" data-inputmask="'alias': 'numeric'" value="{{Datos.Salidas.Efectivo}}" class="form-control" id="SalEfe"
                             name="SalEfe" readonly>
                     </div>
                 </div>
@@ -114,13 +114,13 @@
                     <div class="card-title col-md-2 col-6 "> Gastos </div>
                     <div class=" row col-12 col-md-4 m-2">
                         <label for="GasEle"> Electronico </label>
-                        <input type="text" data-inputmask="'alias': 'numeric'" value="{{Datos.Gastos.GastosEfectivo}}" class="form-control" id="GasEle"
+                        <input type="text" data-inputmask="'alias': 'numeric'" value="{{Datos.Gastos.Electronico}}" class="form-control" id="GasEle"
                             name="GasEle" readonly>
                     </div>
 
                     <div class=" row col-12 col-md-4 m-2">
                         <label for="GasEfe"> Efectivo</label>
-                        <input type="text" data-inputmask="'alias': 'numeric'" value="{{Datos.Salidas.SalidasElectronico}}" class="form-control" id="GasEfe"
+                        <input type="text" data-inputmask="'alias': 'numeric'" value="{{Datos.Gastos.Efectivo}}" class="form-control" id="GasEfe"
                             name="GasEfe" readonly>
                     </div>
 
@@ -129,13 +129,13 @@
                     <div class="card-title col-md-2 col-6 "> Total </div>
                     <div class=" row col-12 col-md-4 m-2">
                         <label for="TotEle"> Electronico </label>
-                        <input type="text" data-inputmask="'alias': 'numeric'" value="Total.MontoEfectivo"class="form-control" id="TotEle"
+                        <input type="text" data-inputmask="'alias': 'numeric'" value="{{Datos.Total.Electronico}}"class="form-control" id="TotEle"
                             name="TotEle" readonly>
                     </div>
 
                     <div class=" row col-12 col-md-4 m-2">
                         <label for="TotEfe"> Efectivo</label>
-                        <input type="text" data-inputmask="'alias': 'numeric'" value="Total.MontoElectronico"class="form-control" id="TotEfe"
+                        <input type="text" data-inputmask="'alias': 'numeric'" value="{{Datos.Total.Efectivo}}" class="form-control" id="TotEfe"
                             name="TotEfe" readonly>
                     </div>
 
@@ -161,7 +161,8 @@
 
                 <div class=" col-md-8 col-12  text-center m-auto"></div>
                 <div class="col-md-6 col-12 m-auto">
-                    <a class="btn btn-success  d-block m-2 " href="javascript:void(0)" onclick="Cierre(VCierreEle.value,VCierreEfe.value)"> Cierre </a>
+                    <a class="btn btn-success d-block m-2 " href="javascript:void(0)" onclick="Cierre(VCierreEfe.value,VCierreEle.value)"> Cierre </a>
+                    <a class="btn btn-success d-none m-2 " href="javascript:void(0)" onclick="EditarCierre(VCierreEfe.value,VCierreEle.value)"> Editar Cierre </a>
                 </div>
 
             </div>
@@ -190,10 +191,9 @@
                     <thead>
                         <tr>
 
-                            <th data-field="FechaEjecucion">Fecha</th>
+                            <th data-field="FE">Fecha</th>
                             <th data-field="Descripcion">Descripcion</th>
-                            <th data-field="MontoEfectivo">Valor Efectivo</th>
-                            <th data-field="MontoElectronico">Valor Electronico</th>
+                            <th data-field="Monto">Valor</th>
                             <th data-field="operate" data-formatter="GastosOP" data-events="EventsGastos"> </th>
                         </tr>
                     </thead>
@@ -220,10 +220,10 @@
 
                             <th data-field="FechaApertura">Fecha Apertura</th>
                             <th data-field="MontoEfectivo">Apertura Efectivo</th>
-                            <th data-field="MontoTarjeta">Apertura Electronico</th>
-                            <th data-field="FechaApertura">Fecha Cierre</th>
+                            <th data-field="MontoElectronico">Apertura Electronico</th>
+                            <th data-field="FechaCierre">Fecha Cierre</th>
                             <th data-field="SaldoEfectivo">Cierre Efectivo</th>
-                            <th data-field="SaldoTarjeta">Cierre Electronico</th>
+                            <th data-field="SaldoElectronico">Cierre Electronico</th>
 
                             <th data-field="operate" data-formatter="DatosCajaOP" data-events="EventsCaja">
                             </th>
